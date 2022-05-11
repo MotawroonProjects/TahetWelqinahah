@@ -9,6 +9,10 @@
             name="lang"
             type="String" />
 
+        <variable
+            name="country"
+            type="String" />
+
     </data>
 
     <LinearLayout
@@ -61,8 +65,7 @@
                             android:fontFamily="@font/font_regular"
                             android:text="@string/change_language"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
-                            />
+                            android:textSize="16sp" />
 
                         <androidx.legacy.widget.Space
                             android:layout_width="0dp"
@@ -77,6 +80,55 @@
                             android:text='@{lang.equals("ar")?"EN":"عربي"}'
                             android:textColor="@color/black"
                             android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@drawable/hor_line"
+                        android:layerType="software"
+
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/llCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="68dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+
+                        >
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_lang" />
+
+                        <androidx.legacy.widget.Space
+                            android:layout_width="12dp"
+                            android:layout_height="0dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/font_regular"
+                            android:text="@string/ch_country"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <androidx.legacy.widget.Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/font_regular"
+                            android:text='@{country.equals("eg")?@string/egypt:(country.equals("sa")?@string/saudi_arabia:@string/united_arab_emirates)}'
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -259,7 +311,6 @@
                             android:textSize="16sp" />
 
                     </LinearLayout>
-
 
 
                     <TextView

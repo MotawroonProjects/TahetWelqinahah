@@ -9,6 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 public class GeneralMvvm extends AndroidViewModel {
     private MutableLiveData<Integer> mainNavigation;
     private MutableLiveData<Boolean> mainNavigationBackPress;
+    private MutableLiveData<Boolean> onUserLoggedIn;
+    private MutableLiveData<Boolean> onUserLoggedOut;
+    private MutableLiveData<Boolean> onCountrySuccess;
 
     public GeneralMvvm(@NonNull Application application) {
         super(application);
@@ -30,5 +33,30 @@ public class GeneralMvvm extends AndroidViewModel {
         }
 
         return mainNavigationBackPress;
+    }
+
+    public MutableLiveData<Boolean> getOnUserLoggedIn() {
+        if (onUserLoggedIn == null) {
+            onUserLoggedIn = new MutableLiveData<>();
+
+        }
+
+        return onUserLoggedIn;
+    }
+
+    public MutableLiveData<Boolean> getOnUserLoggedOut() {
+        if (onUserLoggedOut == null) {
+            onUserLoggedOut = new MutableLiveData<>();
+
+        }
+
+        return onUserLoggedOut;
+    }
+
+    public MutableLiveData<Boolean> getOnCountrySuccess() {
+        if (onCountrySuccess == null) {
+            onCountrySuccess = new MutableLiveData<>();
+        }
+        return onCountrySuccess;
     }
 }

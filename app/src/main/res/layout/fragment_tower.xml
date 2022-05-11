@@ -24,7 +24,7 @@
             layout="@layout/toolbar"
             />
         <include
-            android:id="@+id/recViewLayout"
+            android:id="@+id/recViewLayoutTower"
             layout="@layout/recview_layout" />
     </LinearLayout>
 

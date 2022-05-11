@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lost_found_it.R;
@@ -17,10 +18,12 @@ import com.lost_found_it.adapter.BrandAdapter;
 import com.lost_found_it.adapter.CategoryAdapter;
 import com.lost_found_it.databinding.FragmentHomeBinding;
 import com.lost_found_it.databinding.FragmentLostBinding;
+import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
 public class FragmentLost extends BaseFragment {
+    private GeneralMvvm generalMvvm;
     private FragmentLostBinding binding;
     private HomeActivity activity;
     private CategoryAdapter categoryAdapter;
@@ -52,27 +55,32 @@ public class FragmentLost extends BaseFragment {
     }
 
     private void initView() {
+
+        generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
+        generalMvvm.getOnCountrySuccess().observe(activity,isChanged->{
+            binding.setCountry(getUserSetting().getCountry());
+        });
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
-        binding.recViewCategory.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        binding.recViewCategoryLost.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(activity, this, getLang());
-        binding.recViewCategory.setAdapter(categoryAdapter);
+        binding.recViewCategoryLost.setAdapter(categoryAdapter);
 
-        binding.recViewBrands.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        binding.recViewBrandsLost.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         brandAdapter = new BrandAdapter(activity, this, getLang());
-        binding.recViewBrands.setAdapter(brandAdapter);
+        binding.recViewBrandsLost.setAdapter(brandAdapter);
 
         adAdapter = new AdAdapter(activity,this,getLang());
-        binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
-        binding.recViewLayout.recView.setAdapter(adAdapter);
-        binding.recViewLayout.recView.setHasFixedSize(true);
-        binding.recViewLayout.recView.setDrawingCacheEnabled(true);
-        binding.recViewLayout.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        binding.recViewLayout.recView.setItemViewCacheSize(20);
+        binding.recViewLayoutLost.recView.setLayoutManager(new LinearLayoutManager(activity));
+        binding.recViewLayoutLost.recView.setAdapter(adAdapter);
+        binding.recViewLayoutLost.recView.setHasFixedSize(true);
+        binding.recViewLayoutLost.recView.setDrawingCacheEnabled(true);
+        binding.recViewLayoutLost.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        binding.recViewLayoutLost.recView.setItemViewCacheSize(20);
 
-        binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(()->{
-            binding.recViewLayout.swipeRefresh.setRefreshing(false);
+        binding.recViewLayoutLost.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        binding.recViewLayoutLost.swipeRefresh.setOnRefreshListener(()->{
+            binding.recViewLayoutLost.swipeRefresh.setRefreshing(false);
         });
     }
 

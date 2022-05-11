@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lost_found_it.R;
@@ -17,10 +18,12 @@ import com.lost_found_it.adapter.BrandAdapter;
 import com.lost_found_it.adapter.CategoryAdapter;
 import com.lost_found_it.databinding.FragmentLostBinding;
 import com.lost_found_it.databinding.FragmentMeccaBinding;
+import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
 public class FragmentMecca extends BaseFragment {
+    private GeneralMvvm generalMvvm;
     private FragmentMeccaBinding binding;
     private HomeActivity activity;
     private AdAdapter adAdapter;
@@ -50,9 +53,13 @@ public class FragmentMecca extends BaseFragment {
     }
 
     private void initView() {
+        generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         binding.setLang(getLang());
         setUpToolbar(binding.toolbarMecca,"",R.color.white,R.color.black);
 
+        binding.toolbarMecca.llBack.setOnClickListener(v -> {
+            generalMvvm.getMainNavigationBackPress().setValue(true);
+        });
         adAdapter = new AdAdapter(activity,this,getLang());
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recViewLayout.recView.setAdapter(adAdapter);

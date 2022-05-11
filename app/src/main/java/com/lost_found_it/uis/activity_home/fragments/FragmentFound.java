@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lost_found_it.R;
@@ -18,10 +19,12 @@ import com.lost_found_it.adapter.CategoryAdapter;
 import com.lost_found_it.databinding.FragmentFoundBinding;
 import com.lost_found_it.databinding.FragmentHomeBinding;
 import com.lost_found_it.databinding.FragmentLostBinding;
+import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
 public class FragmentFound extends BaseFragment {
+    private GeneralMvvm generalMvvm;
     private FragmentFoundBinding binding;
     private HomeActivity activity;
     private CategoryAdapter categoryAdapter;
@@ -53,15 +56,19 @@ public class FragmentFound extends BaseFragment {
     }
 
     private void initView() {
+        generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
+        generalMvvm.getOnCountrySuccess().observe(activity,isChanged->{
+            binding.setCountry(getUserSetting().getCountry());
+        });
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
-        binding.recViewCategory.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        binding.recViewCategoryFound.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(activity, this, getLang());
-        binding.recViewCategory.setAdapter(categoryAdapter);
+        binding.recViewCategoryFound.setAdapter(categoryAdapter);
 
-        binding.recViewBrands.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+        binding.recViewBrandsFound.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
         brandAdapter = new BrandAdapter(activity, this, getLang());
-        binding.recViewBrands.setAdapter(brandAdapter);
+        binding.recViewBrandsFound.setAdapter(brandAdapter);
 
         adAdapter = new AdAdapter(activity, this, getLang());
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));

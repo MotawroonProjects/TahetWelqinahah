@@ -166,6 +166,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardMecca"
                     android:layout_width="match_parent"
                     android:layout_height="104dp"
                     android:layout_marginStart="16dp"
@@ -217,6 +218,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardTower"
                     android:layout_width="match_parent"
                     android:layout_height="104dp"
                     android:layout_marginStart="16dp"
@@ -293,7 +295,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recView"
+                android:id="@+id/recViewHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="28dp" />

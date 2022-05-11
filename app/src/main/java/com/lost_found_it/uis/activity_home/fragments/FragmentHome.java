@@ -55,6 +55,9 @@ public class FragmentHome extends BaseFragment {
 
     private void initView() {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
+        generalMvvm.getOnCountrySuccess().observe(activity, isChanged -> {
+            binding.setCountry(getUserSetting().getCountry());
+        });
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
         sliderAdapter = new SliderAdapter(getActivity());
@@ -63,11 +66,19 @@ public class FragmentHome extends BaseFragment {
         binding.indicator.setCount(sliderAdapter.getCount());
 
         adAdapter = new AdAdapter(activity, this, getLang());
-        binding.recView.setLayoutManager(new LinearLayoutManager(activity));
-        binding.recView.setAdapter(adAdapter);
+        binding.recViewHome.setLayoutManager(new LinearLayoutManager(activity));
+        binding.recViewHome.setAdapter(adAdapter);
 
         binding.llSearch.setOnClickListener(v -> {
             generalMvvm.getMainNavigation().setValue(Tags.fragment_search_pos);
+        });
+
+        binding.cardMecca.setOnClickListener(v -> {
+            generalMvvm.getMainNavigation().setValue(Tags.fragment_mecca_pos);
+        });
+
+        binding.cardTower.setOnClickListener(v -> {
+            generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
         });
     }
 

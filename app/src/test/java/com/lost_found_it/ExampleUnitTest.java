@@ -1,4 +1,4 @@
-package com.apps.akkaber;
+package com.lost_found_it;
 
 import org.junit.Test;
 

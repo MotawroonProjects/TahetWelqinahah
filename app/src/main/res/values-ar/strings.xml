@@ -75,5 +75,16 @@
     <string name="follow_us">تابعونا على</string>
     <string name="inv_link">رابط غير صحيح</string>
     <string name="related_products">المنتجات المشابهة</string>
+    <string name="welcome_back">مرحبا بعودتك مرة اخرى</string>
+    <string name="we_sent_an_code_to_verify_yor_phone">لقد ارسلنا رمز التحقق الى</string>
+    <string name="enter_your_verification_code">من فضلك أدخل رمز التحقق</string>
+    <string name="verify">تحقق</string>
+    <string name="ch_country">تغيير الدولة</string>
+    <string name="user_name">إسم المستخدم</string>
+    <string name="first_name">الإسم الاول</string>
+    <string name="last_name">الإسم الاخير</string>
+    <string name="let_s_start">لنبدأ</string>
+    <string name="choose_photo">إختر صورة</string>
+    <string name="agree_terms"><![CDATA[الموافقة على <font color="#EA630B">الشروط والاحكام</font>]]></string>
 
 </resources>

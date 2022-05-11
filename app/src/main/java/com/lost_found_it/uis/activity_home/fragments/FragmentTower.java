@@ -9,16 +9,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lost_found_it.R;
 import com.lost_found_it.adapter.AdAdapter;
 import com.lost_found_it.databinding.FragmentMeccaBinding;
 import com.lost_found_it.databinding.FragmentTowerBinding;
+import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
 public class FragmentTower extends BaseFragment {
+    private GeneralMvvm generalMvvm;
     private FragmentTowerBinding binding;
     private HomeActivity activity;
     private AdAdapter adAdapter;
@@ -48,19 +51,23 @@ public class FragmentTower extends BaseFragment {
     }
 
     private void initView() {
+        generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         binding.setLang(getLang());
         setUpToolbar(binding.toolbarTower,"",R.color.white,R.color.black);
+        binding.toolbarTower.llBack.setOnClickListener(v -> {
+            generalMvvm.getMainNavigationBackPress().setValue(true);
+        });
         adAdapter = new AdAdapter(activity, this, getLang());
-        binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
-        binding.recViewLayout.recView.setAdapter(adAdapter);
-        binding.recViewLayout.recView.setHasFixedSize(true);
-        binding.recViewLayout.recView.setDrawingCacheEnabled(true);
-        binding.recViewLayout.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        binding.recViewLayout.recView.setItemViewCacheSize(20);
+        binding.recViewLayoutTower.recView.setLayoutManager(new LinearLayoutManager(activity));
+        binding.recViewLayoutTower.recView.setAdapter(adAdapter);
+        binding.recViewLayoutTower.recView.setHasFixedSize(true);
+        binding.recViewLayoutTower.recView.setDrawingCacheEnabled(true);
+        binding.recViewLayoutTower.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        binding.recViewLayoutTower.recView.setItemViewCacheSize(20);
 
-        binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> {
-            binding.recViewLayout.swipeRefresh.setRefreshing(false);
+        binding.recViewLayoutTower.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        binding.recViewLayoutTower.swipeRefresh.setOnRefreshListener(() -> {
+            binding.recViewLayoutTower.swipeRefresh.setRefreshing(false);
         });
 
 

@@ -79,5 +79,16 @@
     <string name="follow_us">Follow Us</string>
     <string name="inv_link">Invalid link</string>
     <string name="related_products">Related products</string>
+    <string name="welcome_back">Welcome Back !</string>
+    <string name="we_sent_an_code_to_verify_yor_phone">We sent an code to verify yor phone</string>
+    <string name="enter_your_verification_code">Enter your verification code</string>
+    <string name="verify">Verify</string>
+    <string name="ch_country">Change Country</string>
+    <string name="user_name">UserName</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last Name</string>
+    <string name="let_s_start">Let\'s Start</string>
+    <string name="choose_photo">Choose photo</string>
+    <string name="agree_terms"><![CDATA[Agree to the <font color="#EA630B">Terms And Conditions</font>]]></string>
 
 </resources>

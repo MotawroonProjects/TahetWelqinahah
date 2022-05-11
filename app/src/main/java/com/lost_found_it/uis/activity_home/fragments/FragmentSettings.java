@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -21,18 +25,27 @@ import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.uis.activity_about_app.AboutAppActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_contact_us.ContactUsActivity;
+import com.lost_found_it.uis.activity_country.CountryActivity;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
 public class FragmentSettings extends BaseFragment {
     private GeneralMvvm generalMvvm;
     private FragmentSettingBinding binding;
     private HomeActivity activity;
+    private ActivityResultLauncher<Intent> launcher;
+    private int req;
 
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity = (HomeActivity) context;
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req==1){
+                binding.setCountry(getUserSetting().getCountry());
+                generalMvvm.getOnCountrySuccess().setValue(true);
+            }
+        });
     }
 
     public static FragmentSettings newInstance() {
@@ -56,6 +69,7 @@ public class FragmentSettings extends BaseFragment {
     private void initView() {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         binding.setLang(getLang());
+        binding.setCountry(getUserSetting().getCountry());
         setUpToolbar(binding.toolbarSetting, getString(R.string.settings), R.color.white, R.color.black);
         binding.toolbarSetting.llBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
@@ -74,6 +88,12 @@ public class FragmentSettings extends BaseFragment {
         binding.llContactUs.setOnClickListener(v -> {
             Intent intent = new Intent(activity, ContactUsActivity.class);
             startActivity(intent);
+        });
+
+        binding.llCountry.setOnClickListener(v -> {
+            req = 1;
+            Intent intent = new Intent(activity, CountryActivity.class);
+            launcher.launch(intent);
         });
 
 

@@ -72,7 +72,7 @@ public class HomeActivity extends BaseActivity {
 
         adapter = new MyPagerAdapter(getSupportFragmentManager(), fragments, null);
         binding.pager.setAdapter(adapter);
-        binding.pager.setOffscreenPageLimit(3);
+        //binding.pager.setOffscreenPageLimit(fragments.size());
 
 
         if (stack.isEmpty()) {
@@ -91,7 +91,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void updateStack(int pos) {
-        Log.e("pos",pos+"");
         stack.push(pos);
         binding.pager.setCurrentItem(pos);
     }

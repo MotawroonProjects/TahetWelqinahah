@@ -10,6 +10,7 @@
     <color name="color5">#92B620</color>
     <color name="color6">#F9DECD</color>
     <color name="color7">#4B2771</color>
+    <color name="color8">#1C2B3E</color>
 
 
 
@@ -24,6 +25,9 @@
     <color name="grey6">#FDFDFD</color>
     <color name="grey7">#747474</color>
     <color name="grey8">#777</color>
+    <color name="grey9">#C4C4C4</color>
+    <color name="grey10">#F8F8F8</color>
+
 
 
     <color name="transparent">#00000000</color>
