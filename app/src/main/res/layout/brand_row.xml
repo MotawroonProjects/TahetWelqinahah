@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.lost_found_it.model.BrandModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="@{model.selected?@color/colorPrimary:@color/white}"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:contentPaddingLeft="8dp"
+        app:contentPaddingRight="8dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/font_regular"
+                android:lines="1"
+                android:maxEms="6"
+                android:text="All"
+                android:textColor="@{model.selected?@color/white:@color/color2}"
+                android:textSize="12sp"
+
+                />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</layout>

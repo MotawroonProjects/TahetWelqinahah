@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.lost_found_it.model.CategoryModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_margin="4dp"
+        app:cardBackgroundColor="@{model.selected?@color/color5:@color/white}"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:contentPaddingLeft="5dp"
+        app:contentPaddingRight="5dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:padding="3dp"
+
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/font_regular"
+                android:lines="1"
+                android:maxEms="6"
+                android:text="All"
+                android:textColor="@{model.selected?@color/white:@color/color2}"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</layout>
