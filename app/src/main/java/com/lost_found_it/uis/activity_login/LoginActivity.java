@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,7 @@ import com.lost_found_it.uis.activity_sign_up.SignUpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class LoginActivity extends BaseActivity {
@@ -61,6 +63,8 @@ public class LoginActivity extends BaseActivity {
                 finish();
             }
         });
+
+
         binding.edtPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

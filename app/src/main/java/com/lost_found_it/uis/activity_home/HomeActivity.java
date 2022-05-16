@@ -72,7 +72,7 @@ public class HomeActivity extends BaseActivity {
 
         adapter = new MyPagerAdapter(getSupportFragmentManager(), fragments, null);
         binding.pager.setAdapter(adapter);
-        //binding.pager.setOffscreenPageLimit(fragments.size());
+        binding.pager.setOffscreenPageLimit(fragments.size());
 
 
         if (stack.isEmpty()) {

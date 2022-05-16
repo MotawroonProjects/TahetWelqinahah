@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.lost_found_it.model.BrandModel" />
+            type="com.lost_found_it.model.SubCategoryModel" />
 
     </data>
 
@@ -25,10 +25,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:layout_gravity="center_vertical"
-            >
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,7 +36,7 @@
                 android:fontFamily="@font/font_regular"
                 android:lines="1"
                 android:maxEms="6"
-                android:text="All"
+                android:text='@{model.id.equals("0")?@string/all:model.title}'
                 android:textColor="@{model.selected?@color/white:@color/color2}"
                 android:textSize="12sp"
 

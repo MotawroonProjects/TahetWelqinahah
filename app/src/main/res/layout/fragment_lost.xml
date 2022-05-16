@@ -17,7 +17,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey6"
         >
 
         <com.google.android.material.appbar.AppBarLayout
@@ -165,7 +164,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="4dp"
-                        android:visibility='@{country.equals("uae")?View.VISIBLE:View.GONE,default=gone}'
+                        android:visibility='@{country.equals("ae")?View.VISIBLE:View.GONE,default=gone}'
                         app:cardCornerRadius="16dp"
                         app:cardElevation="4dp">
 

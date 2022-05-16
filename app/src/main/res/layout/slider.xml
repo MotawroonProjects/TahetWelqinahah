@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="model"
-            type="com.lost_found_it.model.SliderModel" />
+            type="com.lost_found_it.model.AdModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,33 +14,32 @@
         android:layout_height="match_parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
+            image="@{model.first_image.image}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:riv_corner_radius="16dp"
-            app:riv_border_width="0dp"
-            android:src="@drawable/test"
             android:scaleType="centerCrop"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_border_width="0dp"
+            app:riv_corner_radius="16dp" />
 
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/pin"
-            app:layout_constraintBottom_toTopOf="@id/pin"
-            app:layout_constraintEnd_toEndOf="@id/tvAddress"
             android:layout_marginBottom="8dp"
-            android:lines="1"
             android:ellipsize="end"
+            android:fontFamily="@font/font_bold"
+            android:lines="1"
             android:maxEms="12"
+            android:text="@{model.title}"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:fontFamily="@font/font_bold"
-            android:text="iphone 13 Pro Max Dual sim"
+            app:layout_constraintBottom_toTopOf="@id/pin"
+            app:layout_constraintEnd_toEndOf="@id/tvAddress"
+            app:layout_constraintStart_toStartOf="@id/pin"
 
 
             />
@@ -48,29 +48,28 @@
             android:id="@+id/pin"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="12dp"
             android:src="@drawable/ic_pin"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/tvAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/pin"
-            app:layout_constraintTop_toTopOf="@id/pin"
-            app:layout_constraintBottom_toBottomOf="@id/pin"
-            android:lines="1"
-            android:ellipsize="end"
-            android:maxEms="12"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:fontFamily="@font/font_regular"
-            android:text="Cairo - Egypt - Ittihad Street"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            />
+            android:ellipsize="end"
+            android:fontFamily="@font/font_regular"
+            android:lines="1"
+            android:maxEms="12"
+            android:text='@{model.address??""}'
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/pin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/pin"
+            app:layout_constraintTop_toTopOf="@id/pin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

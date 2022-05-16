@@ -86,5 +86,23 @@
     <string name="let_s_start">لنبدأ</string>
     <string name="choose_photo">إختر صورة</string>
     <string name="agree_terms"><![CDATA[الموافقة على <font color="#EA630B">الشروط والاحكام</font>]]></string>
+    <string name="ad_type">نوع الإعلان</string>
+    <string name="you_lost_something">العناصر المفقودة</string>
+    <string name="you_found_something">العناصر تمت العثور عليها</string>
+    <string name="ad_photos">صور الاعلان</string>
+    <string name="max_img">4 صور حد اقصى...</string>
+    <string name="ad_title">إسم الاعلان</string>
+    <string name="example">مثال: iPhone x plus</string>
+    <string name="ad_desc">تفاصيل الاعلان</string>
+    <string name="write_here">إكتب هنا ...</string>
+    <string name="main_cat">الأقسام الرئيسية</string>
+    <string name="sub_cat">الأقسام الفرعية</string>
+    <string name="location">الموقع</string>
+    <string name="publish">نشر</string>
+    <string name="back">رجوع</string>
+    <string name="thing_great_mosq">العناصر في الحرم المكي</string>
+    <string name="thing_great_tower">العناصر في برج خليفة</string>
+    <string name="whatsapp_num">واتس اب</string>
+    <string name="no_item">لا توجد عناصر لعرضها</string>
 
 </resources>

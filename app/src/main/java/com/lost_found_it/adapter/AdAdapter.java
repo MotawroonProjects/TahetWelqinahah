@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lost_found_it.R;
 import com.lost_found_it.databinding.AdRowBinding;
 import com.lost_found_it.model.AdModel;
+import com.lost_found_it.uis.activity_home.fragments.FragmentFound;
 import com.lost_found_it.uis.activity_home.fragments.FragmentHome;
+import com.lost_found_it.uis.activity_home.fragments.FragmentLost;
 
 import java.util.List;
 
@@ -41,10 +43,17 @@ public class AdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MyHolder myHolder = (MyHolder) holder;
+        myHolder.binding.setModel(list.get(position));
         myHolder.itemView.setOnClickListener(v -> {
             if (fragment instanceof FragmentHome){
                 FragmentHome fragmentHome = (FragmentHome) fragment;
-                fragmentHome.navigateToAdDetails();
+                fragmentHome.navigateToAdDetails(list.get(myHolder.getAdapterPosition()));
+            }else  if (fragment instanceof FragmentFound){
+                FragmentFound fragmentFound = (FragmentFound) fragment;
+                fragmentFound.navigateToAdDetails(list.get(myHolder.getAdapterPosition()));
+            }else  if (fragment instanceof FragmentLost){
+                FragmentLost fragmentLost = (FragmentLost) fragment;
+                fragmentLost.navigateToAdDetails(list.get(myHolder.getAdapterPosition()));
             }
         });
     }
@@ -53,7 +62,7 @@ public class AdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 4;
+        return list != null ? list.size() : 0;
     }
 
 

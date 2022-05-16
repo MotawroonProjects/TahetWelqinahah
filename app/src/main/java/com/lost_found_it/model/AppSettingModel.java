@@ -12,6 +12,8 @@ import java.io.Serializable;
 public class AppSettingModel extends BaseObservable implements Serializable {
     private String country;
     private boolean isFirstTime;
+    private String id;
+
 
     public String getCountry() {
         if (country==null){
@@ -30,5 +32,13 @@ public class AppSettingModel extends BaseObservable implements Serializable {
 
     public void setFirstTime(boolean firstTime) {
         isFirstTime = firstTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -6,12 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lost_found_it.model.AdModel;
+
 public class GeneralMvvm extends AndroidViewModel {
     private MutableLiveData<Integer> mainNavigation;
     private MutableLiveData<Boolean> mainNavigationBackPress;
     private MutableLiveData<Boolean> onUserLoggedIn;
     private MutableLiveData<Boolean> onUserLoggedOut;
     private MutableLiveData<Boolean> onCountrySuccess;
+    private MutableLiveData<AdModel> onAdDetailsSelected;
 
     public GeneralMvvm(@NonNull Application application) {
         super(application);
@@ -58,5 +61,12 @@ public class GeneralMvvm extends AndroidViewModel {
             onCountrySuccess = new MutableLiveData<>();
         }
         return onCountrySuccess;
+    }
+
+    public MutableLiveData<AdModel> getOnAdDetailsSelected() {
+        if (onAdDetailsSelected == null) {
+            onAdDetailsSelected = new MutableLiveData<>();
+        }
+        return onAdDetailsSelected;
     }
 }

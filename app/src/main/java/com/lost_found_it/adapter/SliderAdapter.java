@@ -13,13 +13,13 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.lost_found_it.R;
 import com.lost_found_it.databinding.SliderBinding;
-import com.lost_found_it.model.SliderModel;
+import com.lost_found_it.model.AdModel;
 
 import java.util.List;
 
 public class SliderAdapter  extends PagerAdapter {
 
-    List<SliderModel> list;
+    List<AdModel> list;
     private LayoutInflater inflater;
     Context context;
 
@@ -35,13 +35,13 @@ public class SliderAdapter  extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return 1;
+        return list!=null?list.size():0;
     }
 
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         SliderBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.slider,view,false);
-
+        rowBinding.setModel(list.get(position));
         view.addView(rowBinding.getRoot());
         return rowBinding.getRoot();
     }
@@ -65,10 +65,14 @@ public class SliderAdapter  extends PagerAdapter {
         return POSITION_NONE;
     }
 
-    public void updateList(List<SliderModel> list){
+    public void updateList(List<AdModel> list){
         if (list!=null){
             this.list = list;
-            notifyDataSetChanged();
+        }else {
+            this.list.clear();
         }
+
+        notifyDataSetChanged();
+
     }
 }

@@ -2,6 +2,7 @@ package com.lost_found_it.uis.activity_splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -14,10 +15,12 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lost_found_it.R;
 import com.lost_found_it.databinding.ActivitySplashBinding;
+import com.lost_found_it.model.AppSettingModel;
 import com.lost_found_it.uis.activity_base.BaseActivity;
 import com.lost_found_it.uis.activity_country.CountryActivity;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -76,6 +79,14 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void setUpData() {
+
+        if (getUserSetting().getId()==null){
+            AppSettingModel settingModel = getUserSetting();
+            String id = UUID.randomUUID().toString();
+            settingModel.setId(id);
+            setUserSetting(settingModel);
+        }
+
         if (getUserSetting().isFirstTime()){
             navigateToCountryActivity();
         }else {

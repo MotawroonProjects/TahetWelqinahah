@@ -51,7 +51,7 @@ public class CountryActivity extends BaseActivity {
         });
 
         binding.llUae.setOnClickListener(v -> {
-            country = "uae";
+            country = "ae";
             binding.setCountry(country);
 
         });
@@ -65,7 +65,6 @@ public class CountryActivity extends BaseActivity {
             finish();
         });
     }
-
 
 
 }

@@ -14,7 +14,7 @@
     <string name="continue1">Continue</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="no_data_to_show">No data to show</string>
-    <string name="phone">Phone</string>
+    <string name="phone">Phone Number</string>
     <string name="login">Login</string>
     <string name="terms_and_conditions">Terms and conditions</string>
     <string name="about_us">About us</string>
@@ -90,5 +90,23 @@
     <string name="let_s_start">Let\'s Start</string>
     <string name="choose_photo">Choose photo</string>
     <string name="agree_terms"><![CDATA[Agree to the <font color="#EA630B">Terms And Conditions</font>]]></string>
+    <string name="ad_type">Ad Type</string>
+    <string name="you_lost_something">you lost something</string>
+    <string name="you_found_something">you found something</string>
+    <string name="ad_photos">AD Photos</string>
+    <string name="max_img">A maximum of 4 photos ...</string>
+    <string name="ad_title">AD Title</string>
+    <string name="example">example: iPhone x plus</string>
+    <string name="ad_desc">AD Descriptions</string>
+    <string name="write_here">Write here ...</string>
+    <string name="main_cat">Main Category</string>
+    <string name="sub_cat">Sub Category</string>
+    <string name="location">Location</string>
+    <string name="publish">Publish</string>
+    <string name="back">Back</string>
+    <string name="thing_great_mosq">Things in the Great Mosque of Mecca</string>
+    <string name="thing_great_tower">Things in the khalifa tower</string>
+    <string name="whatsapp_num">Whatsapp Number</string>
+    <string name="no_item">No Items To Show</string>
 
 </resources>

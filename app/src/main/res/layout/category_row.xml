@@ -7,6 +7,7 @@
         <variable
             name="model"
             type="com.lost_found_it.model.CategoryModel" />
+        <import type="android.view.View"/>
 
     </data>
 
@@ -35,7 +36,8 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="8dp"
                 android:padding="3dp"
-
+                image="@{model.image}"
+                android:visibility='@{model.id.equals("0")?View.GONE:View.VISIBLE}'
 
                 />
 
@@ -46,7 +48,7 @@
                 android:fontFamily="@font/font_regular"
                 android:lines="1"
                 android:maxEms="6"
-                android:text="All"
+                android:text='@{model.id.equals("0")?@string/all:model.title}'
                 android:textColor="@{model.selected?@color/white:@color/color2}"
                 android:textSize="14sp" />
         </LinearLayout>
