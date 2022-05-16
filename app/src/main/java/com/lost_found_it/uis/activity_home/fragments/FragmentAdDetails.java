@@ -182,7 +182,9 @@ public class FragmentAdDetails extends BaseFragment {
         timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, 5000, 5000);
 
+
     }
+
 
     public void setAdItemData(AdModel adModel) {
         String device_id = getUserSetting().getId();
