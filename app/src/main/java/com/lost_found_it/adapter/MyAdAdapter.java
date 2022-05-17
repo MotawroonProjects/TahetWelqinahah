@@ -2,6 +2,7 @@ package com.lost_found_it.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.lost_found_it.R;
 import com.lost_found_it.databinding.AdRowBinding;
 import com.lost_found_it.databinding.MyAdsRowBinding;
 import com.lost_found_it.model.AdModel;
+import com.lost_found_it.uis.activity_home.fragments.FragmentMyAds;
 
 import java.util.List;
 
@@ -38,13 +40,34 @@ public class MyAdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MyHolder myHolder = (MyHolder) holder;
+        myHolder.binding.setModel(list.get(position));
+
+        myHolder.binding.llView.setOnClickListener(view -> {
+            if (fragment instanceof FragmentMyAds){
+                FragmentMyAds fragmentMyAds=(FragmentMyAds) fragment;
+                fragmentMyAds.navigateToDetails(list.get(myHolder.getAdapterPosition()));
+            }
+        });
+        myHolder.binding.llEdit.setOnClickListener(view -> {
+            if (fragment instanceof FragmentMyAds){
+                FragmentMyAds fragmentMyAds=(FragmentMyAds) fragment;
+                fragmentMyAds.editAdd(myHolder.getAdapterPosition(),list.get(position));
+            }
+        });
+
+        myHolder.binding.llDelete.setOnClickListener(view -> {
+            if (fragment instanceof FragmentMyAds){
+                FragmentMyAds fragmentMyAds=(FragmentMyAds) fragment;
+                fragmentMyAds.delete(myHolder.getAdapterPosition(),list.get(position));
+            }
+        });
 
     }
 
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 4;
+        return list != null ? list.size() : 0;
     }
 
 

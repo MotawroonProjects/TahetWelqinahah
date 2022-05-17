@@ -188,6 +188,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
         initView();
     }
 
+
     private void initView() {
         images = new ArrayList<>();
         uris = new HashMap<>();

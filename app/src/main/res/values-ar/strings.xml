@@ -104,5 +104,6 @@
     <string name="thing_great_tower">العناصر في برج خليفة</string>
     <string name="whatsapp_num">واتس اب</string>
     <string name="no_item">لا توجد عناصر لعرضها</string>
+    <string name="add_deleted">تم حذف الاعلان بنجاح</string>
 
 </resources>

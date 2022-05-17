@@ -3,11 +3,11 @@ package com.lost_found_it.model;
 import java.io.Serializable;
 
 public class StatusResponse implements Serializable {
-    protected int status;
+    protected int code;
     protected Object message;
 
-    public int getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
     public Object getMessage() {
