@@ -67,6 +67,13 @@
     <string name="missing_things_in_nthe_tower">العناصر\nالمفقودة في\nبرج خليفة</string>
     <string name="found_things_in_nthe_great_mosque_nof_mecca">العناصر\nتمت العثور عليها في\nالحرم المكي</string>
     <string name="found_things_in_nthe_tower">العناصر\nتمت العثور عليها في\nبرج خليفة</string>
+
+    <string name="missing_things_in_mecca">العناصر المفقودة في الحرم المكي</string>
+    <string name="missing_things_in_tower">العناصر المفقودة في برج خليفة</string>
+
+    <string name="found_things_in_mecca">العناصر تمت العثور عليها في الحرم المكي</string>
+    <string name="found_things_in_tower">العناصر تمت العثور عليها في برج خليفة</string>
+
     <string name="potential_ads">إعلانات محتملة</string>
     <string name="view">مشاهدة</string>
     <string name="edit">تعديل</string>

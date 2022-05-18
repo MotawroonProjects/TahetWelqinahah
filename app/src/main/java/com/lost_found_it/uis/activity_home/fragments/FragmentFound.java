@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -71,6 +72,18 @@ public class FragmentFound extends BaseFragment {
             binding.setCountry(getUserSetting().getCountry());
             mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
         });
+
+
+        binding.cardMecca.setOnClickListener(v -> {
+            generalMvvm.getOnMeccaFoundLost().setValue("found");
+            generalMvvm.getMainNavigation().setValue(Tags.fragment_mecca_pos);
+        });
+
+        binding.cardTower.setOnClickListener(v -> {
+            generalMvvm.getOnTowerFoundLost().setValue("found");
+            generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
+        });
+
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
 

@@ -60,7 +60,7 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
     public void getMyData(String country,UserModel model){
         getIsLoading().setValue(true);
         Api.getService(Tags.base_url)
-                .getMyAds("Bearer "+model.getData().getAccess_token(),country)
+                .getMyAds("Bearer ",country)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {
@@ -97,7 +97,7 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
 
     public void deleteAd(String country,UserModel model, String add_id, int adapterPosition){
         Api.getService(Tags.base_url)
-                .deleteAd("Bearer "+model.getData().getAccess_token(),country,add_id)
+                .deleteAd("Bearer ",country,add_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<StatusResponse>>() {

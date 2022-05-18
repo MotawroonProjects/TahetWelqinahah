@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -74,6 +75,7 @@ public class FragmentHome extends BaseFragment {
             mvvm.getData(getUserSetting().getCountry());
 
         });
+
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
         sliderAdapter = new SliderAdapter(getActivity());
@@ -115,10 +117,12 @@ public class FragmentHome extends BaseFragment {
 
 
         binding.cardMecca.setOnClickListener(v -> {
+            generalMvvm.getOnMeccaFoundLost().setValue("lost");
             generalMvvm.getMainNavigation().setValue(Tags.fragment_mecca_pos);
         });
 
         binding.cardTower.setOnClickListener(v -> {
+            generalMvvm.getOnTowerFoundLost().setValue("lost");
             generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
         });
 

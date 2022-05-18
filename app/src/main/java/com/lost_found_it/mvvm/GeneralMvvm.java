@@ -30,6 +30,9 @@ public class GeneralMvvm extends AndroidViewModel {
     private MutableLiveData<Boolean> onUserLoggedOut;
     private MutableLiveData<Boolean> onCountrySuccess;
     private MutableLiveData<AdModel> onAdDetailsSelected;
+    private MutableLiveData<String> onMeccaFoundLost;
+    private MutableLiveData<String> onTowerFoundLost;
+
     private MutableLiveData<UserModel> onTokenSuccess;
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -86,6 +89,23 @@ public class GeneralMvvm extends AndroidViewModel {
         }
         return onAdDetailsSelected;
     }
+
+    public MutableLiveData<String> getOnMeccaFoundLost() {
+        if (onMeccaFoundLost==null){
+            onMeccaFoundLost=new MutableLiveData<>();
+        }
+        return onMeccaFoundLost;
+    }
+
+    public MutableLiveData<String> getOnTowerFoundLost() {
+        if (onTowerFoundLost==null){
+            onTowerFoundLost=new MutableLiveData<>();
+        }
+        return onTowerFoundLost;
+    }
+
+
+
 
 
     public MutableLiveData<UserModel> onTokenSuccess() {

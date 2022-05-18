@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -73,9 +74,20 @@ public class FragmentLost extends BaseFragment {
             mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
 
         });
+
+
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
 
+        binding.cardMecca.setOnClickListener(v -> {
+            generalMvvm.getOnMeccaFoundLost().setValue("lost");
+            generalMvvm.getMainNavigation().setValue(Tags.fragment_mecca_pos);
+        });
+
+        binding.cardTower.setOnClickListener(v -> {
+            generalMvvm.getOnTowerFoundLost().setValue("lost");
+            generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
+        });
         mvvm.getIsLoading().observe(activity,isLoading->{
             binding.recViewLayoutLost.swipeRefresh.setRefreshing(isLoading);
         });

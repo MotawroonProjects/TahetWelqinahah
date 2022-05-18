@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,8 @@ import com.lost_found_it.model.AdModel;
 import com.lost_found_it.uis.activity_home.fragments.FragmentFound;
 import com.lost_found_it.uis.activity_home.fragments.FragmentHome;
 import com.lost_found_it.uis.activity_home.fragments.FragmentLost;
+import com.lost_found_it.uis.activity_home.fragments.FragmentMecca;
+import com.lost_found_it.uis.activity_home.fragments.FragmentTower;
 
 import java.util.List;
 
@@ -54,6 +57,12 @@ public class AdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }else  if (fragment instanceof FragmentLost){
                 FragmentLost fragmentLost = (FragmentLost) fragment;
                 fragmentLost.navigateToAdDetails(list.get(myHolder.getAdapterPosition()));
+            } else if (fragment instanceof FragmentMecca){
+                FragmentMecca fragmentMecca=(FragmentMecca) fragment;
+                fragmentMecca.navigateToAdDetails(list.get(myHolder.getAdapterPosition()));
+            }else if (fragment instanceof FragmentTower){
+                FragmentTower fragmentTower=(FragmentTower) fragment;
+                fragmentTower.navigateToAdDetails(list.get(myHolder.getAdapterPosition()));
             }
         });
     }
