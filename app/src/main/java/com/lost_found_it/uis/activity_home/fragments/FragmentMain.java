@@ -32,6 +32,7 @@ import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 import com.lost_found_it.uis.activity_login.LoginActivity;
+import com.lost_found_it.uis.activity_sign_up.SignUpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,8 +142,13 @@ public class FragmentMain extends BaseFragment {
         });
 
         binding.cardMyAds.setOnClickListener(v -> {
-            binding.drawerLayout.closeDrawer(GravityCompat.START);
-            generalMvvm.getMainNavigation().setValue(Tags.fragment_my_ads_pos);
+            if (getUserModel() == null) {
+                navigateToLoginActivity();
+            } else {
+                binding.drawerLayout.closeDrawer(GravityCompat.START);
+                generalMvvm.getMainNavigation().setValue(Tags.fragment_my_ads_pos);
+            }
+
         });
 
         binding.cardSetting.setOnClickListener(v -> {
@@ -154,11 +160,14 @@ public class FragmentMain extends BaseFragment {
             generalMvvm.getMainNavigation().setValue(Tags.fragment_notification_pos);
         });
 
-        binding.cardLogout.setOnClickListener(v -> {
+        binding.cardEditProfile.setOnClickListener(v -> {
+
             if (getUserModel() == null) {
+                navigateToLoginActivity();
+
 
             } else {
-                navigateToLoginActivity();
+                navigateToSignUpActivity();
             }
         });
 
@@ -171,6 +180,11 @@ public class FragmentMain extends BaseFragment {
                 logout();
             }
         });
+
+        if (getUserModel()!=null){
+            binding.setModel(getUserModel());
+        }
+
     }
 
     private void logout() {
@@ -178,8 +192,14 @@ public class FragmentMain extends BaseFragment {
     }
 
     private void navigateToLoginActivity() {
-        req=1;
+        req = 1;
         Intent intent = new Intent(activity, LoginActivity.class);
+        launcher.launch(intent);
+    }
+
+    private void navigateToSignUpActivity() {
+        req = 1;
+        Intent intent = new Intent(activity, SignUpActivity.class);
         launcher.launch(intent);
     }
 }

@@ -3,7 +3,6 @@ package com.lost_found_it.uis.activity_home.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lost_found_it.R;
-import com.lost_found_it.adapter.AdAdapter;
 import com.lost_found_it.adapter.MyAdAdapter;
-import com.lost_found_it.databinding.FragmentMeccaBinding;
 import com.lost_found_it.databinding.FragmentMyAdsBinding;
 import com.lost_found_it.model.AdModel;
 import com.lost_found_it.mvvm.FragmentMyAdsMvvm;
@@ -29,14 +25,13 @@ import com.lost_found_it.uis.activity_add_ads.AddAdsActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
-import java.util.List;
-
 public class FragmentMyAds extends BaseFragment {
     private GeneralMvvm generalMvvm;
     private FragmentMyAdsBinding binding;
     private HomeActivity activity;
-    private MyAdAdapter myAdAdapter;
+    private MyAdAdapter adapter;
     private FragmentMyAdsMvvm mvvm;
+
 
 
     @Override
@@ -83,27 +78,28 @@ public class FragmentMyAds extends BaseFragment {
             }else {
                 binding.recViewLayout.tvNoData.setVisibility(View.VISIBLE);
             }
-            myAdAdapter.updateList(adModels);
+            adapter.updateList(adModels);
         });
 
-        mvvm.onDelete.observe(activity, aBoolean -> {
-            if (aBoolean){
-                mvvm.getMyData(getUserSetting().getCountry());
-                Toast.makeText(activity, R.string.add_deleted, Toast.LENGTH_SHORT).show();
+        mvvm.getOnDelete().observe(activity, pos -> {
+            if (adapter!=null){
+                adapter.notifyItemRemoved(pos);
             }
+            Toast.makeText(activity, R.string.add_deleted, Toast.LENGTH_SHORT).show();
+
 
         });
 
-        mvvm.getMyData(getUserSetting().getCountry());
+        mvvm.getMyData(getUserSetting().getCountry(),getUserModel());
 
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(()->mvvm.getMyData(getUserSetting().getCountry()));
-        myAdAdapter = new MyAdAdapter(activity, this, getLang());
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(()->mvvm.getMyData(getUserSetting().getCountry(),getUserModel()));
+        adapter = new MyAdAdapter(activity, this, getLang());
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recViewLayout.recView.setHasFixedSize(true);
         binding.recViewLayout.recView.setDrawingCacheEnabled(true);
         binding.recViewLayout.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.recViewLayout.recView.setItemViewCacheSize(20);
-        binding.recViewLayout.recView.setAdapter(myAdAdapter);
+        binding.recViewLayout.recView.setAdapter(adapter);
 
         binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
@@ -121,7 +117,7 @@ public class FragmentMyAds extends BaseFragment {
     }
 
     public void delete(int adapterPosition, AdModel adModel) {
-        mvvm.deleteAdd(getUserSetting().getCountry(),adModel.getId());
+        mvvm.deleteAd(getUserSetting().getCountry(),getUserModel(),adModel.getId(),adapterPosition);
     }
 
 

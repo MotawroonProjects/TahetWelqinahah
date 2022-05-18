@@ -88,24 +88,22 @@ public class SignUpActivity extends BaseActivity {
 
         if (getUserModel() != null) {
             title = getString(R.string.edit_profile);
-           /* model.setName(getUserModel().getData().getName());
-            model.setEmail(getUserModel().getData().getEmail());
-            model.setPhone_code(getUserModel().getData().getPhone_code());
-            model.setPhone(getUserModel().getData().getPhone());
-            model.setVat(getUserModel().getData().getVat_number());
-            binding.llVat.setVisibility(View.GONE);
-            binding.llSpinner.setEnabled(false);
-            binding.edtName.setEnabled(false);
-            binding.llPhone.setVisibility(View.VISIBLE);
-            if (getUserModel().getData().getImage()!=null){
+            model.setFirst_name(getUserModel().getData().getUser().getFirst_name());
+            model.setLast_name(getUserModel().getData().getUser().getLast_name());
+            model.setEmail(getUserModel().getData().getUser().getEmail());
+            model.setPhone_code(getUserModel().getData().getUser().getPhone_code());
+            model.setPhone(getUserModel().getData().getUser().getPhone());
+            model.setAcceptTerms(true);
+            if (getUserModel().getData().getUser().getImage()!=null){
                 Glide.with(this).asBitmap()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.drawable.circle_avatar)
-                        .load(getUserModel().getData().getImage())
+                        .load(getUserModel().getData().getUser().getImage())
                         .centerCrop()
                         .into(binding.image);
 
-            }*/
+            }
+            binding.checkbox.setChecked(true);
         } else {
             model.setPhone_code(phone_code);
             model.setPhone(phone);
@@ -156,10 +154,11 @@ public class SignUpActivity extends BaseActivity {
         binding.flImage.setOnClickListener(v -> openSheet());
         binding.btnSignup.setOnClickListener(view -> {
             if (getUserModel() == null) {
-                activitySignupMvvm.signUp(model, this);
+                activitySignupMvvm.signUp(model, this, getUserSetting().getCountry());
 
             } else {
-                //activitySignupMvvm.update(model,getUserModel().getData().getId(),this);
+                String token = "Bearer "+getUserModel().getData().getAccess_token();
+                activitySignupMvvm.update(model,token,getUserSetting().getCountry(),this);
 
             }
         });

@@ -108,5 +108,7 @@
     <string name="whatsapp_num">Whatsapp Number</string>
     <string name="no_item">No Items To Show</string>
     <string name="add_deleted">Add deleted successfully</string>
+    <string name="ph_found">Phone exist</string>
+    <string name="em_found">Email exist</string>
 
 </resources>

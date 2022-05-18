@@ -32,6 +32,8 @@ import com.lost_found_it.uis.activity_home.fragments.FragmentSearch;
 import com.lost_found_it.uis.activity_home.fragments.FragmentSettings;
 import com.lost_found_it.uis.activity_home.fragments.FragmentTower;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -86,7 +88,18 @@ public class HomeActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+        generalMvvm.onTokenSuccess().observe(this, this::setUserModel);
+        generalMvvm.getOnUserLoggedIn().observe(this, loggedIn -> {
+            generalMvvm.updateToken(getUserModel());
 
+        });
+
+
+
+        if (getUserModel() != null) {
+            //EventBus.getDefault().register(this);
+            generalMvvm.updateToken(getUserModel());
+        }
 
     }
 
@@ -122,4 +135,11 @@ public class HomeActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /*if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }*/
+    }
 }

@@ -102,6 +102,12 @@ public class GeneralMethod {
                         .centerCrop()
                         .into(imageView);
 
+            }else {
+                Glide.with(view.getContext()).asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .load(0)
+                        .centerCrop()
+                        .into(imageView);
             }
         } else if (view instanceof RoundedImageView) {
             RoundedImageView imageView = (RoundedImageView) view;
@@ -114,6 +120,12 @@ public class GeneralMethod {
                         .centerCrop()
                         .into(imageView);
 
+            }else {
+                Glide.with(view.getContext()).asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .load(0)
+                        .centerCrop()
+                        .into(imageView);
             }
         } else if (view instanceof ImageView) {
             ImageView imageView = (ImageView) view;
@@ -123,6 +135,12 @@ public class GeneralMethod {
                 Glide.with(view.getContext()).asBitmap()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .load(imageUrl)
+                        .centerCrop()
+                        .into(imageView);
+            }else {
+                Glide.with(view.getContext()).asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .load(0)
                         .centerCrop()
                         .into(imageView);
             }

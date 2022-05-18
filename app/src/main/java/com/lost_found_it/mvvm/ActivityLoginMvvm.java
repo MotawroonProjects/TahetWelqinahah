@@ -19,7 +19,9 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.lost_found_it.R;
 import com.lost_found_it.model.LoginModel;
 import com.lost_found_it.model.UserModel;
+import com.lost_found_it.remote.Api;
 import com.lost_found_it.share.Common;
+import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 import com.lost_found_it.uis.activity_login.LoginActivity;
 
@@ -82,7 +84,7 @@ public class ActivityLoginMvvm extends AndroidViewModel {
     }
 
 
-    public void sendSmsCode(LoginModel model, LoginActivity activity) {
+    public void sendSmsCode(LoginModel model,String country, LoginActivity activity) {
         startTimer();
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -91,7 +93,7 @@ public class ActivityLoginMvvm extends AndroidViewModel {
                 String smsCode = phoneAuthCredential.getSmsCode();
                 Log.e("sms", smsCode + "");
                 getSmsCode().setValue(smsCode);
-                checkValidCode(smsCode, activity, model);
+                checkValidCode(smsCode,country, activity, model);
             }
 
             @Override
@@ -125,9 +127,9 @@ public class ActivityLoginMvvm extends AndroidViewModel {
 
     }
 
-    public void reSendSmsCode(LoginModel model, LoginActivity activity) {
+    public void reSendSmsCode(LoginModel model,String country, LoginActivity activity) {
         startTimer();
-        sendSmsCode(model, activity);
+        sendSmsCode(model,country, activity);
 
     }
 
@@ -168,7 +170,7 @@ public class ActivityLoginMvvm extends AndroidViewModel {
 
     }
 
-    public void checkValidCode(String code, LoginActivity activity, LoginModel loginModel) {
+    public void checkValidCode(String code,String country, LoginActivity activity, LoginModel loginModel) {
         Log.e("code", code + "__");
         ProgressDialog dialog = Common.createProgressDialog(activity, activity.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
@@ -178,7 +180,7 @@ public class ActivityLoginMvvm extends AndroidViewModel {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             mAuth.signInWithCredential(credential)
                     .addOnSuccessListener(authResult -> {
-                        login(activity, loginModel, dialog);
+                        login(activity, loginModel,country, dialog);
                     }).addOnFailureListener(e -> {
                         dialog.dismiss();
                         if (e.getMessage() != null) {
@@ -198,12 +200,9 @@ public class ActivityLoginMvvm extends AndroidViewModel {
     }
 
 
-    public void login(Context context, LoginModel loginMode, ProgressDialog dialogl) {
-        dialogl.dismiss();
-        /*  ProgressDialog dialog = Common.createProgressDialog(context, context.getResources().getString(R.string.wait));
-        dialog.setCancelable(false);
-        dialog.show();
-        Api.getService(Tags.base_url).login(phone_code, phone)
+    public void login(Context context, LoginModel loginMode,String country, ProgressDialog dialog) {
+        Log.e("logging","logging");
+        Api.getService(Tags.base_url).login(country,loginMode.getPhone_code(), loginMode.getPhone())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<UserModel>>() {
@@ -217,13 +216,13 @@ public class ActivityLoginMvvm extends AndroidViewModel {
                         dialog.dismiss();
 
                         if (response.isSuccessful()) {
-                            Log.e("status", response.body().getStatus() + "");
+                            Log.e("status", response.body().getCode() + "");
                             if (response.body() != null) {
 
-                                if (response.body().getStatus() == 200) {
+                                if (response.body().getCode() == 200) {
 
                                     getUserData().setValue(response.body());
-                                } else if (response.body().getStatus() == 400) {
+                                } else if (response.body().getCode() == 406) {
                                     getUserData().setValue(null);
 
                                 }
@@ -244,7 +243,7 @@ public class ActivityLoginMvvm extends AndroidViewModel {
                         dialog.dismiss();
 
                     }
-                });*/
+                });
     }
 
 

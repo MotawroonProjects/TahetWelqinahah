@@ -41,7 +41,7 @@ public class LoginActivity extends BaseActivity {
     private ActivityResultLauncher<Intent> launcher;
     private ActivityLoginMvvm mvvm;
     private DailogVerificationCodeBinding dailogVerificationCodeBinding;
-
+    private AlertDialog builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +85,8 @@ public class LoginActivity extends BaseActivity {
         });
 
         binding.btnLogin.setOnClickListener(v -> {
-           /* createVerificationCodeDialog();
-            mvvm.sendSmsCode(model, this);*/
-            navigateToSignUpActivity();
+            createVerificationCodeDialog();
+            mvvm.sendSmsCode(model,getUserSetting().getCountry(), this);
         });
 
         mvvm.getTime().observe(this, time -> {
@@ -108,12 +107,15 @@ public class LoginActivity extends BaseActivity {
 
         });
         mvvm.getUserData().observe(this, userModel -> {
+            if (builder!=null){
+                builder.dismiss();
+            }
             if (userModel != null) {
                 setUserModel(userModel);
                 setResult(RESULT_OK);
                 finish();
             } else {
-                createVerificationCodeDialog();
+                navigateToSignUpActivity();
             }
         });
 
@@ -144,7 +146,7 @@ public class LoginActivity extends BaseActivity {
 
 
     private void createVerificationCodeDialog() {
-        AlertDialog builder = new AlertDialog.Builder(this)
+        builder = new AlertDialog.Builder(this)
                 .create();
         builder.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
         dailogVerificationCodeBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dailog_verification_code, null, false);
@@ -169,11 +171,11 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
-        dailogVerificationCodeBinding.tvResend.setOnClickListener(v -> mvvm.reSendSmsCode(model, this));
+        dailogVerificationCodeBinding.tvResend.setOnClickListener(v -> mvvm.reSendSmsCode(model,getUserSetting().getCountry(), this));
         dailogVerificationCodeBinding.btnVerify.setOnClickListener(v -> {
             String code = dailogVerificationCodeBinding.edtCode.getText().toString();
             if (!code.isEmpty()) {
-                mvvm.checkValidCode(code, this, model);
+                mvvm.checkValidCode(code,getUserSetting().getCountry(), this, model);
                 Common.CloseKeyBoard(this, dailogVerificationCodeBinding.edtCode);
 
             }

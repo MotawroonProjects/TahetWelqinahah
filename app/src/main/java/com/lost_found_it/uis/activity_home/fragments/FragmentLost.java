@@ -70,7 +70,7 @@ public class FragmentLost extends BaseFragment {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         generalMvvm.getOnCountrySuccess().observe(activity, isChanged -> {
             binding.setCountry(getUserSetting().getCountry());
-            mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
 
         });
         binding.setLang(getLang());
@@ -120,11 +120,11 @@ public class FragmentLost extends BaseFragment {
 
         binding.recViewLayoutLost.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         binding.recViewLayoutLost.swipeRefresh.setOnRefreshListener(() -> {
-            mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
 
         });
 
-        mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+        mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
 
     }
 
@@ -161,7 +161,6 @@ public class FragmentLost extends BaseFragment {
             brandAdapter = new BrandAdapter(activity,this,getLang());
             binding.recViewBrandsLost.setAdapter(brandAdapter);
             brandAdapter.updateList(list);
-            Log.e("sdas","sda00");
 
 
             String category_id = "0";

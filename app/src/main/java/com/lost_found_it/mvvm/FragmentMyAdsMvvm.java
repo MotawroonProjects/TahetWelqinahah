@@ -28,7 +28,7 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
     private final String TAG = FragmentMyAdsMvvm.class.getName();
     public MutableLiveData<List<AdModel>> onDataSuccess;
     public MutableLiveData<Boolean> isLoading;
-    public MutableLiveData<Boolean> onDelete=new MutableLiveData<>();
+    public MutableLiveData<Integer> onDelete;
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -50,11 +50,17 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
         return onDataSuccess;
     }
 
-    public void getMyData( String country){
-        getIsLoading().setValue(true);
+    public MutableLiveData<Integer> getOnDelete() {
+        if (onDelete == null) {
+            onDelete = new MutableLiveData<>();
+        }
+        return onDelete;
+    }
 
+    public void getMyData(String country,UserModel model){
+        getIsLoading().setValue(true);
         Api.getService(Tags.base_url)
-                .getMyAds("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90YTdldHdlbGUydDdhLmFmaWZkcml2aW5nLmNvbVwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1Mjc4MTY5OCwibmJmIjoxNjUyNzgxNjk4LCJqdGkiOiJQQ1JnbUxkQjNTRzE0QkFHIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.oBRbtEGeCEA_QjpotWrtqfeVKSevf-Ohyut2Ojz1p5Y",country)
+                .getMyAds("Bearer "+model.getData().getAccess_token(),country)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {
@@ -89,8 +95,9 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
                 });
     }
 
-    public void deleteAdd(String country,String add_id){
-        Api.getService(Tags.base_url).deleteAdd("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90YTdldHdlbGUydDdhLmFmaWZkcml2aW5nLmNvbVwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY1Mjc4MTY5OCwibmJmIjoxNjUyNzgxNjk4LCJqdGkiOiJQQ1JnbUxkQjNTRzE0QkFHIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.oBRbtEGeCEA_QjpotWrtqfeVKSevf-Ohyut2Ojz1p5Y",country,add_id)
+    public void deleteAd(String country,UserModel model, String add_id, int adapterPosition){
+        Api.getService(Tags.base_url)
+                .deleteAd("Bearer "+model.getData().getAccess_token(),country,add_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<StatusResponse>>() {
@@ -104,7 +111,11 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
                         if (response.isSuccessful()){
                             if (response.body()!=null){
                                 if (response.body().getCode()==200){
-                                    onDelete.postValue(true);
+                                    getOnDelete().setValue(adapterPosition);
+                                    if (getOnDataSuccess().getValue()!=null){
+                                        getOnDataSuccess().getValue().remove(adapterPosition);
+
+                                    }
                                 }
                             }
                         }
