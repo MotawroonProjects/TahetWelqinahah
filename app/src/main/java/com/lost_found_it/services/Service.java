@@ -4,10 +4,13 @@ package com.lost_found_it.services;
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.HomeDataModel;
+import com.lost_found_it.model.SingleAd;
 import com.lost_found_it.model.SettingDataModel;
 import com.lost_found_it.model.SingleAdModel;
 import com.lost_found_it.model.StatusResponse;
 import com.lost_found_it.model.UserModel;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -94,6 +97,7 @@ public interface Service {
     @FormUrlEncoded
     @POST("api/auth/insertToken")
     Single<Response<StatusResponse>> updateFireBaseToken(@Header("Authorization") String Authorization,
+                                                         @Field("country") String country,
                                                          @Field("token") String token,
                                                          @Field("type") String type
 
@@ -109,5 +113,51 @@ public interface Service {
 
     @GET("api/setting/index")
     Single<Response<SettingDataModel>> getSettings(@Query("country") String country);
+
+    @Multipart
+    @POST("api/profile/addAd")
+    Single<Response<SingleAd>> addAds(@Header("Authorization") String Authorization,
+                                      @Part("country") RequestBody country,
+                                      @Part("title") RequestBody title,
+                                      @Part("description") RequestBody description,
+                                      @Part("category_id") RequestBody category_id,
+                                      @Part("sub_category_id") RequestBody sub_category_id,
+                                      @Part("address") RequestBody address,
+                                      @Part("latitude") RequestBody latitude,
+                                      @Part("longitude") RequestBody longitude,
+                                      @Part("whatsapp") RequestBody whatsapp,
+                                      @Part("phone_code") RequestBody phone_code,
+                                      @Part("phone") RequestBody phone,
+                                      @Part("type") RequestBody type,
+                                      @Part("place_type") RequestBody place_type,
+                                      @Part List<MultipartBody.Part> images
+    );
+
+    @Multipart
+    @POST("api/profile/updateAd")
+    Single<Response<SingleAd>> updateAds(@Header("Authorization") String Authorization,
+                                         @Part("country") RequestBody country,
+                                         @Part("ad_id") RequestBody ad_id,
+                                         @Part("title") RequestBody title,
+                                         @Part("description") RequestBody description,
+                                         @Part("category_id") RequestBody category_id,
+                                         @Part("sub_category_id") RequestBody sub_category_id,
+                                         @Part("address") RequestBody address,
+                                         @Part("latitude") RequestBody latitude,
+                                         @Part("longitude") RequestBody longitude,
+                                         @Part("whatsapp") RequestBody whatsapp,
+                                         @Part("phone_code") RequestBody phone_code,
+                                         @Part("phone") RequestBody phone,
+                                         @Part("type") RequestBody type,
+                                         @Part("place_type") RequestBody place_type,
+                                         @Part List<MultipartBody.Part> images
+    );
+
+    @FormUrlEncoded
+    @POST("api/auth/logout")
+    Single<Response<StatusResponse>> logout(@Header("Authorization") String Authorization,
+                                            @Field("country") String country,
+                                            @Field("token") String token);
+
 
 }

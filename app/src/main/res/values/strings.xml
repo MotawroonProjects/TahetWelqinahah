@@ -113,6 +113,8 @@
     <string name="add_deleted">Add deleted successfully</string>
     <string name="ph_found">Phone exist</string>
     <string name="em_found">Email exist</string>
+    <string name="posting_ad">Posting ad....</string>
+
     <string name="field_required">field required</string>
     <string name="inv_email">Invalid Email</string>
 </resources>

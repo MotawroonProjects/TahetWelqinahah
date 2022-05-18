@@ -88,6 +88,18 @@ public class FragmentLost extends BaseFragment {
             generalMvvm.getOnTowerFoundLost().setValue("lost");
             generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
         });
+        generalMvvm.getOnNewAdAdded().observe(activity,adModel -> {
+            if (mvvm.getOnDataSuccess().getValue()!=null){
+                mvvm.getOnDataSuccess().getValue().add(0,adModel);
+                if (adAdapter!=null){
+                    adAdapter.notifyItemInserted(0);
+                }
+            }
+        });
+
+        generalMvvm.getOnAdUpdated().observe(activity,mBoolean -> {
+            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
+        });
         mvvm.getIsLoading().observe(activity,isLoading->{
             binding.recViewLayoutLost.swipeRefresh.setRefreshing(isLoading);
         });

@@ -9,10 +9,11 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".share.App"
@@ -28,28 +29,24 @@
         tools:targetApi="q">
         <activity
             android:name=".uis.activity_add_ads.AddAdsActivity"
-            android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".uis.activity_country.CountryActivity"
-            android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".uis.activity_sign_up.SignUpActivity"
-            android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".uis.activity_login.LoginActivity"
-            android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".uis.activity_home.HomeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -92,6 +89,13 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider" />
         </provider>
+
+        <service
+            android:name=".background_service.ServicePostAd"
+            android:exported="false"
+            android:stopWithTask="false" />
+
+        <receiver android:name=".background_service.BroadCastCancelNotificationImages"/>
     </application>
 
 </manifest>

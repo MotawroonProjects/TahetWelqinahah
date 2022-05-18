@@ -29,8 +29,7 @@ public class FragmentMecca extends BaseFragment {
     private HomeActivity activity;
     private AdAdapter adAdapter;
     private FragmentMeccaTowerMvvm mvvm;
-    private String type;
-    private String title;
+    private String type="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,39 +61,52 @@ public class FragmentMecca extends BaseFragment {
         binding.setLang(getLang());
 
 
-
         binding.toolbarMecca.llBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
-        mvvm.getIsLoading().observe(activity,isLoading->{
+        generalMvvm.getOnNewAdAdded().observe(activity, adModel -> {
+            if (mvvm.getOnDataSuccess().getValue() != null) {
+                if (adModel.getPlace_type().equals("special")) {
+                    mvvm.getOnDataSuccess().getValue().add(0, adModel);
+                    if (adAdapter != null) {
+                        adAdapter.notifyItemInserted(0);
+                    }
+                }
+
+            }
+        });
+
+        generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
+            mvvm.getData(getUserSetting().getCountry(), type);
+        });
+        mvvm.getIsLoading().observe(activity, isLoading -> {
             binding.recViewLayout.swipeRefresh.setRefreshing(isLoading);
         });
-        mvvm.getOnDataSuccess().observe(activity,list->{
+        mvvm.getOnDataSuccess().observe(activity, list -> {
 
             binding.recViewLayout.tvNoData.setText(R.string.no_item);
-            if (list.size()>0){
+            if (list.size() > 0) {
                 binding.recViewLayout.tvNoData.setVisibility(View.GONE);
-            }else {
+            } else {
                 binding.recViewLayout.tvNoData.setVisibility(View.VISIBLE);
             }
             adAdapter.updateList(list);
         });
         generalMvvm.getOnMeccaFoundLost().observe(activity, type -> {
-            this.type=type;
-            Log.e("typee",type);
-            String title ="";
-            if (type.equals("found")){
+            this.type = type;
+            String title = "";
+            if (type.equals("found")) {
                 title = getString(R.string.found_things_in_mecca);
-            }else {
+            } else {
                 title = getString(R.string.missing_things_in_mecca);
 
             }
-            setUpToolbar(binding.toolbarMecca,title,R.color.white,R.color.black);
+            setUpToolbar(binding.toolbarMecca, title, R.color.white, R.color.black);
 
-            mvvm.getData(getUserSetting().getCountry(),type);
+            mvvm.getData(getUserSetting().getCountry(), type);
 
         });
-        adAdapter = new AdAdapter(activity,this,getLang());
+        adAdapter = new AdAdapter(activity, this, getLang());
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recViewLayout.recView.setAdapter(adAdapter);
         binding.recViewLayout.recView.setHasFixedSize(true);
@@ -103,11 +115,11 @@ public class FragmentMecca extends BaseFragment {
         binding.recViewLayout.recView.setItemViewCacheSize(20);
 
         binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(()->{
-            if (type!=null){
-                mvvm.getData(getUserSetting().getCountry(),type);
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> {
+            if (type != null) {
+                mvvm.getData(getUserSetting().getCountry(), type);
 
-            }else {
+            } else {
                 binding.recViewLayout.swipeRefresh.setRefreshing(false);
             }
         });

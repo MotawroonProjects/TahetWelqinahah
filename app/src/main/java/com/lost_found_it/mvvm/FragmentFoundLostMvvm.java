@@ -62,7 +62,6 @@ public class FragmentFoundLostMvvm extends AndroidViewModel {
     }
 
     public void getCategories(String country,String type,String place_type){
-        Log.e("ttrrr","rr");
 
         getIsLoading().setValue(true);
         Api.getService(Tags.base_url)

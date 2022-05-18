@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -25,8 +27,10 @@ import com.lost_found_it.mvvm.FragmentHomeMvvm;
 import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_add_ads.AddAdsActivity;
+import com.lost_found_it.uis.activity_base.BaseActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
+import com.lost_found_it.uis.activity_login.LoginActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,11 +44,17 @@ public class FragmentHome extends BaseFragment {
     private HomeActivity activity;
     private MyTimerTask timerTask;
     private Timer timer;
+    private ActivityResultLauncher<Intent> launcher;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity = (HomeActivity) context;
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == BaseActivity.RESULT_OK) {
+                generalMvvm.getOnUserLoggedIn().setValue(true);
+            }
+        });
     }
 
     public static FragmentHome newInstance() {
@@ -76,6 +86,14 @@ public class FragmentHome extends BaseFragment {
 
         });
 
+        generalMvvm.getOnAdUpdated().observe(activity,mBoolean->{
+            mvvm.getData(getUserSetting().getCountry());
+        });
+
+        generalMvvm.getOnNewAdAdded().observe(activity,model->{
+            mvvm.getData(getUserSetting().getCountry());
+        });
+
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
         sliderAdapter = new SliderAdapter(getActivity());
@@ -92,20 +110,20 @@ public class FragmentHome extends BaseFragment {
         });
 
 
-        mvvm.getIsLoading().observe(activity,isLoading->{
+        mvvm.getIsLoading().observe(activity, isLoading -> {
             binding.homeSwipeLayout.setRefreshing(isLoading);
         });
-        mvvm.getOnDataSuccess().observe(activity,homeDataModel -> {
+        mvvm.getOnDataSuccess().observe(activity, homeDataModel -> {
             binding.llData.setVisibility(View.VISIBLE);
-            if (homeDataModel.getData().getSlider().size()>0){
+            if (homeDataModel.getData().getSlider().size() > 0) {
                 binding.flSlider.setVisibility(View.VISIBLE);
                 binding.indicator.setCount(homeDataModel.getData().getSlider().size());
 
-                if (homeDataModel.getData().getSlider().size()>1){
+                if (homeDataModel.getData().getSlider().size() > 1) {
                     startSliderTimer();
 
                 }
-            }else {
+            } else {
                 binding.flSlider.setVisibility(View.GONE);
 
             }
@@ -126,21 +144,32 @@ public class FragmentHome extends BaseFragment {
             generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
         });
 
+
         binding.cardPostAd.setOnClickListener(v -> {
-            Intent intent = new Intent(activity, AddAdsActivity.class);
-            startActivity(intent);
+            if (getUserModel()==null){
+                navigateToLoginActivity();
+            }else {
+                Intent intent = new Intent(activity, AddAdsActivity.class);
+                launcher.launch(intent);
+            }
+
         });
 
         mvvm.getData(getUserSetting().getCountry());
 
-        binding.homeSwipeLayout.setOnRefreshListener(()->mvvm.getData(getUserSetting().getCountry()));
+        binding.homeSwipeLayout.setOnRefreshListener(() -> mvvm.getData(getUserSetting().getCountry()));
 
+    }
+
+    private void navigateToLoginActivity() {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        launcher.launch(intent);
     }
 
     private void startSliderTimer() {
         timerTask = new MyTimerTask();
         timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask,5000,5000);
+        timer.scheduleAtFixedRate(timerTask, 5000, 5000);
 
     }
 
@@ -149,14 +178,14 @@ public class FragmentHome extends BaseFragment {
         generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
     }
 
-    public class MyTimerTask extends TimerTask{
+    public class MyTimerTask extends TimerTask {
 
         @Override
         public void run() {
             int currentPos = binding.pager.getCurrentItem();
-            if (currentPos< sliderAdapter.getCount()-1){
-                currentPos +=1;
-            }else {
+            if (currentPos < sliderAdapter.getCount() - 1) {
+                currentPos += 1;
+            } else {
                 currentPos = 0;
 
             }
@@ -167,7 +196,7 @@ public class FragmentHome extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (timer!=null&&timerTask!=null){
+        if (timer != null && timerTask != null) {
             timer.purge();
             timer.cancel();
             timerTask.cancel();

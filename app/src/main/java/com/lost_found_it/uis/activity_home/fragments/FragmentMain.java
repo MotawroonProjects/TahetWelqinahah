@@ -185,10 +185,14 @@ public class FragmentMain extends BaseFragment {
             binding.setModel(getUserModel());
         }
 
+        generalMvvm.getOnUserLoggedOut().observe(activity,loggedOut->{
+            binding.setModel(null);
+
+        });
     }
 
     private void logout() {
-        generalMvvm.getOnUserLoggedOut().setValue(true);
+        generalMvvm.logout(activity,getUserModel(), getUserSetting().getCountry());
     }
 
     private void navigateToLoginActivity() {

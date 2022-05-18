@@ -19,6 +19,7 @@ import com.lost_found_it.R;
 import com.lost_found_it.adapter.MyPagerAdapter;
 import com.lost_found_it.databinding.ActivityHomeBinding;
 import com.lost_found_it.language.Language;
+import com.lost_found_it.model.AdModel;
 import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_base.BaseActivity;
@@ -33,6 +34,8 @@ import com.lost_found_it.uis.activity_home.fragments.FragmentSettings;
 import com.lost_found_it.uis.activity_home.fragments.FragmentTower;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,17 +91,22 @@ public class HomeActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+        generalMvvm.getOnUserLoggedOut().observe(this,loggedOut->{
+            if (EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().unregister(this);
+            }
+            setUserModel(null);
+        });
         generalMvvm.onTokenSuccess().observe(this, this::setUserModel);
         generalMvvm.getOnUserLoggedIn().observe(this, loggedIn -> {
-            generalMvvm.updateToken(getUserModel());
+            generalMvvm.updateToken(getUserModel(), getUserSetting().getCountry());
 
         });
 
 
-
         if (getUserModel() != null) {
-            //EventBus.getDefault().register(this);
-            generalMvvm.updateToken(getUserModel());
+            EventBus.getDefault().register(this);
+            generalMvvm.updateToken(getUserModel(),getUserSetting().getCountry());
         }
 
     }
@@ -123,6 +131,16 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenFoAdAdded(AdModel adModel) {
+        generalMvvm.getOnNewAdAdded().setValue(adModel);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenFoAdAdded(Boolean updated) {
+        generalMvvm.getOnAdUpdated().setValue(true);
+    }
+
     @Override
     public void onBackPressed() {
         if (stack.size() > 1) {
@@ -138,8 +156,8 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*if (EventBus.getDefault().isRegistered(this)) {
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
-        }*/
+        }
     }
 }

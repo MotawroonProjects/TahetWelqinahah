@@ -30,8 +30,7 @@ public class FragmentTower extends BaseFragment {
     private HomeActivity activity;
     private AdAdapter adAdapter;
     private FragmentMeccaTowerMvvm mvvm;
-    private String type;
-    private String title;
+    private String type="";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -75,9 +74,24 @@ public class FragmentTower extends BaseFragment {
             }
             adAdapter.updateList(list);
         });
+
+        generalMvvm.getOnNewAdAdded().observe(activity, adModel -> {
+            if (mvvm.getOnDataSuccess().getValue() != null) {
+                if (adModel.getPlace_type().equals("special")) {
+                    mvvm.getOnDataSuccess().getValue().add(0, adModel);
+                    if (adAdapter != null) {
+                        adAdapter.notifyItemInserted(0);
+                    }
+                }
+
+            }
+        });
+
+        generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
+            mvvm.getData(getUserSetting().getCountry(), type);
+        });
         generalMvvm.getOnMeccaFoundLost().observe(activity, type -> {
             this.type=type;
-//            Log.e("typee",type);
             String title ="";
             if (type.equals("found")){
                 title = getString(R.string.found_things_in_tower);

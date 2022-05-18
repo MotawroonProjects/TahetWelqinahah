@@ -3,7 +3,10 @@ package com.lost_found_it.tags;
 public class Tags {
 
     public static String base_url = "http://ta7etwele2t7a.afifdriving.com/";
-    public static final int not_id = 3254;
+    public static final int not_ad_id = 1001;
+    public static final String not_ad_tag = "tahet_ad_not";
+
+    public static final int not_id = 1002;
     public static final String not_tag = "tahet_not";
     public static final int fragment_main_pos = 0;
     public static final int fragment_notification_pos = 1;

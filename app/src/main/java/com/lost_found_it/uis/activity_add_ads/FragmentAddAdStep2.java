@@ -11,9 +11,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -21,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,9 +46,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lost_found_it.R;
+import com.lost_found_it.adapter.SpinnerCategoryAdapter;
+import com.lost_found_it.adapter.SpinnerSubCategoryAdapter;
+import com.lost_found_it.background_service.ServicePostAd;
 import com.lost_found_it.databinding.FragmentPostAddStep1Binding;
 import com.lost_found_it.databinding.FragmentPostAddStep2Binding;
 import com.lost_found_it.model.AddAdModel;
+import com.lost_found_it.model.CategoryModel;
+import com.lost_found_it.model.SubCategoryModel;
+import com.lost_found_it.mvvm.FragmentAddAdsMvvm;
+import com.lost_found_it.uis.activity_about_app.AboutAppActivity;
 import com.lost_found_it.uis.activity_base.BaseActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_base.FragmentMapTouchListener;
@@ -56,6 +67,7 @@ import java.util.Locale;
 
 public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private FragmentPostAddStep2Binding binding;
+    private FragmentAddAdsMvvm mvvm;
     private AddAdsActivity activity;
     private AddAdModel model;
     private FragmentMapTouchListener fragmentMapTouchListener;
@@ -69,6 +81,8 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     private double lng;
     private String address = "";
     private ActivityResultLauncher<String> permission;
+    private SpinnerCategoryAdapter spinnerCategoryAdapter;
+    private SpinnerSubCategoryAdapter spinnerSubCategoryAdapter;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -102,18 +116,172 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     }
 
     private void initView() {
-        binding.btnPublish.setOnClickListener(v -> {
+        mvvm = ViewModelProviders.of(this).get(FragmentAddAdsMvvm.class);
 
+
+        mvvm.getOnCategoryDataSuccess().observe(activity, list -> {
+            if (spinnerCategoryAdapter != null) {
+
+                if (list.size() > 0) {
+                    spinnerCategoryAdapter.updateList(list);
+                    if (model.getAd_id().isEmpty()) {
+                        CategoryModel categoryModel = list.get(0);
+                        model.setCategory_id(categoryModel.getId());
+
+                        if (categoryModel.getSub_categories().size() > 0) {
+                            binding.llSubCategory.setVisibility(View.VISIBLE);
+
+                            SubCategoryModel subCategoryModel = categoryModel.getSub_categories().get(0);
+                            model.setSub_category_id(subCategoryModel.getId());
+
+                            model.setHasSubCategory(true);
+
+                            if (spinnerSubCategoryAdapter != null) {
+                                spinnerSubCategoryAdapter.updateList(categoryModel.getSub_categories());
+
+                            }
+                        } else {
+                            binding.llSubCategory.setVisibility(View.GONE);
+                            model.setSub_category_id("");
+                            model.setHasSubCategory(false);
+
+                        }
+                    } else {
+                        int pos = getCategoryPos(model.getCategory_id());
+                        binding.spinnerCategory.setSelection(pos);
+                        if (!model.getSub_category_id().isEmpty()) {
+                            if (mvvm.getOnCategoryDataSuccess().getValue() != null) {
+                                CategoryModel categoryModel = mvvm.getOnCategoryDataSuccess().getValue().get(pos);
+                                int sub_category_pos = getSubCategoryPos(model.getSub_category_id(), categoryModel.getSub_categories());
+                                binding.spinnerSubCategory.setSelection(sub_category_pos);
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+        });
+
+        binding.spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CategoryModel categoryModel = (CategoryModel) parent.getSelectedItem();
+                model.setCategory_id(categoryModel.getId());
+
+                if (categoryModel.getSub_categories().size() > 0) {
+                    binding.llSubCategory.setVisibility(View.VISIBLE);
+                    SubCategoryModel subCategoryModel = categoryModel.getSub_categories().get(0);
+                    model.setSub_category_id(subCategoryModel.getId());
+
+                    model.setHasSubCategory(true);
+
+                    if (spinnerSubCategoryAdapter != null) {
+                        spinnerSubCategoryAdapter.updateList(categoryModel.getSub_categories());
+
+                    }
+                } else {
+                    binding.llSubCategory.setVisibility(View.GONE);
+
+                    spinnerSubCategoryAdapter.updateList(new ArrayList<>());
+                    model.setSub_category_id("");
+                    model.setHasSubCategory(false);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        binding.spinnerSubCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SubCategoryModel subCategoryModel = (SubCategoryModel) parent.getSelectedItem();
+                model.setSub_category_id(subCategoryModel.getId());
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        spinnerCategoryAdapter = new SpinnerCategoryAdapter(activity);
+        binding.spinnerCategory.setAdapter(spinnerCategoryAdapter);
+
+        spinnerSubCategoryAdapter = new SpinnerSubCategoryAdapter(activity);
+        binding.spinnerSubCategory.setAdapter(spinnerSubCategoryAdapter);
+
+
+        binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            model.setAgree_terms(isChecked);
+            if (isChecked&&model!=null&&model.getAd_id().isEmpty()) {
+                String url = "";
+                Intent intent = new Intent(activity, AboutAppActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("type", "1");
+                startActivity(intent);
+            }
+        });
+        binding.btnPublish.setOnClickListener(v -> {
+            String action = "add";
+            if (model.getAd_id().isEmpty()) {
+                action = "add";
+            } else {
+                action = "update";
+
+            }
+            Intent intent = new Intent(activity, ServicePostAd.class);
+            intent.putExtra("action", action);
+            intent.putExtra("country", getUserSetting().getCountry());
+            intent.putExtra("data", model);
+            activity.startService(intent);
+            activity.finish();
+            Toast.makeText(activity, R.string.posting_ad, Toast.LENGTH_SHORT).show();
         });
         binding.btnBack.setOnClickListener(v -> {
             activity.navigateToStep1();
         });
+
+    }
+
+    private int getCategoryPos(String category_id) {
+        if (mvvm.getOnCategoryDataSuccess().getValue() != null) {
+            List<CategoryModel> list = mvvm.getOnCategoryDataSuccess().getValue();
+            for (int index = 0; index < list.size(); index++) {
+                if (list.get(index).getId().equals(category_id)) {
+                    return index;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private int getSubCategoryPos(String sub_category_id, List<SubCategoryModel> list) {
+        if (mvvm.getOnCategoryDataSuccess().getValue() != null) {
+            for (int index = 0; index < list.size(); index++) {
+                if (list.get(index).getId().equals(sub_category_id)) {
+                    return index;
+                }
+            }
+        }
+        return 0;
     }
 
     public void updateModel(AddAdModel model) {
         this.model = model;
         binding.setModel(model);
         setUpMapFragment();
+        mvvm.getCategories(getUserSetting().getCountry());
+        if (model!=null&&!model.getAd_id().isEmpty()) {
+            binding.checkbox.setChecked(true);
+        }
 
     }
 

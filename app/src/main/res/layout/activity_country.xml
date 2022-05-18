@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:layout_marginTop="8dp"
-                android:background='@{country.equals("uae")?@drawable/small_stroke_primary:@drawable/small_stroke_grey}'
+                android:background='@{country.equals("ae")?@drawable/small_stroke_primary:@drawable/small_stroke_grey}'
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="16dp"

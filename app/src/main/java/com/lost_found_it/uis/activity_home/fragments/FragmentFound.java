@@ -87,6 +87,19 @@ public class FragmentFound extends BaseFragment {
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
 
+        generalMvvm.getOnNewAdAdded().observe(activity,adModel -> {
+            if (mvvm.getOnDataSuccess().getValue()!=null){
+                mvvm.getOnDataSuccess().getValue().add(0,adModel);
+                if (adAdapter!=null){
+                    adAdapter.notifyItemInserted(0);
+                }
+            }
+        });
+
+        generalMvvm.getOnAdUpdated().observe(activity,mBoolean -> {
+            mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+        });
+
         mvvm.getIsLoading().observe(activity,isLoading->{
             binding.recViewLayout.swipeRefresh.setRefreshing(isLoading);
         });

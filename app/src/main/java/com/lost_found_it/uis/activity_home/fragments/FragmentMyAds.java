@@ -3,11 +3,14 @@ package com.lost_found_it.uis.activity_home.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -22,6 +25,7 @@ import com.lost_found_it.mvvm.FragmentMyAdsMvvm;
 import com.lost_found_it.mvvm.GeneralMvvm;
 import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_add_ads.AddAdsActivity;
+import com.lost_found_it.uis.activity_base.BaseActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
@@ -31,13 +35,22 @@ public class FragmentMyAds extends BaseFragment {
     private HomeActivity activity;
     private MyAdAdapter adapter;
     private FragmentMyAdsMvvm mvvm;
-
+    private ActivityResultLauncher<Intent> launcher;
+    private int req;
 
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity = (HomeActivity) context;
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result -> {
+            if (result.getResultCode()== BaseActivity.RESULT_OK){
+                if (req==1){
+                    generalMvvm.getOnAdUpdated().setValue(true);
+
+                }
+            }
+        });
     }
 
     public static FragmentMyAds newInstance() {
@@ -68,6 +81,31 @@ public class FragmentMyAds extends BaseFragment {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
 
+        generalMvvm.getOnNewAdAdded().observe(activity, adModel -> {
+            if (mvvm.getOnDataSuccess().getValue() != null) {
+                mvvm.getOnDataSuccess().getValue().add(0, adModel);
+                binding.recViewLayout.tvNoData.setVisibility(View.GONE);
+                if (adapter != null) {
+                    adapter.notifyItemInserted(0);
+                }
+
+            }
+        });
+
+        generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
+            if (getUserModel()!=null){
+                mvvm.getMyAds(getUserSetting().getCountry(),getUserModel());
+
+            }
+        });
+        generalMvvm.getOnUserLoggedIn().observe(activity,mBoolean->{
+            if (getUserModel()!=null){
+                mvvm.getMyAds(getUserSetting().getCountry(),getUserModel());
+
+            }
+        });
+
+
         mvvm.getIsLoading().observe(activity,isLoading->{
             binding.recViewLayout.swipeRefresh.setRefreshing(isLoading);
         });
@@ -85,14 +123,25 @@ public class FragmentMyAds extends BaseFragment {
             if (adapter!=null){
                 adapter.notifyItemRemoved(pos);
             }
+
+            if (mvvm.getOnDataSuccess().getValue()!=null){
+                if (mvvm.getOnDataSuccess().getValue().size()==0){
+                 binding.recViewLayout.tvNoData.setVisibility(View.VISIBLE);
+                }
+            }
+
+            generalMvvm.getOnAdUpdated().setValue(true);
             Toast.makeText(activity, R.string.add_deleted, Toast.LENGTH_SHORT).show();
 
 
         });
 
-        mvvm.getMyData(getUserSetting().getCountry(),getUserModel());
+        if (getUserModel()!=null){
+            mvvm.getMyAds(getUserSetting().getCountry(),getUserModel());
 
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(()->mvvm.getMyData(getUserSetting().getCountry(),getUserModel()));
+        }
+
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(()->mvvm.getMyAds(getUserSetting().getCountry(),getUserModel()));
         adapter = new MyAdAdapter(activity, this, getLang());
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recViewLayout.recView.setHasFixedSize(true);
@@ -103,6 +152,10 @@ public class FragmentMyAds extends BaseFragment {
 
         binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
+        binding.cardPostAd.setOnClickListener(v -> {
+            Intent intent = new Intent(activity,AddAdsActivity.class);
+            startActivity(intent);
+        });
     }
 
     public void navigateToDetails(AdModel adModel) {
@@ -111,9 +164,10 @@ public class FragmentMyAds extends BaseFragment {
     }
 
     public void editAdd(int adapterPosition, AdModel adModel) {
+        req = 1;
         Intent intent=new Intent(activity, AddAdsActivity.class);
         intent.putExtra("data",adModel);
-        startActivity(intent);
+        launcher.launch(intent);
     }
 
     public void delete(int adapterPosition, AdModel adModel) {

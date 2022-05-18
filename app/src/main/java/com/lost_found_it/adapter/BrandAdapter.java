@@ -44,7 +44,6 @@ public class BrandAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         MyHolder myHolder = (MyHolder) holder;
         SubCategoryModel model = list.get(position);
         myHolder.binding.setModel(model);
-        Log.e("model",model.getId()+"__"+model.isSelected());
 
         if (model.isSelected()){
             if (oldHolder==null){

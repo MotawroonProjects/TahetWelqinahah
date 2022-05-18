@@ -31,12 +31,18 @@ public class Preferences {
     }
 
     public void createUpdateUserData(Context context, UserModel userModel) {
-        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String user_data = gson.toJson(userModel);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("user_data", user_data);
-        editor.apply();
+
+        if (userModel!=null){
+            SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+            Gson gson = new Gson();
+            String user_data = gson.toJson(userModel);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("user_data", user_data);
+            editor.apply();
+        }else {
+            clearUserData(context);
+        }
+
 
     }
 

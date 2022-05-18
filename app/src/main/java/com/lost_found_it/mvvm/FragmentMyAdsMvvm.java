@@ -57,10 +57,10 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
         return onDelete;
     }
 
-    public void getMyData(String country,UserModel model){
+    public void getMyAds(String country, UserModel model){
         getIsLoading().setValue(true);
         Api.getService(Tags.base_url)
-                .getMyAds("Bearer ",country)
+                .getMyAds("Bearer "+model.getData().getAccess_token(),country)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {
@@ -97,7 +97,7 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
 
     public void deleteAd(String country,UserModel model, String add_id, int adapterPosition){
         Api.getService(Tags.base_url)
-                .deleteAd("Bearer ",country,add_id)
+                .deleteAd("Bearer "+model.getData().getAccess_token(),country,add_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<StatusResponse>>() {
@@ -111,11 +111,12 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
                         if (response.isSuccessful()){
                             if (response.body()!=null){
                                 if (response.body().getCode()==200){
-                                    getOnDelete().setValue(adapterPosition);
                                     if (getOnDataSuccess().getValue()!=null){
                                         getOnDataSuccess().getValue().remove(adapterPosition);
 
                                     }
+                                    getOnDelete().setValue(adapterPosition);
+
                                 }
                             }
                         }

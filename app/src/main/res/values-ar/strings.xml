@@ -116,4 +116,6 @@
     <string name="em_found">البريد الإلكتروني</string>
     <string name="field_required">الحقل مطلوب</string>
     <string name="inv_email">بريد الكترونى خاطئ</string>
+    <string name="posting_ad">جار نشر الاعلان....</string>
+
 </resources>

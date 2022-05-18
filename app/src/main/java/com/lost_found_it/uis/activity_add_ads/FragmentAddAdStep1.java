@@ -63,7 +63,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
     private String imagePath = "";
     private int req;
     private int type;
-    private Map<Integer,String> uris;
+    private Map<Integer, String> uris;
     private List<String> images;
 
     @Override
@@ -93,7 +93,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(outPutUri)
                             .into(binding.img1);
                     binding.icon1.setVisibility(View.GONE);
-                    uris.put(0,outPutUri.toString());
+                    uris.put(0, outPutUri.toString());
                     addImages();
 
                 } else if (type == 2) {
@@ -102,7 +102,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(outPutUri)
                             .into(binding.img2);
                     binding.icon2.setVisibility(View.GONE);
-                    uris.put(1,outPutUri.toString());
+                    uris.put(1, outPutUri.toString());
                     addImages();
 
 
@@ -112,7 +112,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(outPutUri)
                             .into(binding.img3);
                     binding.icon3.setVisibility(View.GONE);
-                    uris.put(2,outPutUri.toString());
+                    uris.put(2, outPutUri.toString());
                     addImages();
 
                 } else if (type == 4) {
@@ -121,7 +121,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(outPutUri)
                             .into(binding.img4);
                     binding.icon4.setVisibility(View.GONE);
-                    uris.put(3,outPutUri.toString());
+                    uris.put(3, outPutUri.toString());
                     addImages();
 
                 }
@@ -135,7 +135,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(uri)
                             .into(binding.img1);
                     binding.icon1.setVisibility(View.GONE);
-                    uris.put(0,uri.toString());
+                    uris.put(0, uri.toString());
                     addImages();
 
                 } else if (type == 2) {
@@ -144,7 +144,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(uri)
                             .into(binding.img2);
                     binding.icon2.setVisibility(View.GONE);
-                    uris.put(1,uri.toString());
+                    uris.put(1, uri.toString());
                     addImages();
 
                 } else if (type == 3) {
@@ -153,7 +153,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(uri)
                             .into(binding.img3);
                     binding.icon3.setVisibility(View.GONE);
-                    uris.put(2,uri.toString());
+                    uris.put(2, uri.toString());
                     addImages();
 
                 } else if (type == 4) {
@@ -162,7 +162,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .load(uri)
                             .into(binding.img4);
                     binding.icon4.setVisibility(View.GONE);
-                    uris.put(3,uri.toString());
+                    uris.put(3, uri.toString());
                     addImages();
                 }
             }
@@ -170,10 +170,21 @@ public class FragmentAddAdStep1 extends BaseFragment {
 
     }
 
-    public static FragmentAddAdStep1 newInstance() {
-        return new FragmentAddAdStep1();
+    public static FragmentAddAdStep1 newInstance(AddAdModel addAdModel) {
+        FragmentAddAdStep1 fragmentAddAdStep1 = new FragmentAddAdStep1();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("data", addAdModel);
+        fragmentAddAdStep1.setArguments(bundle);
+        return fragmentAddAdStep1;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            model = (AddAdModel) getArguments().getSerializable("data");
+        }
+    }
 
     @Nullable
     @Override
@@ -192,51 +203,84 @@ public class FragmentAddAdStep1 extends BaseFragment {
     private void initView() {
         images = new ArrayList<>();
         uris = new HashMap<>();
-        model = new AddAdModel();
         binding.setModel(model);
         model.setCountry(getUserSetting().getCountry());
+
+        if (!model.getAd_id().isEmpty()){
+            for (int index =0;index<model.getOnlineImages().size();index++){
+                String onlineUrl = model.getOnlineImages().get(index);
+                if (index==0){
+                    Glide.with(this)
+                            .asBitmap()
+                            .load(onlineUrl)
+                            .into(binding.img1);
+                    binding.icon1.setVisibility(View.GONE);
+
+                }else if (index==1){
+                    Glide.with(this)
+                            .asBitmap()
+                            .load(onlineUrl)
+                            .into(binding.img2);
+                    binding.icon2.setVisibility(View.GONE);
+                }else if (index==2){
+                    Glide.with(this)
+                            .asBitmap()
+                            .load(onlineUrl)
+                            .into(binding.img3);
+                    binding.icon3.setVisibility(View.GONE);
+                }else if (index==3){
+                    Glide.with(this)
+                            .asBitmap()
+                            .load(onlineUrl)
+                            .into(binding.img4);
+                    binding.icon4.setVisibility(View.GONE);
+                }
+            }
+
+            if (model.getAd_type().equals("lost")){
+                updateAdTypeLost();
+            }else if (model.getAd_type().equals("found")){
+                updateAdTypeFound();
+            }
+        }
 
         if (getUserSetting().getCountry().equals("sa")) {
             binding.checkbox.setVisibility(View.VISIBLE);
             binding.checkbox.setText(R.string.thing_great_mosq);
+            if (!model.getAd_id().isEmpty()){
+                if (model.getAd_type().equals("special")){
+                    binding.checkbox.setChecked(true);
+                }else {
+                    binding.checkbox.setChecked(false);
 
-        } else if (getUserSetting().getCountry().equals("uae")) {
+                }
+            }
+
+        } else if (getUserSetting().getCountry().equals("ae")) {
             binding.checkbox.setVisibility(View.VISIBLE);
             binding.checkbox.setText(R.string.thing_great_tower);
+            if (!model.getAd_id().isEmpty()){
+                if (model.getAd_type().equals("special")){
+                    binding.checkbox.setChecked(true);
+                }else {
+                    binding.checkbox.setChecked(false);
 
+                }
+            }
 
         } else {
             binding.checkbox.setText("");
             binding.checkbox.setVisibility(View.GONE);
         }
 
+
+
         binding.flAdLost.setOnClickListener(v -> {
-            model.setAd_type("lost");
-
-            binding.flAdLost.setBackgroundResource(R.drawable.small_rounded_primary);
-            binding.iconLost.setColorFilter(ContextCompat.getColor(activity, R.color.white));
-            binding.tvLost.setTextColor(ContextCompat.getColor(activity, R.color.white));
-            binding.tvLostNote.setTextColor(ContextCompat.getColor(activity, R.color.white));
-
-            binding.flAdFound.setBackgroundResource(R.drawable.small_stroke_rounded_white_grey0);
-            binding.iconFound.setColorFilter(ContextCompat.getColor(activity, R.color.color3));
-            binding.tvFound.setTextColor(ContextCompat.getColor(activity, R.color.color3));
-            binding.tvFoundNote.setTextColor(ContextCompat.getColor(activity, R.color.grey7));
-
+           updateAdTypeLost();
         });
 
         binding.flAdFound.setOnClickListener(v -> {
-            model.setAd_type("found");
-            binding.flAdFound.setBackgroundResource(R.drawable.small_rounded_color3);
-            binding.iconFound.setColorFilter(ContextCompat.getColor(activity, R.color.white));
-            binding.tvFound.setTextColor(ContextCompat.getColor(activity, R.color.white));
-            binding.tvFoundNote.setTextColor(ContextCompat.getColor(activity, R.color.white));
-
-            binding.flAdLost.setBackgroundResource(R.drawable.small_stroke_rounded_white_grey0);
-            binding.iconLost.setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary));
-            binding.tvLost.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
-            binding.tvLostNote.setTextColor(ContextCompat.getColor(activity, R.color.grey7));
-
+            updateAdTypeFound();
         });
 
         binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -269,11 +313,42 @@ public class FragmentAddAdStep1 extends BaseFragment {
         });
     }
 
-    private void addImages(){
+    private void updateAdTypeLost() {
+        model.setAd_type("lost");
+
+        binding.flAdLost.setBackgroundResource(R.drawable.small_rounded_primary);
+        binding.iconLost.setColorFilter(ContextCompat.getColor(activity, R.color.white));
+        binding.tvLost.setTextColor(ContextCompat.getColor(activity, R.color.white));
+        binding.tvLostNote.setTextColor(ContextCompat.getColor(activity, R.color.white));
+
+        binding.flAdFound.setBackgroundResource(R.drawable.small_stroke_rounded_white_grey0);
+        binding.iconFound.setColorFilter(ContextCompat.getColor(activity, R.color.color3));
+        binding.tvFound.setTextColor(ContextCompat.getColor(activity, R.color.color3));
+        binding.tvFoundNote.setTextColor(ContextCompat.getColor(activity, R.color.grey7));
+
+    }
+
+    private void updateAdTypeFound() {
+        model.setAd_type("lost");
+
+        binding.flAdLost.setBackgroundResource(R.drawable.small_rounded_primary);
+        binding.iconLost.setColorFilter(ContextCompat.getColor(activity, R.color.white));
+        binding.tvLost.setTextColor(ContextCompat.getColor(activity, R.color.white));
+        binding.tvLostNote.setTextColor(ContextCompat.getColor(activity, R.color.white));
+
+        binding.flAdFound.setBackgroundResource(R.drawable.small_stroke_rounded_white_grey0);
+        binding.iconFound.setColorFilter(ContextCompat.getColor(activity, R.color.color3));
+        binding.tvFound.setTextColor(ContextCompat.getColor(activity, R.color.color3));
+        binding.tvFoundNote.setTextColor(ContextCompat.getColor(activity, R.color.grey7));
+
+    }
+
+    private void addImages() {
         images.clear();
         images.addAll(uris.values());
         model.setImages(images);
     }
+
     private void openSheet() {
         AlertDialog dialog = new AlertDialog.Builder(activity).create();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);

@@ -6,13 +6,16 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.lost_found_it.R;
 import com.lost_found_it.adapter.MyPagerAdapter;
 import com.lost_found_it.databinding.ActivityAddAdsBinding;
+import com.lost_found_it.model.AdModel;
 import com.lost_found_it.model.AddAdModel;
+import com.lost_found_it.model.SliderImages;
 import com.lost_found_it.uis.activity_base.BaseActivity;
 
 import java.util.ArrayList;
@@ -22,20 +25,60 @@ public class AddAdsActivity extends BaseActivity {
     private ActivityAddAdsBinding binding;
     private List<Fragment> fragments;
     private MyPagerAdapter adapter;
+    private AdModel adModel;
+    private AddAdModel addAdModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_ads);
-        initView();
+        getDataFromIntent();
+        new Handler().postDelayed(this::initView,1);
     }
 
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("data")){
+            adModel = (AdModel) intent.getSerializableExtra("data");
+        }
+    }
 
 
     private void initView() {
         setUpToolbar(binding.toolBar, getString(R.string.post_your_ad), R.color.white, R.color.black);
+        addAdModel = new AddAdModel();
+        if (adModel!=null){
+            addAdModel.setAd_id(adModel.getId());
+            addAdModel.setTitle(adModel.getTitle());
+            addAdModel.setDescription(adModel.getDescription());
+            addAdModel.setCategory_id(adModel.getCategory().getId());
+            addAdModel.setAd_type(adModel.getType());
+            addAdModel.setPlace_type(adModel.getPlace_type());
+            addAdModel.setAddress(adModel.getAddress());
+            addAdModel.setLat(Double.parseDouble(adModel.getLatitude()));
+            addAdModel.setLng(Double.parseDouble(adModel.getLongitude()));
+            addAdModel.setWhatsapp(adModel.getWhatsapp());
+            addAdModel.setPhone_code(adModel.getPhone_code());
+            addAdModel.setPhone(adModel.getPhone());
+            addAdModel.setAgree_terms(true);
+            addAdModel.setCountry(getUserSetting().getCountry());
+            addAdModel.setAction("update");
+            List<String> onlineImages = new ArrayList<>();
+            for (SliderImages image :adModel.getImages()){
+                onlineImages.add(image.getImage());
+            }
+            addAdModel.setOnlineImages(onlineImages);
+            if (adModel.getSubCategory()!=null){
+                addAdModel.setSub_category_id(adModel.getSubCategory().getId());
+                addAdModel.setHasSubCategory(true);
+            }else {
+                addAdModel.setSub_category_id("");
+                addAdModel.setHasSubCategory(false);
+
+            }
+        }
         fragments = new ArrayList<>();
-        fragments.add(FragmentAddAdStep1.newInstance());
+        fragments.add(FragmentAddAdStep1.newInstance(addAdModel));
         fragments.add(FragmentAddAdStep2.newInstance());
         adapter = new MyPagerAdapter(getSupportFragmentManager(), fragments, null);
         binding.pager.setAdapter(adapter);

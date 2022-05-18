@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddAdModel extends BaseObservable implements Serializable {
+    private String ad_id;
     private String ad_type;
     private String country;
     private String place_type; // mecca -- tower
@@ -21,13 +22,20 @@ public class AddAdModel extends BaseObservable implements Serializable {
     private double lat;
     private double lng;
     private List<String> images;
+    private String phone_code;
     private String phone;
     private String whatsapp;
     private boolean agree_terms;
     private boolean validStep1;
     private boolean validStep2;
+    private boolean hasSubCategory;
+    private String action;
+    private List<String> onlineImages;
 
     public AddAdModel() {
+        action = "add";
+        ad_id = "";
+        phone_code = "+966";
         ad_type = "";
         country = "";
         place_type = "main";
@@ -35,6 +43,7 @@ public class AddAdModel extends BaseObservable implements Serializable {
         description = "";
         category_id = "";
         sub_category_id = "";
+        hasSubCategory = false;
         address = "";
         lat = 0.0;
         lng = 0.0;
@@ -44,16 +53,27 @@ public class AddAdModel extends BaseObservable implements Serializable {
         validStep1 = false;
         validStep2 = false;
         images = new ArrayList<>();
+        onlineImages = new ArrayList<>();
     }
 
     public void isStep1Valid() {
         if (!ad_type.isEmpty() &&
                 !country.isEmpty() &&
                 !title.isEmpty() &&
-                !description.isEmpty() &&
-                images.size() > 0
+                !description.isEmpty()
         ) {
-            setValidStep1(true);
+            if (action.equals("add")) {
+                if (images.size() > 0) {
+                    setValidStep1(true);
+
+                } else {
+                    setValidStep1(false);
+
+                }
+            } else {
+                setValidStep1(true);
+
+            }
         } else {
             setValidStep1(false);
         }
@@ -61,12 +81,24 @@ public class AddAdModel extends BaseObservable implements Serializable {
 
     public void isStep2Valid() {
         if (!category_id.isEmpty() &&
-                !sub_category_id.isEmpty() &&
                 !address.isEmpty() &&
                 !phone.isEmpty() &&
-                !whatsapp.isEmpty()
+                !whatsapp.isEmpty() &&
+                agree_terms
         ) {
-            setValidStep2(true);
+            if (hasSubCategory) {
+                if (!sub_category_id.isEmpty()) {
+                    setValidStep2(true);
+
+                } else {
+                    setValidStep2(false);
+
+                }
+
+            } else {
+                setValidStep2(true);
+
+            }
         } else {
             setValidStep2(false);
         }
@@ -210,13 +242,11 @@ public class AddAdModel extends BaseObservable implements Serializable {
     }
 
 
-
     @Bindable
     public void setAgree_terms(boolean agree_terms) {
         this.agree_terms = agree_terms;
         notifyPropertyChanged(BR.agree_terms);
         isStep2Valid();
-
 
 
     }
@@ -250,5 +280,44 @@ public class AddAdModel extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.validStep2);
     }
 
+    public String getPhone_code() {
+        return phone_code;
+    }
 
+    public void setPhone_code(String phone_code) {
+        this.phone_code = phone_code;
+    }
+
+    public boolean isHasSubCategory() {
+        return hasSubCategory;
+    }
+
+    public void setHasSubCategory(boolean hasSubCategory) {
+        this.hasSubCategory = hasSubCategory;
+        isStep2Valid();
+    }
+
+    public String getAd_id() {
+        return ad_id;
+    }
+
+    public void setAd_id(String ad_id) {
+        this.ad_id = ad_id;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public List<String> getOnlineImages() {
+        return onlineImages;
+    }
+
+    public void setOnlineImages(List<String> onlineImages) {
+        this.onlineImages = onlineImages;
+    }
 }
