@@ -83,6 +83,7 @@
                     </LinearLayout>
 
                     <EditText
+                        error="@{contactModel.error_name}"
                         android:layout_width="match_parent"
                         android:layout_height="53dp"
                         android:layout_marginTop="8dp"
@@ -128,6 +129,7 @@
                     </LinearLayout>
 
                     <EditText
+                        error="@{contactModel.error_email}"
                         android:layout_width="match_parent"
                         android:layout_height="53dp"
                         android:layout_marginTop="8dp"
@@ -168,7 +170,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
                             android:fontFamily="@font/font_regular"
-                            android:text="@string/subject"
+                            android:text="@string/phone"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -176,6 +178,7 @@
                     </LinearLayout>
 
                     <EditText
+                        error="@{contactModel.error_phone}"
                         android:layout_width="match_parent"
                         android:layout_height="53dp"
                         android:layout_marginTop="8dp"
@@ -186,7 +189,8 @@
                         android:layout_marginStart="21dp"
                         android:layout_marginEnd="21dp"
                         android:textColorHint="@color/grey7"
-                        android:text="@={contactModel.subject}"
+                        android:text="@={contactModel.phone}"
+                        android:inputType="number"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:fontFamily="@font/font_regular"
@@ -224,6 +228,7 @@
                     </LinearLayout>
 
                     <EditText
+                        error="@{contactModel.error_text}"
                         android:layout_width="match_parent"
                         android:layout_height="114dp"
                         android:layout_marginTop="8dp"
@@ -235,7 +240,7 @@
                         android:layout_marginStart="21dp"
                         android:layout_marginEnd="21dp"
                         android:textColorHint="@color/grey7"
-                        android:text="@={contactModel.message}"
+                        android:text="@={contactModel.text}"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:fontFamily="@font/font_regular"
@@ -254,8 +259,6 @@
                         android:text="@string/send"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        android:enabled="@{contactModel.valid,default=false}"
-
 
                         />
 

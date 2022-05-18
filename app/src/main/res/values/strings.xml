@@ -68,7 +68,6 @@
     <string name="found_things_in_nthe_great_mosque_nof_mecca">Found things in\nthe Great Mosque\nof Mecca</string>
     <string name="found_things_in_nthe_tower">Found things in\nthe Tower Khalifa</string>
 
-
     <string name="missing_things_in_mecca">Missing things in the Great Mosque of Mecca</string>
     <string name="missing_things_in_tower">Missing things in the Tower Khalifa</string>
     <string name="found_things_in_mecca">Found things in the Great Mosque of Mecca</string>
@@ -114,5 +113,6 @@
     <string name="add_deleted">Add deleted successfully</string>
     <string name="ph_found">Phone exist</string>
     <string name="em_found">Email exist</string>
-
+    <string name="field_required">field required</string>
+    <string name="inv_email">Invalid Email</string>
 </resources>

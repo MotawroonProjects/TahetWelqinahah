@@ -4,6 +4,7 @@ package com.lost_found_it.services;
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.HomeDataModel;
+import com.lost_found_it.model.SettingDataModel;
 import com.lost_found_it.model.SingleAdModel;
 import com.lost_found_it.model.StatusResponse;
 import com.lost_found_it.model.UserModel;
@@ -76,7 +77,7 @@ public interface Service {
                                        @Part("phone_code") RequestBody phone_code,
                                        @Part("phone") RequestBody phone,
                                        @Part MultipartBody.Part image
-                                       );
+    );
 
     @Multipart
     @POST("api/auth/updateProfile")
@@ -97,5 +98,16 @@ public interface Service {
                                                          @Field("type") String type
 
     );
+
+    @FormUrlEncoded
+    @POST("api/setting/contactUs")
+    Single<Response<StatusResponse>> contactUs(@Field("country") String country,
+                                               @Field("name") String name,
+                                               @Field("email") String email,
+                                               @Field("phone") String phone,
+                                               @Field("text") String text);
+
+    @GET("api/setting/index")
+    Single<Response<SettingDataModel>> getSettings(@Query("country") String country);
 
 }

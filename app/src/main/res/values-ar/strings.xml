@@ -114,5 +114,6 @@
     <string name="add_deleted">تم حذف الاعلان بنجاح</string>
     <string name="ph_found">رقم الجوال موجود من قبل</string>
     <string name="em_found">البريد الإلكتروني</string>
-
+    <string name="field_required">الحقل مطلوب</string>
+    <string name="inv_email">بريد الكترونى خاطئ</string>
 </resources>

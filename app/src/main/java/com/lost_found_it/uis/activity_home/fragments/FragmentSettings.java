@@ -21,7 +21,10 @@ import androidx.lifecycle.ViewModelProviders;
 import com.lost_found_it.R;
 import com.lost_found_it.databinding.FragmentSearchBinding;
 import com.lost_found_it.databinding.FragmentSettingBinding;
+import com.lost_found_it.model.SettingDataModel;
+import com.lost_found_it.mvvm.FragmentSettingsMvvm;
 import com.lost_found_it.mvvm.GeneralMvvm;
+import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_about_app.AboutAppActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_contact_us.ContactUsActivity;
@@ -30,10 +33,12 @@ import com.lost_found_it.uis.activity_home.HomeActivity;
 
 public class FragmentSettings extends BaseFragment {
     private GeneralMvvm generalMvvm;
+    private FragmentSettingsMvvm settingsMvvm;
     private FragmentSettingBinding binding;
     private HomeActivity activity;
     private ActivityResultLauncher<Intent> launcher;
     private int req;
+    private SettingDataModel.Data settingModel;
 
 
     @Override
@@ -41,7 +46,7 @@ public class FragmentSettings extends BaseFragment {
         super.onAttach(context);
         activity = (HomeActivity) context;
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (req==1){
+            if (req == 1) {
                 binding.setCountry(getUserSetting().getCountry());
                 generalMvvm.getOnCountrySuccess().setValue(true);
             }
@@ -67,7 +72,9 @@ public class FragmentSettings extends BaseFragment {
     }
 
     private void initView() {
+
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
+        settingsMvvm = ViewModelProviders.of(activity).get(FragmentSettingsMvvm.class);
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
         setUpToolbar(binding.toolbarSetting, getString(R.string.settings), R.color.white, R.color.black);
@@ -75,6 +82,10 @@ public class FragmentSettings extends BaseFragment {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
 
+        settingsMvvm.getOnDataSuccess().observe(activity, model -> {
+            settingModel = model;
+        });
+        settingsMvvm.getSettings(activity, getUserSetting().getCountry());
 
         binding.tvLanguage.setOnClickListener(v -> {
             if (getLang().equals("ar")) {
@@ -98,22 +109,22 @@ public class FragmentSettings extends BaseFragment {
 
 
         binding.llTerms.setOnClickListener(v -> {
-            /*if (setting != null && setting.getTerms() != null) {
-                String url = Tags.base_url + "webView?type=" + setting.getTerms();
+            if (settingModel != null && settingModel.getTerms_condition() != null) {
+                String url = Tags.base_url + "webView?type=" + settingModel.getTerms_condition();
                 navigateToAboutAppActivity("1", url);
             } else {
                 Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }*/
+            }
 
         });
 
         binding.llPrivacy.setOnClickListener(v -> {
-           /* if (setting != null && setting.getPrivacy() != null) {
-                String url = Tags.base_url + "webView?type=" + setting.getPrivacy();
+            if (settingModel != null && settingModel.getPrivacy_policy() != null) {
+                String url = Tags.base_url + "webView?type=" + settingModel.getPrivacy_policy();
                 navigateToAboutAppActivity("2", url);
             } else {
                 Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }*/
+            }
         });
 
         binding.llRateApp.setOnClickListener(v -> {
@@ -125,45 +136,50 @@ public class FragmentSettings extends BaseFragment {
 
         binding.imageFacebook.setOnClickListener(v -> {
 
-            /*if (setting != null && setting.getFacebook() != null) {
-                String url = setting.getFacebook();
+            if (settingModel != null && settingModel.getFacebook() != null) {
+                String url = settingModel.getFacebook();
                 createIntentForSocial(url);
             } else {
                 Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }*/
+            }
         });
 
         binding.imageTwitter.setOnClickListener(v -> {
 
-            /*if (setting != null && setting.getTwitter() != null) {
-                String url = setting.getTwitter();
+            if (settingModel != null && settingModel.getTwitter() != null) {
+                String url = settingModel.getTwitter();
                 createIntentForSocial(url);
             } else {
                 Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }*/
+            }
         });
 
         binding.imageInstagram.setOnClickListener(v -> {
 
-            /*if (setting != null && setting.getInsta() != null) {
-                String url = setting.getInsta();
+            if (settingModel != null && settingModel.getInstagram() != null) {
+                String url = settingModel.getInstagram();
                 createIntentForSocial(url);
             } else {
                 Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }*/
+            }
         });
 
         binding.imageSnapChat.setOnClickListener(v -> {
 
-            /*if (setting != null && setting.getSnapchat() != null) {
-                String url = setting.getSnapchat();
+            if (settingModel != null && settingModel.getSnapchat() != null) {
+                String url = settingModel.getSnapchat();
                 createIntentForSocial(url);
             } else {
                 Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }*/
+            }
         });
 
 
+    }
+
+    private void createIntentForSocial(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 
     private void navigateToAboutAppActivity(String type, String url) {

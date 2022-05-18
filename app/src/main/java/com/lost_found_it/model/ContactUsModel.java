@@ -8,6 +8,7 @@ import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
 
 import com.lost_found_it.BR;
+import com.lost_found_it.R;
 
 import java.io.Serializable;
 
@@ -15,27 +16,63 @@ import java.io.Serializable;
 public class ContactUsModel extends BaseObservable implements Serializable {
     private String name;
     private String email;
-    private String subject;
-    private String message;
-    private boolean valid;
+    private String phone;
+    private String text;
 
-    public void isDataValid() {
+    public ObservableField<String> error_name = new ObservableField<>();
+    public ObservableField<String> error_email = new ObservableField<>();
+    public ObservableField<String> error_phone = new ObservableField<>();
+    public ObservableField<String> error_text = new ObservableField<>();
+
+    public boolean isDataValid(Context context) {
 
         if (!name.isEmpty() &&
                 !email.isEmpty() &&
                 Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
-                !subject.isEmpty() &&
-                !message.isEmpty()
+                !phone.isEmpty() &&
+                !text.isEmpty()
 
         ) {
+            error_name.set(null);
+            error_email.set(null);
+            error_phone.set(null);
+            error_text.set(null);
 
-
-            setValid(true);
+            return true;
 
         } else {
+            if (name.isEmpty()){
+                error_name.set(context.getString(R.string.field_required));
+            }else {
+                error_name.set(null);
 
-            setValid(false);
+            }
 
+
+            if (email.isEmpty()){
+                error_email.set(context.getString(R.string.field_required));
+            }if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                error_email.set(context.getString(R.string.inv_email));
+            }else {
+                error_email.set(null);
+
+            }
+
+            if (phone.isEmpty()){
+                error_phone.set(context.getString(R.string.field_required));
+            }else {
+                error_phone.set(null);
+
+            }
+
+            if (text.isEmpty()){
+                error_text.set(context.getString(R.string.field_required));
+            }else {
+                error_text.set(null);
+
+            }
+
+            return false;
         }
 
     }
@@ -43,8 +80,8 @@ public class ContactUsModel extends BaseObservable implements Serializable {
     public ContactUsModel() {
         name = "";
         email = "";
-        subject = "";
-        message = "";
+        phone = "";
+        text = "";
     }
 
     @Bindable
@@ -69,34 +106,26 @@ public class ContactUsModel extends BaseObservable implements Serializable {
     }
 
     @Bindable
-    public String getSubject() {
-        return subject;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-        notifyPropertyChanged(BR.subject);
-
-    }
-
-    @Bindable
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-        notifyPropertyChanged(BR.message);
+    public void setPhone(String phone) {
+        this.phone = phone;
+        notifyPropertyChanged(BR.phone);
 
     }
 
     @Bindable
-    public boolean isValid() {
-        return valid;
+    public String getText() {
+        return text;
     }
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
-        notifyPropertyChanged(BR.valid);
+    public void setText(String text) {
+        this.text = text;
+        notifyPropertyChanged(BR.text);
+
     }
+
+
 }
