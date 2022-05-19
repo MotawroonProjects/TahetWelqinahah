@@ -110,6 +110,7 @@
     <string name="thing_great_tower">Things in the khalifa tower</string>
     <string name="whatsapp_num">Whatsapp Number</string>
     <string name="no_item">No Items To Show</string>
+    <string name="no_notify">No Notifications To Show</string>
     <string name="add_deleted">Add deleted successfully</string>
     <string name="ph_found">Phone exist</string>
     <string name="em_found">Email exist</string>

@@ -4,6 +4,7 @@ package com.lost_found_it.services;
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.HomeDataModel;
+import com.lost_found_it.model.NotificationDataModel;
 import com.lost_found_it.model.SingleAd;
 import com.lost_found_it.model.SettingDataModel;
 import com.lost_found_it.model.SingleAdModel;
@@ -160,4 +161,7 @@ public interface Service {
                                             @Field("token") String token);
 
 
+    @GET("api/profile/notifications")
+    Single<Response<NotificationDataModel>> getNotifications(@Header("Authorization") String Authorization,
+                                                             @Query("country") String country);
 }
