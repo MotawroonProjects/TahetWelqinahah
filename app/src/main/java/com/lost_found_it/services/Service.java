@@ -4,9 +4,12 @@ package com.lost_found_it.services;
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.HomeDataModel;
+import com.lost_found_it.model.MessagesDataModel;
+import com.lost_found_it.model.RoomDataModel;
 import com.lost_found_it.model.SingleAd;
 import com.lost_found_it.model.SettingDataModel;
 import com.lost_found_it.model.SingleAdModel;
+import com.lost_found_it.model.SingleMessageModel;
 import com.lost_found_it.model.StatusResponse;
 import com.lost_found_it.model.UserModel;
 
@@ -159,5 +162,30 @@ public interface Service {
                                             @Field("country") String country,
                                             @Field("token") String token);
 
+    @GET("api/home/follow-delete-Ad")
+    Single<Response<StatusResponse>> followUnFollow(@Header("Authorization") String Authorization,
+                                                    @Query("country") String country,
+                                                    @Query("ad_id") String ad_id
+    );
 
+    @GET("api/chat/myRooms")
+    Single<Response<RoomDataModel>> getRoom(@Header("Authorization") String Authorization,
+                                            @Query("country") String country);
+
+    @GET("api/chat/index")
+    Single<Response<MessagesDataModel>> getChatMessages(@Header("Authorization") String Authorization,
+                                                        @Query("country") String country,
+                                                        @Query("ad_id") String ad_id,
+                                                        @Query("room_id") String room_id);
+
+    @Multipart
+    @POST("api/chat/sendMessage")
+    Single<Response<SingleMessageModel>> sendMessages(@Header("Authorization") String Authorization,
+                                                      @Part("country") RequestBody country,
+                                                      @Part("ad_id") RequestBody ad_id,
+                                                      @Part("room_id") RequestBody room_id,
+                                                      @Part("type") RequestBody type,
+                                                      @Part("message") RequestBody message,
+                                                      @Part MultipartBody.Part image
+    );
 }

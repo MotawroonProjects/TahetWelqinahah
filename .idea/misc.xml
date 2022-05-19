@@ -82,15 +82,29 @@
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/dialog_window_bg.xml" value="0.204" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/ic_arrow_down.xml" value="0.202" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/ic_edit2.xml" value="0.202" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/ic_file.xml" value="0.204" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/ic_send.xml" value="0.204" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/msg_left_bg.xml" value="0.204" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/msg_left_image_bg.xml" value="0.204" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/msg_right_bg.xml" value="0.204" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/msg_right_image_bg.xml" value="0.204" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/rounded_stroke_color2.xml" value="0.204" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/rounded_stroke_color2_2.xml" value="0.204" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/small_stroke_rounded_grey0.xml" value="0.204" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_chat.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_country.xml" value="0.17074275362318841" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_home.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_rooms.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/chat_image_left_row.xml" value="0.1875" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/chat_image_right_row.xml" value="0.1875" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/chat_message_left_row.xml" value="0.1875" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/chat_message_right_row.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/country_spinner_row.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/dailog_verification_code.xml" value="0.2" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/dialog_choose_image.xml" value="0.4" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_ad_details.xml" value="0.4" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_found.xml" value="0.264" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_home.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_lost.xml" value="0.10280797101449275" />
@@ -100,6 +114,7 @@
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_tower.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/recview_layout.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/related_ad_row.xml" value="0.18385416666666668" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/room_row.xml" value="0.264" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/slider.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/slider_ad.xml" value="0.18385416666666668" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/spinner_row.xml" value="0.1875" />

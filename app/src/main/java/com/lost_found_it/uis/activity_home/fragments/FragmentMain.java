@@ -32,6 +32,7 @@ import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 import com.lost_found_it.uis.activity_login.LoginActivity;
+import com.lost_found_it.uis.activity_rooms.RoomsActivity;
 import com.lost_found_it.uis.activity_sign_up.SignUpActivity;
 
 import java.util.ArrayList;
@@ -171,6 +172,17 @@ public class FragmentMain extends BaseFragment {
             }
         });
 
+        binding.cardConversations.setOnClickListener(v -> {
+
+            if (getUserModel() == null) {
+                navigateToLoginActivity();
+
+
+            } else {
+                navigateToSignRoomsActivity();
+            }
+        });
+
         binding.cardLogout.setOnClickListener(v -> {
             if (getUserModel() == null) {
                 navigateToLoginActivity();
@@ -189,6 +201,11 @@ public class FragmentMain extends BaseFragment {
             binding.setModel(null);
 
         });
+    }
+
+    private void navigateToSignRoomsActivity() {
+        Intent intent = new Intent(activity, RoomsActivity.class);
+        startActivity(intent);
     }
 
     private void logout() {

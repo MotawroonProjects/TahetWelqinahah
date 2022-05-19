@@ -1,7 +1,9 @@
 package com.lost_found_it.mvvm;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,7 +14,9 @@ import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.CategoryModel;
 import com.lost_found_it.model.SingleAdModel;
+import com.lost_found_it.model.StatusResponse;
 import com.lost_found_it.model.SubCategoryModel;
+import com.lost_found_it.model.UserModel;
 import com.lost_found_it.remote.Api;
 import com.lost_found_it.tags.Tags;
 
@@ -30,6 +34,7 @@ import retrofit2.Response;
 public class FragmentAdDetailsMvvm extends AndroidViewModel {
     private final String TAG = FragmentAdDetailsMvvm.class.getName();
     public MutableLiveData<SingleAdModel.Data> onDataSuccess;
+    public MutableLiveData<String> onFollowDataSuccess;
 
     public MutableLiveData<Boolean> isLoading;
 
@@ -56,11 +61,18 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
         return isLoading;
     }
 
-    public void getData(String country,String phone_token_id,String ad_id){
+    public MutableLiveData<String> getOnFollowDataSuccess() {
+        if (onFollowDataSuccess == null) {
+            onFollowDataSuccess = new MutableLiveData<>();
+        }
+        return onFollowDataSuccess;
+    }
+
+    public void getData(String country, String phone_token_id, String ad_id) {
         getIsLoading().setValue(true);
 
         Api.getService(Tags.base_url)
-                .getAdDetails(country,ad_id,phone_token_id)
+                .getAdDetails(country, ad_id, phone_token_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<SingleAdModel>>() {
@@ -73,15 +85,15 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
                     public void onSuccess(Response<SingleAdModel> response) {
                         getIsLoading().setValue(false);
 
-                        if (response.isSuccessful()){
+                        if (response.isSuccessful()) {
 
-                            if (response.body()!=null){
+                            if (response.body() != null) {
                                 getOnDataSuccess().setValue(response.body().getData());
                             }
 
-                        }else {
+                        } else {
                             try {
-                                Log.e(TAG,response.errorBody().string()+"___"+response.body().getMessage().toString());
+                                Log.e(TAG, response.errorBody().string() + "___" + response.body().getMessage().toString());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -92,7 +104,52 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
                     public void onError(Throwable e) {
                         getIsLoading().setValue(false);
 
-                        Log.e(TAG,e.getMessage());
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
+    }
+
+    public void followUnFollow(String country, UserModel userModel, String ad_id, String isFollowed) {
+        if (userModel == null) {
+            return;
+        }
+
+
+
+        Api.getService(Tags.base_url)
+                .followUnFollow("Bearer " + userModel.getData().getAccess_token(), country, ad_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<StatusResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(Response<StatusResponse> response) {
+
+                        if (response.isSuccessful()) {
+                            Log.e("follow",response.body().getCode()+"__");
+                            if (response.body() != null && response.body().getCode() == 200) {
+                                boolean follow = Boolean.parseBoolean(isFollowed);
+                                getOnFollowDataSuccess().setValue(String.valueOf(!follow));
+                            }
+
+
+                        } else {
+                            try {
+                                Log.e(TAG, response.errorBody().string() + "___" + response.body().getMessage().toString());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.e(TAG, e.getMessage());
                     }
                 });
     }

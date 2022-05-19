@@ -73,6 +73,10 @@ public class AdModel implements Serializable {
         return is_followed;
     }
 
+    public void setIs_followed(String is_followed) {
+        this.is_followed = is_followed;
+    }
+
     public String getViews() {
         return views;
     }

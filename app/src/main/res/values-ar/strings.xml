@@ -117,5 +117,11 @@
     <string name="field_required">الحقل مطلوب</string>
     <string name="inv_email">بريد الكترونى خاطئ</string>
     <string name="posting_ad">جار نشر الاعلان....</string>
+    <string name="follow">متابعة</string>
+    <string name="un_follow">إلغاء المتابعة</string>
+    <string name="attachment_sent">تم إرسال مرفق</string>
+    <string name="conversations">المحادثات</string>
+    <string name="no_conv">لا توجد محادثات</string>
+    <string name="type_a_message">إكتب رسالتك ...</string>
 
 </resources>

@@ -3,15 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="lang"
             type="String" />
         <variable
+            name="userModel"
+            type="com.lost_found_it.model.UserModel" />
+        <variable
             name="model"
             type="com.lost_found_it.model.AdModel" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,8 +30,8 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -35,21 +41,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility='@{model==null?View.GONE:View.VISIBLE}'
-                    >
+                    android:visibility='@{model==null?View.GONE:View.VISIBLE}'>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
+                        android:layout_height="wrap_content">
+
                         <FrameLayout
                             android:id="@+id/flSlider"
                             android:layout_width="match_parent"
                             android:layout_height="250dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0"
 
                             >
@@ -58,6 +63,7 @@
                                 android:id="@+id/pager"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent" />
+
                             <FrameLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -89,90 +95,93 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:minHeight="56dp"
-                            app:cardCornerRadius="16dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/flSlider"
-                            app:layout_constraintBottom_toBottomOf="@id/flSlider"
                             android:layout_margin="5dp"
-                            app:cardElevation="5dp"
+                            android:minHeight="56dp"
                             app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="5dp"
+                            app:layout_constraintBottom_toBottomOf="@id/flSlider"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/flSlider"
+                            android:visibility='@{userModel==null?View.GONE:(userModel.data.user.id.equals(model.user.id)?View.GONE:View.VISIBLE)}'
 
                             >
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
+                                android:orientation="horizontal"
 
                                 >
+
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:background="@drawable/rounded_stroke_color7"
+                                    android:gravity="center_vertical"
                                     android:minHeight="36dp"
                                     android:orientation="horizontal"
-                                    android:background="@drawable/rounded_stroke_color7"
                                     android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:gravity="center_vertical"
-                                    >
+                                    android:paddingEnd="16dp">
+
                                     <ImageView
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/ic_view"
-                                        app:tint="@color/color7"
-                                        />
+                                        app:tint="@color/color7" />
+
                                     <androidx.legacy.widget.Space
                                         android:layout_width="8dp"
-                                        android:layout_height="0dp"
-                                        />
+                                        android:layout_height="0dp" />
+
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:lines="1"
-                                        android:textColor="@color/color7"
-                                        android:textSize="14sp"
                                         android:fontFamily="@font/font_bold"
+                                        android:lines="1"
                                         android:text='@{model.views??"0"}'
-                                        />
+                                        android:textColor="@color/color7"
+                                        android:textSize="14sp" />
                                 </LinearLayout>
+
                                 <androidx.legacy.widget.Space
                                     android:layout_width="8dp"
-                                    android:layout_height="0dp"/>
+                                    android:layout_height="0dp" />
+
                                 <LinearLayout
+                                    android:id="@+id/llFollow"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:background="@drawable/rounded_stroke_color2"
+                                    android:gravity="center_vertical"
                                     android:minHeight="36dp"
                                     android:orientation="horizontal"
-                                    android:background="@drawable/rounded_stroke_color2"
                                     android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:gravity="center_vertical"
-                                    >
+                                    android:paddingEnd="16dp">
 
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:lines="1"
-                                        android:textColor="@color/color2"
-                                        android:textSize="14sp"
                                         android:fontFamily="@font/font_bold"
-                                        android:text="i phone"
-                                        />
+                                        android:lines="1"
+                                        android:text='@{model.is_followed.equals("true")?@string/un_follow:@string/follow}'
+                                        android:textColor="@color/color2"
+                                        android:textSize="14sp" />
+
                                     <androidx.legacy.widget.Space
                                         android:layout_width="8dp"
-                                        android:layout_height="0dp"
-                                        />
+                                        android:layout_height="0dp" />
+
                                     <ImageView
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/ic_wifi"
-                                        app:tint="@color/color2"
-                                        />
+                                        app:tint="@color/color2" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -183,38 +192,40 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/font_bold"
                         android:lines="1"
+                        android:text='@{model.title??""}'
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:fontFamily="@font/font_bold"
-                        android:text='@{model.title??""}'
-                        android:layout_marginTop="24dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
 
                         />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey8"
-                        android:textSize="14sp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
                         android:fontFamily="@font/font_regular"
                         android:text='@{model.description??""}'
-                        android:layout_marginTop="16dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
+                        android:textColor="@color/grey8"
+                        android:textSize="14sp"
 
                         />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="24dp"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
                         android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
 
                         >
+
                         <ImageView
                             android:id="@+id/pin"
                             android:layout_width="24dp"
@@ -241,32 +252,31 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="24dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/rounded_stroke_color2"
-                        android:padding="16dp"
-                        >
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
                         <com.makeramen.roundedimageview.RoundedImageView
+                            user_image="@{model.user.image}"
                             android:layout_width="72dp"
                             android:layout_height="72dp"
                             android:background="@color/grey0"
-                            app:riv_mutate_background="true"
                             app:riv_corner_radius="16dp"
-                            user_image="@{model.user.image}"
-                            />
+                            app:riv_mutate_background="true" />
 
                         <androidx.legacy.widget.Space
                             android:layout_width="10dp"
-                            android:layout_height="0dp"
-                            />
+                            android:layout_height="0dp" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:orientation="vertical"
-                            >
+                            android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -280,28 +290,42 @@
 
 
                                 />
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+
                                 >
+
                                 <ImageView
+                                    android:id="@+id/call"
                                     android:layout_width="36dp"
                                     android:layout_height="36dp"
                                     android:src="@drawable/ic_call2"
+                                    android:visibility='@{userModel!=null?(userModel.data.user.id.equals(model.user.id)?View.GONE:View.VISIBLE):View.VISIBLE}'
+
                                     />
+
                                 <ImageView
+                                    android:id="@+id/whatsapp"
                                     android:layout_width="36dp"
                                     android:layout_height="36dp"
                                     android:layout_marginStart="10dp"
                                     android:layout_marginEnd="10dp"
                                     android:src="@drawable/ic_whatsapp"
+                                    android:visibility='@{userModel!=null?(userModel.data.user.id.equals(model.user.id)?View.GONE:View.VISIBLE):View.VISIBLE}'
+
                                     />
+
                                 <ImageView
+                                    android:id="@+id/chat"
                                     android:layout_width="36dp"
                                     android:layout_height="36dp"
                                     android:src="@drawable/ic_chat"
+                                    android:visibility='@{userModel!=null?(userModel.data.user.id.equals(model.user.id)?View.GONE:View.VISIBLE):View.VISIBLE}'
+
                                     />
 
 
@@ -313,8 +337,8 @@
                         android:id="@+id/llRelated"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -345,8 +369,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            />
+                            android:layout_marginBottom="8dp" />
 
                     </LinearLayout>
 

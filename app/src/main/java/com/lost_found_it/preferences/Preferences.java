@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.lost_found_it.model.AppSettingModel;
+import com.lost_found_it.model.ChatUserModel;
 import com.lost_found_it.model.UserModel;
 
 import com.google.gson.Gson;
@@ -78,5 +79,28 @@ public class Preferences {
 
     }
 
+    public void create_update_room(Context context, ChatUserModel model) {
+        SharedPreferences preferences = context.getSharedPreferences("room", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String data = new Gson().toJson(model);
+        editor.putString("order_id", data);
+        editor.apply();
+
+
+    }
+
+    public ChatUserModel getRoomId(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("room", Context.MODE_PRIVATE);
+        ChatUserModel model = new Gson().fromJson(preferences.getString("room_id",""),ChatUserModel.class);
+
+        return model;
+    }
+
+    public void clearRoomId(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("room", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
 
 }

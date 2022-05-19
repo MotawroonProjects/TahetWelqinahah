@@ -49,14 +49,23 @@ public class HomeActivity extends BaseActivity {
     private MyPagerAdapter adapter;
     private List<Fragment> fragments;
     private Stack<Integer> stack;
+    private boolean from_fire;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        getDataFromIntent();
         initView();
 
 
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("from_fire")) {
+            from_fire = true;
+        }
     }
 
 
@@ -84,6 +93,8 @@ public class HomeActivity extends BaseActivity {
             stack.push(Tags.fragment_main_pos);
         }
 
+
+
         generalMvvm.getMainNavigation().observe(this, this::updateStack);
 
         generalMvvm.getMainNavigationBackPress().observe(this, back -> {
@@ -91,7 +102,7 @@ public class HomeActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        generalMvvm.getOnUserLoggedOut().observe(this,loggedOut->{
+        generalMvvm.getOnUserLoggedOut().observe(this, loggedOut -> {
             if (EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().unregister(this);
             }
@@ -106,7 +117,11 @@ public class HomeActivity extends BaseActivity {
 
         if (getUserModel() != null) {
             EventBus.getDefault().register(this);
-            generalMvvm.updateToken(getUserModel(),getUserSetting().getCountry());
+            generalMvvm.updateToken(getUserModel(), getUserSetting().getCountry());
+        }
+
+        if (getUserModel() != null && from_fire) {
+            updateStack(1);
         }
 
     }

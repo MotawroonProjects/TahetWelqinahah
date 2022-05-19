@@ -117,4 +117,11 @@
 
     <string name="field_required">field required</string>
     <string name="inv_email">Invalid Email</string>
+    <string name="follow">Follow</string>
+    <string name="un_follow">Un Follow</string>
+    <string name="attachment_sent">Attachment sent</string>
+    <string name="conversations">Conversations</string>
+    <string name="no_conv">No Conversations</string>
+    <string name="type_a_message">Type a message ...</string>
+
 </resources>

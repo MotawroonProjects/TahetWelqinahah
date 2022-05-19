@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import com.lost_found_it.databinding.ToolbarBinding;
 import com.lost_found_it.language.Language;
 import com.lost_found_it.model.AppSettingModel;
+import com.lost_found_it.model.ChatUserModel;
 import com.lost_found_it.model.UserModel;
 import com.lost_found_it.preferences.Preferences;
 
@@ -69,7 +70,15 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+    public void clearRoomId() {
+        Preferences preferences = Preferences.getInstance();
+        preferences.clearRoomId(this);
+    }
 
+    public void setRoomId(ChatUserModel model) {
+        Preferences preferences = Preferences.getInstance();
+        preferences.create_update_room(this, model);
+    }
 
     protected void setUpToolbar(ToolbarBinding binding, String title, int background, int arrowTitleColor) {
         binding.setLang(getLang());
