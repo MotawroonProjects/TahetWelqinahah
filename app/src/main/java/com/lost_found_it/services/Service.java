@@ -6,6 +6,7 @@ import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.HomeDataModel;
 import com.lost_found_it.model.MessagesDataModel;
 import com.lost_found_it.model.RoomDataModel;
+import com.lost_found_it.model.NotificationDataModel;
 import com.lost_found_it.model.SingleAd;
 import com.lost_found_it.model.SettingDataModel;
 import com.lost_found_it.model.SingleAdModel;
@@ -172,6 +173,9 @@ public interface Service {
     Single<Response<RoomDataModel>> getRoom(@Header("Authorization") String Authorization,
                                             @Query("country") String country);
 
+    @GET("api/profile/notifications")
+    Single<Response<NotificationDataModel>> getNotifications(@Header("Authorization") String Authorization,
+                                                             @Query("country") String country);
     @GET("api/chat/index")
     Single<Response<MessagesDataModel>> getChatMessages(@Header("Authorization") String Authorization,
                                                         @Query("country") String country,

@@ -111,6 +111,7 @@
     <string name="thing_great_tower">العناصر في برج خليفة</string>
     <string name="whatsapp_num">واتس اب</string>
     <string name="no_item">لا توجد عناصر لعرضها</string>
+    <string name="no_notify">لا توجد إشعارات لعرضها</string>
     <string name="add_deleted">تم حذف الاعلان بنجاح</string>
     <string name="ph_found">رقم الجوال موجود من قبل</string>
     <string name="em_found">البريد الإلكتروني</string>
