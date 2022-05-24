@@ -124,5 +124,6 @@
     <string name="conversations">المحادثات</string>
     <string name="no_conv">لا توجد محادثات</string>
     <string name="type_a_message">إكتب رسالتك ...</string>
+    <string name="not_avail_now">Not Available Now</string>
 
 </resources>

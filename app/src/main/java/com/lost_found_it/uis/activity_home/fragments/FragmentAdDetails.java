@@ -1,9 +1,11 @@
 package com.lost_found_it.uis.activity_home.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,6 +52,8 @@ public class FragmentAdDetails extends BaseFragment {
     private AdModel adModel;
     private MyTimerTask timerTask;
     private Timer timer;
+    private static final int REQUEST_PHONE_CALL = 1;
+    private Intent intent;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -157,8 +163,23 @@ public class FragmentAdDetails extends BaseFragment {
 
         binding.call.setOnClickListener(v -> {
             String phone = adModel.getPhone_code()+adModel.getPhone();
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+phone));
-            startActivity(intent);
+                intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+
+            if (intent != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
+                    } else {
+                        startActivity(intent);
+                    }
+                } else {
+                    startActivity(intent);
+                }
+            } else {
+                Toast.makeText(activity, getResources().getString(R.string.not_avail_now), Toast.LENGTH_SHORT).show();
+
+                // Common.CreateAlertDialog(QuestionsActivity.this, getResources().getString(R.string.phone_not_found));
+            }
         });
 
         binding.whatsapp.setOnClickListener(v -> {
@@ -266,5 +287,32 @@ public class FragmentAdDetails extends BaseFragment {
             timer = null;
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_PHONE_CALL: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (activity.checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    Activity#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for Activity#requestPermissions for more details.
+                            return;
+                        }
+                    }
+                    startActivity(intent);
+                } else {
+
+                }
+                return;
+            }
+        }
+    }
 }

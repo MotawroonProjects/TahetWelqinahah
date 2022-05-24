@@ -124,5 +124,6 @@
     <string name="conversations">Conversations</string>
     <string name="no_conv">No Conversations</string>
     <string name="type_a_message">Type a message ...</string>
+    <string name="not_avail_now">Not Available Now</string>
 
 </resources>
