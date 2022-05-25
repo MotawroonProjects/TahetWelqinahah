@@ -139,6 +139,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         } else if (holder instanceof HolderImageRight) {
             HolderImageRight holderImageRight = (HolderImageRight) holder;
+            holderImageRight.binding.setModel(list.get(position));
             Glide.with(context)
                     .load(Uri.parse(model.getFile()))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

@@ -75,9 +75,9 @@ public class BaseActivity extends AppCompatActivity {
         preferences.clearRoomId(this);
     }
 
-    public void setRoomId(ChatUserModel model) {
+    public void setRoomId(String roomId) {
         Preferences preferences = Preferences.getInstance();
-        preferences.create_update_room(this, model);
+        preferences.create_update_room(this, roomId);
     }
 
     protected void setUpToolbar(ToolbarBinding binding, String title, int background, int arrowTitleColor) {

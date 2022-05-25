@@ -11,12 +11,20 @@ public class MessagesDataModel extends StatusResponse implements Serializable {
     }
 
     public static class Data implements Serializable {
-
+        private String id;
+        private String ad_id;
         private List<MessageModel> messages;
 
         public List<MessageModel> getMessages() {
             return messages;
         }
 
+        public String getId() {
+            return id;
+        }
+
+        public String getAd_id() {
+            return ad_id;
+        }
     }
 }

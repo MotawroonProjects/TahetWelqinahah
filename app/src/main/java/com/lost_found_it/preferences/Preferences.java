@@ -79,21 +79,21 @@ public class Preferences {
 
     }
 
-    public void create_update_room(Context context, ChatUserModel model) {
+    public void create_update_room(Context context, String room_id) {
         SharedPreferences preferences = context.getSharedPreferences("room", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        String data = new Gson().toJson(model);
-        editor.putString("order_id", data);
+
+        editor.putString("room_id", room_id);
         editor.apply();
 
 
     }
 
-    public ChatUserModel getRoomId(Context context) {
+    public String getRoomId(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("room", Context.MODE_PRIVATE);
-        ChatUserModel model = new Gson().fromJson(preferences.getString("room_id",""),ChatUserModel.class);
+        String room_id = preferences.getString("room_id","");
 
-        return model;
+        return room_id;
     }
 
     public void clearRoomId(Context context) {

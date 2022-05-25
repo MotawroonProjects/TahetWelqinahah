@@ -27,6 +27,7 @@ import retrofit2.Response;
 public class ActivityChatMvvm extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading;
     private MutableLiveData<List<MessageModel>> onDataSuccess;
+    private MutableLiveData<MessagesDataModel> roomId;
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -49,6 +50,12 @@ public class ActivityChatMvvm extends AndroidViewModel {
         return onDataSuccess;
     }
 
+    public MutableLiveData<MessagesDataModel> getRoomId() {
+        if (roomId == null) {
+            roomId = new MutableLiveData<>();
+        }
+        return roomId;
+    }
 
     public void getChatMessages(UserModel userModel, String country, String ad_id, String room_id) {
 
@@ -69,6 +76,7 @@ public class ActivityChatMvvm extends AndroidViewModel {
 
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getCode() == 200) {
+                               getRoomId().setValue(response.body());
                                 onDataSuccess().setValue(response.body().getData().getMessages());
                             }
                         } else {

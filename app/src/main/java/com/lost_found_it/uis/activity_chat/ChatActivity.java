@@ -5,9 +5,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -28,6 +31,7 @@ import com.lost_found_it.databinding.ActivityChatBinding;
 import com.lost_found_it.model.AddChatMessageModel;
 import com.lost_found_it.model.ChatUserModel;
 import com.lost_found_it.model.MessageModel;
+import com.lost_found_it.model.MessagesDataModel;
 import com.lost_found_it.mvvm.ActivityChatMvvm;
 import com.lost_found_it.uis.activity_base.BaseActivity;
 
@@ -49,6 +53,8 @@ public class ChatActivity extends BaseActivity {
     private ActivityResultLauncher<Intent> launcher;
     private ChatUserModel model;
     private int req;
+    private String roomId;
+    private String ad_id;
 
 
     @Override
@@ -95,7 +101,7 @@ public class ChatActivity extends BaseActivity {
                 }
             }
         });
-        adapter = new ChatAdapter(this, binding.recView,getUserModel().getData().getUser().getId());
+        adapter = new ChatAdapter(this, binding.recView, getUserModel().getData().getUser().getId());
         binding.recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.recView.setAdapter(adapter);
 
@@ -104,7 +110,16 @@ public class ChatActivity extends BaseActivity {
                 adapter.updateList(list);
             }
         });
-
+        mvvm.getRoomId().observe(this, new Observer<MessagesDataModel>() {
+            @Override
+            public void onChanged(MessagesDataModel messagesDataModel) {
+                if (messagesDataModel.getData() != null) {
+                    roomId = messagesDataModel.getData().getId();
+                    setRoomId(roomId);
+                    ad_id = messagesDataModel.getData().getAd_id();
+                }
+            }
+        });
 
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (req == 1 && result.getResultCode() == RESULT_OK) {
@@ -121,7 +136,7 @@ public class ChatActivity extends BaseActivity {
             EventBus.getDefault().register(this);
         }
 
-        mvvm.getChatMessages(getUserModel(), getUserSetting().getCountry(), model.getAd_id(),model.getRoom_id());
+        mvvm.getChatMessages(getUserModel(), getUserSetting().getCountry(), model.getAd_id(), model.getRoom_id());
 
         binding.send.setOnClickListener(v -> {
             if (binding.edtMessage.getText().toString().length() > 0) {
@@ -142,14 +157,13 @@ public class ChatActivity extends BaseActivity {
             //binding.recView.post(() -> );
         });
 
-        binding.swipeRefresh.setOnRefreshListener(() ->mvvm.getChatMessages(getUserModel(), getUserSetting().getCountry(), model.getAd_id(),model.getRoom_id()));
-        setRoomId(model);
+        binding.swipeRefresh.setOnRefreshListener(() -> mvvm.getChatMessages(getUserModel(), getUserSetting().getCountry(), model.getAd_id(), model.getRoom_id()));
 
 
     }
 
     private void sendMessage(String type, String msg, String image_url) {
-        AddChatMessageModel addChatMessageModel = new AddChatMessageModel(type, msg, image_url, model.getAd_id(),model.getRoom_id(),getUserModel().getData().getUser().getId());
+        AddChatMessageModel addChatMessageModel = new AddChatMessageModel(type, msg, image_url, ad_id, roomId, getUserModel().getData().getUser().getId());
         Intent intent = new Intent(this, ChatService.class);
         intent.putExtra("data", addChatMessageModel);
         startService(intent);
@@ -161,23 +175,25 @@ public class ChatActivity extends BaseActivity {
         imagePath = "";
         mvvm.addNewMessage(messageModel);
         adapter.notifyItemInserted(mvvm.onDataSuccess().getValue().size() - 1);
-
+        scrollToLastPosition();
     }
 
     private void checkCameraFilePermission() {
+     //   Log.e("Ddldldl","ddddd");
         if (ActivityCompat.checkSelfPermission(this, BaseActivity.WRITE_REQ) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, BaseActivity.CAM_REQ) == PackageManager.PERMISSION_GRANTED
         ) {
+           // Log.e("dkkdkd","dkkdkdk");
             openCamera();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{BaseActivity.WRITE_REQ, BaseActivity.CAM_REQ}, 100);
+            ActivityCompat.requestPermissions(this, new String[]{BaseActivity.WRITE_REQ, BaseActivity.CAM_REQ}, 1);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100) {
+        if (requestCode == 1) {
             if (grantResults.length == 2) {
                 openCamera();
             }
@@ -205,14 +221,23 @@ public class ChatActivity extends BaseActivity {
         String imageName = "JPEG_" + timeStamp + "_";
         File file = new File(Environment.getExternalStorageDirectory().getPath(), "Etbo5lyClientImages");
         if (!file.exists()) {
+            Log.e("lklkkk","lllll");
             file.mkdirs();
         }
+        if (!file.exists()) {
 
+            file = new File(this.getExternalFilesDir(null), "Etbo5lyClientImages");
+
+         file.mkdirs();
+        }
         try {
+            Log.e("llll",imageName+" "+file.getPath());
             imageFile = File.createTempFile(imageName, ".jpg", file);
+            Log.e("llll",imageName+" "+file.getPath());
+
             imagePath = imageFile.getAbsolutePath();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("dartt",e.toString());
         }
 
         return imageFile;
@@ -242,4 +267,11 @@ public class ChatActivity extends BaseActivity {
         binding.setMsg("");
         binding.cardLastMsg.setVisibility(View.GONE);
     }
+
+    private void scrollToLastPosition() {
+
+        new Handler()
+                .postDelayed(() -> binding.recView.scrollToPosition(mvvm.onDataSuccess().getValue().size() - 1), 10);
+    }
+
 }

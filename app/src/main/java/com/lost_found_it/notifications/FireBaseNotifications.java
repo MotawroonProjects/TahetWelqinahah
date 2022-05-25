@@ -78,8 +78,15 @@ public class FireBaseNotifications extends FirebaseMessagingService {
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         sound_Path = uri.toString();
         Intent cancelIntent = new Intent(this, BroadcastCancelNotification.class);
-        PendingIntent cancelPending = PendingIntent.getBroadcast(this, 0, cancelIntent, 0);
 
+        PendingIntent cancelPending;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+
+            cancelPending = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_MUTABLE);
+        } else {
+            cancelPending = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        }
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(this, App.CHANNEL_ID)
@@ -96,6 +103,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
         if (notification_type.equals("chat")) {
             title = getChatUserModel(map).getUser_name();
             String image = map.get("file");
+            String room_id = map.get("room_id");
 
             if (image != null && !image.isEmpty() && !map.get("type").equals("text")) {
                 body = getString(R.string.attachment_sent);
@@ -112,11 +120,16 @@ public class FireBaseNotifications extends FirebaseMessagingService {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
             taskStackBuilder.addNextIntent(intent);
-            notificationCompat.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
 
+                notificationCompat.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_MUTABLE));
+            } else {
+                notificationCompat.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
+
+            }
             ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
             String className = activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
-            if (className.equals("com.lost_found_it.uis.activity_chat.ChatActivity")) {
+            if (className.equals("com.lost_found_it.uis.activity_chat.ChatActivity") && getRoomId().equals(room_id)) {
 
                 EventBus.getDefault().post(getMessageModel(map));
 
@@ -146,7 +159,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
             }
 
 
-        }else {
+        } else {
 
             notificationCompat.setContentTitle(title);
             notificationCompat.setContentText(body);
@@ -171,7 +184,6 @@ public class FireBaseNotifications extends FirebaseMessagingService {
     }
 
 
-
     private MessageModel getMessageModel(Map<String, String> map) {
         String id = map.get("id");
         String user_id = map.get("user_id");
@@ -180,7 +192,6 @@ public class FireBaseNotifications extends FirebaseMessagingService {
         String file = map.get("file");
         String time = map.get("time");
         String date = map.get("date");
-
         if (file == null) {
             file = "";
 
@@ -206,7 +217,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
             String user_phone = user.getPhone_code() + user.getPhone();
             String user_image = user.getImage();
 
-            model = new ChatUserModel(user_id, user_name, user_phone, user_image,ad_id,room_id,adModel);
+            model = new ChatUserModel(user_id, user_name, user_phone, user_image, null, room_id, adModel);
 
         } else {
             String user_id = getUserModel().getData().getUser().getId();
@@ -214,7 +225,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
             String user_phone = getUserModel().getData().getUser().getPhone_code() + getUserModel().getData().getUser().getPhone();
             String user_image = getUserModel().getData().getUser().getImage();
 
-            model = new ChatUserModel(user_id, user_name, user_phone, user_image,ad_id,room_id,adModel);
+            model = new ChatUserModel(user_id, user_name, user_phone, user_image, null, room_id, adModel);
 
         }
 
@@ -222,6 +233,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
         return model;
 
     }
+
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
@@ -294,7 +306,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
     }
 
 
-    public ChatUserModel getRoomId() {
+    public String getRoomId() {
         Preferences preferences = Preferences.getInstance();
         return preferences.getRoomId(this);
     }

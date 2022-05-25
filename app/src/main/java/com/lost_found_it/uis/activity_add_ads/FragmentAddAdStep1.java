@@ -329,17 +329,17 @@ public class FragmentAddAdStep1 extends BaseFragment {
     }
 
     private void updateAdTypeFound() {
-        model.setAd_type("lost");
+        model.setAd_type("found");
 
-        binding.flAdLost.setBackgroundResource(R.drawable.small_rounded_primary);
-        binding.iconLost.setColorFilter(ContextCompat.getColor(activity, R.color.white));
-        binding.tvLost.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        binding.tvLostNote.setTextColor(ContextCompat.getColor(activity, R.color.white));
+        binding.flAdFound.setBackgroundResource(R.drawable.small_rounded_color3);
+        binding.iconFound.setColorFilter(ContextCompat.getColor(activity, R.color.white));
+        binding.tvFound.setTextColor(ContextCompat.getColor(activity, R.color.white));
+        binding.tvFoundNote.setTextColor(ContextCompat.getColor(activity, R.color.white));
 
-        binding.flAdFound.setBackgroundResource(R.drawable.small_stroke_rounded_white_grey0);
-        binding.iconFound.setColorFilter(ContextCompat.getColor(activity, R.color.color3));
-        binding.tvFound.setTextColor(ContextCompat.getColor(activity, R.color.color3));
-        binding.tvFoundNote.setTextColor(ContextCompat.getColor(activity, R.color.grey7));
+        binding.flAdLost.setBackgroundResource(R.drawable.small_stroke_rounded_white_grey0);
+        binding.iconLost.setColorFilter(ContextCompat.getColor(activity, R.color.colorAccent));
+        binding.tvLost.setTextColor(ContextCompat.getColor(activity, R.color.colorAccent));
+        binding.tvLostNote.setTextColor(ContextCompat.getColor(activity, R.color.grey7));
 
     }
 
