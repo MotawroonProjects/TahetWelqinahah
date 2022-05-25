@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lost_found_it.R;
 import com.lost_found_it.databinding.SearchRowBinding;
 import com.lost_found_it.model.AdModel;
+import com.lost_found_it.uis.activity_home.fragments.FragmentMyAds;
+import com.lost_found_it.uis.activity_home.fragments.FragmentSearch;
 
 import java.util.List;
 
@@ -38,6 +40,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MyHolder myHolder=(MyHolder) holder;
         myHolder.binding.setModel(list.get(position));
+        myHolder.itemView.setOnClickListener(view -> {
+            if (fragment instanceof FragmentSearch){
+                FragmentSearch fragmentMyAds=(FragmentSearch) fragment;
+                fragmentMyAds.navigateToDetails(list.get(myHolder.getAdapterPosition()));
+            }
+        });
     }
 
     public int getItemCount() {

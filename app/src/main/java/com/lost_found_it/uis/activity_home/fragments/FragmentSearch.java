@@ -25,6 +25,7 @@ import com.lost_found_it.model.AdModel;
 import com.lost_found_it.mvvm.FragmentHomeMvvm;
 import com.lost_found_it.mvvm.FragmentSearchMvvm;
 import com.lost_found_it.mvvm.GeneralMvvm;
+import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
@@ -112,4 +113,8 @@ public class FragmentSearch extends BaseFragment {
         binding.recViewLayout.recView.setAdapter(searchAdapter);
     }
 
+    public void navigateToDetails(AdModel adModel) {
+        generalMvvm.getOnAdDetailsSelected().setValue(adModel);
+        generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
+    }
 }
