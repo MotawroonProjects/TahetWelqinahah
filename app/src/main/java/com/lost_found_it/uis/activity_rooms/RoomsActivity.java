@@ -71,7 +71,7 @@ public class RoomsActivity extends BaseActivity {
 
     public void setRoomItem(RoomModel roomModel) {
         String phone = roomModel.getUser().getPhone_code()+roomModel.getUser().getPhone();
-        ChatUserModel model = new ChatUserModel(roomModel.getUser().getId(),roomModel.getUser().getFirst_name()+" "+roomModel.getUser().getLast_name(),phone,roomModel.getUser().getImage(),roomModel.getAd_id(),roomModel.getId(),roomModel.getAd());
+        ChatUserModel model = new ChatUserModel(roomModel.getUser().getId(),roomModel.getUser().getFirst_name()+" "+roomModel.getUser().getLast_name(),phone,roomModel.getUser().getImage(),null,roomModel.getId(),roomModel.getAd());
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("data",model);
         startActivity(intent);
