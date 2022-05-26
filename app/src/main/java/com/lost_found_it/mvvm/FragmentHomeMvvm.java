@@ -66,7 +66,7 @@ public class FragmentHomeMvvm extends AndroidViewModel {
                     public void onSuccess(Response<HomeDataModel> response) {
                         getIsLoading().setValue(false);
 
-                        if (response.isSuccessful()){
+                        if (response.isSuccessful()&&response.code()==200){
 
                             if (response.body()!=null){
                                 getOnDataSuccess().setValue(response.body());
