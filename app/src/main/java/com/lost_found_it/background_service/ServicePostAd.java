@@ -193,7 +193,7 @@ public class ServicePostAd extends Service {
         String title = "Add ad";
         String content = "Uploading...";
         Intent cancelIntent = new Intent(this, BroadCastCancelNotificationImages.class);
-        PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_MUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, App.CHANNEL_ID);
         builder.setContentTitle(title);

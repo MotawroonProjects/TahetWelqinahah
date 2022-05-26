@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -30,6 +29,14 @@ import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FragmentSearch extends BaseFragment {
     private GeneralMvvm generalMvvm;
@@ -37,6 +44,7 @@ public class FragmentSearch extends BaseFragment {
     private HomeActivity activity;
     private FragmentSearchMvvm mvvm;
     private SearchAdapter searchAdapter;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     @Override
@@ -66,7 +74,35 @@ public class FragmentSearch extends BaseFragment {
     private void initView() {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         mvvm = ViewModelProviders.of(this).get(FragmentSearchMvvm.class);
+        binding.setLang(getLang());
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
 
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        loadUiData();
+                    }
+                });
+
+    }
+
+    private void loadUiData() {
         mvvm.getIsLoading().observe(activity,isLoading->{
             binding.recViewLayout.swipeRefresh.setRefreshing(isLoading);
         });
@@ -79,7 +115,7 @@ public class FragmentSearch extends BaseFragment {
             }
             searchAdapter.updateList(adModels);
         });
-        binding.setLang(getLang());
+
         binding.edtSearch.requestFocus();
         binding.imageBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
@@ -111,10 +147,17 @@ public class FragmentSearch extends BaseFragment {
         binding.recViewLayout.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.recViewLayout.recView.setItemViewCacheSize(20);
         binding.recViewLayout.recView.setAdapter(searchAdapter);
+        binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+
     }
 
     public void navigateToDetails(AdModel adModel) {
-        generalMvvm.getOnAdDetailsSelected().setValue(adModel);
+        generalMvvm.getOnAdDetailsSelected().setValue(adModel.getId());
         generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
     }
 }

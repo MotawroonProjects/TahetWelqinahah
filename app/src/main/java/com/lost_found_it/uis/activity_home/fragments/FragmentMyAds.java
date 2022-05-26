@@ -29,6 +29,15 @@ import com.lost_found_it.uis.activity_base.BaseActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class FragmentMyAds extends BaseFragment {
     private GeneralMvvm generalMvvm;
     private FragmentMyAdsBinding binding;
@@ -37,15 +46,16 @@ public class FragmentMyAds extends BaseFragment {
     private FragmentMyAdsMvvm mvvm;
     private ActivityResultLauncher<Intent> launcher;
     private int req;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity = (HomeActivity) context;
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result -> {
-            if (result.getResultCode()== BaseActivity.RESULT_OK){
-                if (req==1){
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == BaseActivity.RESULT_OK) {
+                if (req == 1) {
                     generalMvvm.getOnAdUpdated().setValue(true);
 
                 }
@@ -74,13 +84,39 @@ public class FragmentMyAds extends BaseFragment {
     private void initView() {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         mvvm = ViewModelProviders.of(this).get(FragmentMyAdsMvvm.class);
-
-        setUpToolbar(binding.toolbarMyAds,getString(R.string.my_ads),R.color.white,R.color.black);
+        setUpToolbar(binding.toolbarMyAds, getString(R.string.my_ads), R.color.white, R.color.black);
         binding.setLang(getLang());
         binding.toolbarMyAds.llBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
 
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        loadUiData();
+                    }
+                });
+    }
+
+    private void loadUiData() {
         generalMvvm.getOnNewAdAdded().observe(activity, adModel -> {
             if (mvvm.getOnDataSuccess().getValue() != null) {
                 mvvm.getOnDataSuccess().getValue().add(0, adModel);
@@ -93,40 +129,40 @@ public class FragmentMyAds extends BaseFragment {
         });
 
         generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
-            if (getUserModel()!=null){
-                mvvm.getMyAds(getUserSetting().getCountry(),getUserModel());
+            if (getUserModel() != null) {
+                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
 
             }
         });
-        generalMvvm.getOnUserLoggedIn().observe(activity,mBoolean->{
-            if (getUserModel()!=null){
-                mvvm.getMyAds(getUserSetting().getCountry(),getUserModel());
+        generalMvvm.getOnUserLoggedIn().observe(activity, mBoolean -> {
+            if (getUserModel() != null) {
+                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
 
             }
         });
 
 
-        mvvm.getIsLoading().observe(activity,isLoading->{
+        mvvm.getIsLoading().observe(activity, isLoading -> {
             binding.recViewLayout.swipeRefresh.setRefreshing(isLoading);
         });
 
         mvvm.getOnDataSuccess().observe(activity, adModels -> {
-            if (adModels!=null&&adModels.size()>0){
+            if (adModels != null && adModels.size() > 0) {
                 binding.recViewLayout.tvNoData.setVisibility(View.GONE);
-            }else {
+            } else {
                 binding.recViewLayout.tvNoData.setVisibility(View.VISIBLE);
             }
             adapter.updateList(adModels);
         });
 
         mvvm.getOnDelete().observe(activity, pos -> {
-            if (adapter!=null){
+            if (adapter != null) {
                 adapter.notifyItemRemoved(pos);
             }
 
-            if (mvvm.getOnDataSuccess().getValue()!=null){
-                if (mvvm.getOnDataSuccess().getValue().size()==0){
-                 binding.recViewLayout.tvNoData.setVisibility(View.VISIBLE);
+            if (mvvm.getOnDataSuccess().getValue() != null) {
+                if (mvvm.getOnDataSuccess().getValue().size() == 0) {
+                    binding.recViewLayout.tvNoData.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -136,12 +172,12 @@ public class FragmentMyAds extends BaseFragment {
 
         });
 
-        if (getUserModel()!=null){
-            mvvm.getMyAds(getUserSetting().getCountry(),getUserModel());
+        if (getUserModel() != null) {
+            mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
 
         }
 
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(()->mvvm.getMyAds(getUserSetting().getCountry(),getUserModel()));
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.getMyAds(getUserSetting().getCountry(), getUserModel()));
         adapter = new MyAdAdapter(activity, this, getLang());
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recViewLayout.recView.setHasFixedSize(true);
@@ -153,26 +189,31 @@ public class FragmentMyAds extends BaseFragment {
         binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
         binding.cardPostAd.setOnClickListener(v -> {
-            Intent intent = new Intent(activity,AddAdsActivity.class);
+            Intent intent = new Intent(activity, AddAdsActivity.class);
             startActivity(intent);
         });
     }
 
     public void navigateToDetails(AdModel adModel) {
-        generalMvvm.getOnAdDetailsSelected().setValue(adModel);
+        generalMvvm.getOnAdDetailsSelected().setValue(adModel.getId());
         generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
     }
 
     public void editAdd(int adapterPosition, AdModel adModel) {
         req = 1;
-        Intent intent=new Intent(activity, AddAdsActivity.class);
-        intent.putExtra("data",adModel);
+        Intent intent = new Intent(activity, AddAdsActivity.class);
+        intent.putExtra("data", adModel);
         launcher.launch(intent);
     }
 
     public void delete(int adapterPosition, AdModel adModel) {
-        mvvm.deleteAd(getUserSetting().getCountry(),getUserModel(),adModel.getId(),adapterPosition);
+        mvvm.deleteAd(getUserSetting().getCountry(), getUserModel(), adModel.getId(), adapterPosition);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
+    }
 
 }

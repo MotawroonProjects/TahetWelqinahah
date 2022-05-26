@@ -60,7 +60,7 @@ public class ActivityChatMvvm extends AndroidViewModel {
     public void getChatMessages(UserModel userModel, String country, String ad_id, String room_id) {
 
         getIsLoading().setValue(true);
-        Api.getService(Tags.base_url).getChatMessages("Bearer "+userModel.getData().getAccess_token(),country,ad_id,room_id)
+        Api.getService(Tags.base_url).getChatMessages("Bearer " + userModel.getData().getAccess_token(), country, ad_id, room_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<MessagesDataModel>>() {
@@ -72,11 +72,11 @@ public class ActivityChatMvvm extends AndroidViewModel {
                     @Override
                     public void onSuccess(@NonNull Response<MessagesDataModel> response) {
                         getIsLoading().setValue(false);
-                        Log.e("kdkkdkk",response.code()+" "+response.body().getCode());
+                        Log.e("kdkkdkk", response.code() + " " + response.body().getCode());
 
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getCode() == 200) {
-                               getRoomId().setValue(response.body());
+                                getRoomId().setValue(response.body());
                                 onDataSuccess().setValue(response.body().getData().getMessages());
                             }
                         } else {
@@ -97,7 +97,7 @@ public class ActivityChatMvvm extends AndroidViewModel {
 
     }
 
-    public void addNewMessage(MessageModel messageModel){
+    public void addNewMessage(MessageModel messageModel) {
         onDataSuccess().getValue().add(messageModel);
     }
 

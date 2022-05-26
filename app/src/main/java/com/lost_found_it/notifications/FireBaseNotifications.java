@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -113,7 +114,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
 
 
             notificationCompat.setContentTitle(title);
-            notificationCompat.setStyle(new NotificationCompat.BigTextStyle().bigText(body));
+            notificationCompat.setContentText(body);
 
             Intent intent = new Intent(this, ChatActivity.class);
             intent.putExtra("data", getChatUserModel(map));
@@ -162,8 +163,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
         } else {
 
             notificationCompat.setContentTitle(title);
-            notificationCompat.setContentText(body);
-            notificationCompat.setStyle(new NotificationCompat.BigTextStyle().bigText(body));
+            notificationCompat.setContentText(Html.fromHtml(body));
 
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra("from_fire", true);
@@ -171,7 +171,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
             taskStackBuilder.addNextIntent(intent);
-            notificationCompat.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
+            notificationCompat.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_MUTABLE));
 
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
             notificationCompat.setLargeIcon(bitmap);

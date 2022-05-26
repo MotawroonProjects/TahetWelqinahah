@@ -85,7 +85,7 @@ public class ActivityLoginMvvm extends AndroidViewModel {
 
 
     public void sendSmsCode(LoginModel model,String country, LoginActivity activity) {
-        startTimer();
+      /*  startTimer();
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
@@ -100,6 +100,8 @@ public class ActivityLoginMvvm extends AndroidViewModel {
             public void onCodeSent(@NonNull String verification_id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(verification_id, forceResendingToken);
                 verificationId = verification_id;
+                Log.e("verificationId", verificationId + "");
+
                 ActivityLoginMvvm.this.forceResendingToken = forceResendingToken;
             }
 
@@ -123,7 +125,11 @@ public class ActivityLoginMvvm extends AndroidViewModel {
                 .build();
 
 
-        PhoneAuthProvider.verifyPhoneNumber(options);
+        PhoneAuthProvider.verifyPhoneNumber(options);*/
+        ProgressDialog dialog = Common.createProgressDialog(activity, activity.getResources().getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        login(activity,model,country,dialog);
 
     }
 

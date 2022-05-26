@@ -14,6 +14,7 @@ import com.lost_found_it.R;
 import com.lost_found_it.databinding.MyAdsRowBinding;
 import com.lost_found_it.databinding.NotificationRowBinding;
 import com.lost_found_it.model.NotificationModel;
+import com.lost_found_it.uis.activity_home.fragments.FragmentNotifications;
 
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MyHolder myHolder = (MyHolder) holder;
         myHolder.binding.setModel(list.get(position));
+        myHolder.itemView.setOnClickListener(v -> {
+            if (fragment instanceof FragmentNotifications){
+                FragmentNotifications fragmentNotifications = (FragmentNotifications) fragment;
+                fragmentNotifications.navigateToAdDetails(list.get(myHolder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override

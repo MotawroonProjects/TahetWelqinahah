@@ -37,6 +37,14 @@ import com.lost_found_it.uis.activity_sign_up.SignUpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FragmentMain extends BaseFragment {
     private GeneralMvvm generalMvvm;
@@ -47,6 +55,7 @@ public class FragmentMain extends BaseFragment {
     private ActionBarDrawerToggle toggle;
     private ActivityResultLauncher<Intent> launcher;
     private int req;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -83,7 +92,33 @@ public class FragmentMain extends BaseFragment {
         binding.setLang(getLang());
         toggle.syncState();
         binding.toolbar.setNavigationIcon(R.drawable.ic_drawer_icon);
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
 
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        loadUiData();
+                    }
+                });
+    }
+
+    private void loadUiData() {
         fragments = new ArrayList<>();
         fragments.add(FragmentHome.newInstance());
         fragments.add(FragmentLost.newInstance());
@@ -193,11 +228,11 @@ public class FragmentMain extends BaseFragment {
             }
         });
 
-        if (getUserModel()!=null){
+        if (getUserModel() != null) {
             binding.setModel(getUserModel());
         }
 
-        generalMvvm.getOnUserLoggedOut().observe(activity,loggedOut->{
+        generalMvvm.getOnUserLoggedOut().observe(activity, loggedOut -> {
             binding.setModel(null);
 
         });
@@ -209,7 +244,7 @@ public class FragmentMain extends BaseFragment {
     }
 
     private void logout() {
-        generalMvvm.logout(activity,getUserModel(), getUserSetting().getCountry());
+        generalMvvm.logout(activity, getUserModel(), getUserSetting().getCountry());
     }
 
     private void navigateToLoginActivity() {
@@ -222,5 +257,11 @@ public class FragmentMain extends BaseFragment {
         req = 1;
         Intent intent = new Intent(activity, SignUpActivity.class);
         launcher.launch(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
     }
 }

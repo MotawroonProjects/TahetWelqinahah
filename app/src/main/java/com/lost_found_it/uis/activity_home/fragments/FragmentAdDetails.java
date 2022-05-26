@@ -41,6 +41,14 @@ import com.lost_found_it.uis.activity_home.HomeActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FragmentAdDetails extends BaseFragment {
     private GeneralMvvm generalMvvm;
@@ -54,6 +62,7 @@ public class FragmentAdDetails extends BaseFragment {
     private Timer timer;
     private static final int REQUEST_PHONE_CALL = 1;
     private Intent intent;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,16 +98,44 @@ public class FragmentAdDetails extends BaseFragment {
         });
         binding.setUserModel(getUserModel());
 
-        generalMvvm.getOnAdDetailsSelected().observe(activity, adModel1 -> {
-            if (adModel1 != null) {
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LoadUiData();
+                    }
+                });
+
+    }
+
+    private void LoadUiData() {
+        generalMvvm.getOnAdDetailsSelected().observe(activity, ad_id -> {
+            if (ad_id != null) {
                 if (this.adModel!=null) {
-                    if (!this.adModel.getId().equals(adModel1.getId())){
+                    if (!this.adModel.getId().equals(ad_id)){
                         binding.setModel(null);
                         String device_id = getUserSetting().getId();
                         if (getUserModel() != null) {
                             device_id = device_id + "_" + getUserModel().getData().getUser().getId();
                         }
-                        mvvm.getData(getUserSetting().getCountry(), device_id, adModel1.getId());
+                        mvvm.getData(getUserSetting().getCountry(), device_id, ad_id);
 
                     }else {
                         updateUi(mvvm.getOnDataSuccess().getValue());
@@ -110,7 +147,7 @@ public class FragmentAdDetails extends BaseFragment {
                     if (getUserModel() != null) {
                         device_id = device_id + "_" + getUserModel().getData().getUser().getId();
                     }
-                    mvvm.getData(getUserSetting().getCountry(), device_id, adModel1.getId());
+                    mvvm.getData(getUserSetting().getCountry(), device_id, ad_id);
 
                 }
             }
@@ -163,7 +200,7 @@ public class FragmentAdDetails extends BaseFragment {
 
         binding.call.setOnClickListener(v -> {
             String phone = adModel.getPhone_code()+adModel.getPhone();
-                intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+            intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
 
             if (intent != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -206,7 +243,6 @@ public class FragmentAdDetails extends BaseFragment {
             intent.putExtra("data",model);
             startActivity(intent);
         });
-
     }
 
     private void updateUi(SingleAdModel.Data singleAdModel) {
@@ -286,6 +322,7 @@ public class FragmentAdDetails extends BaseFragment {
             timerTask = null;
             timer = null;
         }
+        disposable.clear();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -315,4 +352,6 @@ public class FragmentAdDetails extends BaseFragment {
             }
         }
     }
+
+
 }

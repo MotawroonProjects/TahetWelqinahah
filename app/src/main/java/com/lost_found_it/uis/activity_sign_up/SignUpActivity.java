@@ -166,9 +166,7 @@ public class SignUpActivity extends BaseActivity {
         binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             model.setAcceptTerms(isChecked);
             if (isChecked) {
-                String url = "";
                 Intent intent = new Intent(this, AboutAppActivity.class);
-                intent.putExtra("url", url);
                 intent.putExtra("type", "1");
                 startActivity(intent);
 

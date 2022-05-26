@@ -125,6 +125,8 @@ public class LoginActivity extends BaseActivity {
         List<CountryCodeModel> list = new ArrayList<>();
         list.add(new CountryCodeModel(R.drawable.saudi_arabia, getString(R.string.saudi_arabia), "+966"));
         list.add(new CountryCodeModel(R.drawable.egypt_flag, getString(R.string.egypt), "+20"));
+        list.add(new CountryCodeModel(R.drawable.emirates, getString(R.string.united_arab_emirates), "+971"));
+
         CountryCodeAdapter adapter = new CountryCodeAdapter(this);
         adapter.updateList(list);
         binding.spinner.setAdapter(adapter);

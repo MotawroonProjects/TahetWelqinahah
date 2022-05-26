@@ -222,11 +222,12 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             model.setAgree_terms(isChecked);
             if (isChecked&&model!=null&&model.getAd_id().isEmpty()) {
-                String url = "";
                 Intent intent = new Intent(activity, AboutAppActivity.class);
-                intent.putExtra("url", url);
                 intent.putExtra("type", "1");
                 startActivity(intent);
+
+
+
             }
         });
         binding.btnPublish.setOnClickListener(v -> {

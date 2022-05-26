@@ -1,5 +1,6 @@
 package com.lost_found_it.uis.activity_add_ads;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,14 @@ import com.lost_found_it.uis.activity_base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class AddAdsActivity extends BaseActivity {
     private ActivityAddAdsBinding binding;
@@ -27,13 +36,15 @@ public class AddAdsActivity extends BaseActivity {
     private MyPagerAdapter adapter;
     private AdModel adModel;
     private AddAdModel addAdModel;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_ads);
         getDataFromIntent();
-        new Handler().postDelayed(this::initView,1);
+        initView();
+
     }
 
     private void getDataFromIntent() {
@@ -46,6 +57,36 @@ public class AddAdsActivity extends BaseActivity {
 
     private void initView() {
         setUpToolbar(binding.toolBar, getString(R.string.post_your_ad), R.color.white, R.color.black);
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LoadUiData();
+                    }
+                });
+
+
+
+    }
+
+    private void LoadUiData() {
         addAdModel = new AddAdModel();
         if (adModel!=null){
             addAdModel.setAd_id(adModel.getId());
@@ -82,8 +123,6 @@ public class AddAdsActivity extends BaseActivity {
         fragments.add(FragmentAddAdStep2.newInstance());
         adapter = new MyPagerAdapter(getSupportFragmentManager(), fragments, null);
         binding.pager.setAdapter(adapter);
-
-
     }
 
     public void navigateToStep2(AddAdModel model) {
@@ -106,5 +145,11 @@ public class AddAdsActivity extends BaseActivity {
             navigateToStep1();
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.clear();
     }
 }

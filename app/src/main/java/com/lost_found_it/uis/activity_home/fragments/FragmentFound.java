@@ -29,6 +29,14 @@ import com.lost_found_it.uis.activity_home.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FragmentFound extends BaseFragment {
     private GeneralMvvm generalMvvm;
@@ -39,6 +47,7 @@ public class FragmentFound extends BaseFragment {
     private BrandAdapter brandAdapter;
     private AdAdapter adAdapter;
     private CategoryModel selectedCategory;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -66,8 +75,39 @@ public class FragmentFound extends BaseFragment {
 
     private void initView() {
         mvvm = ViewModelProviders.of(this).get(FragmentFoundLostMvvm.class);
-
+        binding.setLang(getLang());
+        binding.setCountry(getUserSetting().getCountry());
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
+
+
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LoadUiData();
+                    }
+                });
+
+    }
+
+    private void LoadUiData() {
         generalMvvm.getOnCountrySuccess().observe(activity, isChanged -> {
             binding.setCountry(getUserSetting().getCountry());
             mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
@@ -84,8 +124,7 @@ public class FragmentFound extends BaseFragment {
             generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
         });
 
-        binding.setLang(getLang());
-        binding.setCountry(getUserSetting().getCountry());
+
 
         generalMvvm.getOnNewAdAdded().observe(activity,adModel -> {
             if (mvvm.getOnDataSuccess().getValue()!=null){
@@ -201,8 +240,14 @@ public class FragmentFound extends BaseFragment {
         }
     }
     public void navigateToAdDetails(AdModel adModel) {
-        generalMvvm.getOnAdDetailsSelected().setValue(adModel);
+        generalMvvm.getOnAdDetailsSelected().setValue(adModel.getId());
         generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
     }
 
 }

@@ -23,6 +23,15 @@ import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class FragmentMecca extends BaseFragment {
     private GeneralMvvm generalMvvm;
     private FragmentMeccaBinding binding;
@@ -30,6 +39,7 @@ public class FragmentMecca extends BaseFragment {
     private AdAdapter adAdapter;
     private FragmentMeccaTowerMvvm mvvm;
     private String type="";
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,11 +69,36 @@ public class FragmentMecca extends BaseFragment {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         mvvm = ViewModelProviders.of(this).get(FragmentMeccaTowerMvvm.class);
         binding.setLang(getLang());
-
-
         binding.toolbarMecca.llBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        loadUiData();
+                    }
+                });
+    }
+
+    private void loadUiData() {
         generalMvvm.getOnNewAdAdded().observe(activity, adModel -> {
             if (mvvm.getOnDataSuccess().getValue() != null) {
                 if (adModel.getPlace_type().equals("special")) {
@@ -126,7 +161,13 @@ public class FragmentMecca extends BaseFragment {
     }
 
     public void navigateToAdDetails(AdModel adModel) {
-        generalMvvm.getOnAdDetailsSelected().setValue(adModel);
+        generalMvvm.getOnAdDetailsSelected().setValue(adModel.getId());
         generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
     }
 }

@@ -31,6 +31,8 @@ import com.lost_found_it.uis.activity_contact_us.ContactUsActivity;
 import com.lost_found_it.uis.activity_country.CountryActivity;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 public class FragmentSettings extends BaseFragment {
     private GeneralMvvm generalMvvm;
     private FragmentSettingsMvvm settingsMvvm;
@@ -39,6 +41,7 @@ public class FragmentSettings extends BaseFragment {
     private ActivityResultLauncher<Intent> launcher;
     private int req;
     private SettingDataModel.Data settingModel;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     @Override
@@ -109,22 +112,14 @@ public class FragmentSettings extends BaseFragment {
 
 
         binding.llTerms.setOnClickListener(v -> {
-            if (settingModel != null && settingModel.getTerms_condition() != null) {
-                String url = Tags.base_url + "webView?type=" + settingModel.getTerms_condition();
-                navigateToAboutAppActivity("1", url);
-            } else {
-                Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }
+            navigateToAboutAppActivity("1");
+
 
         });
 
         binding.llPrivacy.setOnClickListener(v -> {
-            if (settingModel != null && settingModel.getPrivacy_policy() != null) {
-                String url = Tags.base_url + "webView?type=" + settingModel.getPrivacy_policy();
-                navigateToAboutAppActivity("2", url);
-            } else {
-                Toast.makeText(activity, R.string.inv_link, Toast.LENGTH_SHORT).show();
-            }
+            navigateToAboutAppActivity("2");
+
         });
 
         binding.llRateApp.setOnClickListener(v -> {
@@ -182,11 +177,10 @@ public class FragmentSettings extends BaseFragment {
         startActivity(intent);
     }
 
-    private void navigateToAboutAppActivity(String type, String url) {
+    private void navigateToAboutAppActivity(String type) {
 
         Intent intent = new Intent(activity, AboutAppActivity.class);
         intent.putExtra("type", type);
-        intent.putExtra("url", url);
         startActivity(intent);
     }
 
@@ -213,5 +207,9 @@ public class FragmentSettings extends BaseFragment {
         }
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
+    }
 }

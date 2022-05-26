@@ -8,7 +8,6 @@
         <entry key="..\:/AndroidProjects/TahetWelqinahah/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/TahetWelqinahah/app/src/main/res/layout/activity_sign_up.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/TahetWelqinahah/app/src/main/res/layout/ad_row.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidProjects/TahetWelqinahah/app/src/main/res/layout/fragment_ad_details.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/TahetWelqinahah/app/src/main/res/layout/fragment_found.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/TahetWelqinahah/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidProjects/TahetWelqinahah/app/src/main/res/layout/fragment_lost.xml" value="0.25416666666666665" />
@@ -81,10 +80,6 @@
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/tahet_welqinaha/app/src/main/res/layout/toolbar.xml" value="0.25" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/tahet_welqinaha/app/src/main/res/menu/menu.xml" value="0.17083333333333334" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/tahet_welqinaha/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
-        <entry key="..\:/Users/Arb Develpor/StudioProjects/TahetWelqinahah/app/src/main/res/drawable/small_rounded_color3.xml" value="0.1" />
-        <entry key="..\:/Users/Arb Develpor/StudioProjects/TahetWelqinahah/app/src/main/res/layout/chat_image_left_row.xml" value="0.1" />
-        <entry key="..\:/Users/Arb Develpor/StudioProjects/TahetWelqinahah/app/src/main/res/layout/chat_image_right_row.xml" value="0.1" />
-        <entry key="..\:/Users/Arb Develpor/StudioProjects/TahetWelqinahah/app/src/main/res/layout/fragment_post_add_step1.xml" value="0.1" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/circle_white_stroke.xml" value="0.204" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/dialog_window_bg.xml" value="0.204" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/drawable/ic_arrow_down.xml" value="0.202" />
@@ -104,6 +99,7 @@
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_rooms.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/ad_row.xml" value="0.4" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/chat_image_left_row.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/chat_image_right_row.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/chat_message_left_row.xml" value="0.1875" />
@@ -111,7 +107,7 @@
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/country_spinner_row.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/dailog_verification_code.xml" value="0.2" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/dialog_choose_image.xml" value="0.4" />
-        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_ad_details.xml" value="0.4" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_ad_details.xml" value="0.264" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_found.xml" value="0.264" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_home.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_lost.xml" value="0.10280797101449275" />
@@ -119,6 +115,7 @@
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_mecca.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_setting.xml" value="0.264" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/fragment_tower.xml" value="0.10280797101449275" />
+        <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/notification_row.xml" value="0.1875" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/recview_layout.xml" value="0.10280797101449275" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/related_ad_row.xml" value="0.18385416666666668" />
         <entry key="..\:/emad/Projects/TahetWelqinaha/app/src/main/res/layout/room_row.xml" value="0.264" />

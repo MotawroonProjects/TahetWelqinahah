@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -40,8 +41,15 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.TimeUnit;
 
 import io.paperdb.Paper;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class HomeActivity extends BaseActivity {
     private GeneralMvvm generalMvvm;
@@ -50,6 +58,7 @@ public class HomeActivity extends BaseActivity {
     private List<Fragment> fragments;
     private Stack<Integer> stack;
     private boolean from_fire;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +80,35 @@ public class HomeActivity extends BaseActivity {
 
     private void initView() {
 
+
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        loadUiData();
+                    }
+                });
+
+    }
+
+    private void loadUiData() {
         generalMvvm = ViewModelProviders.of(this).get(GeneralMvvm.class);
         stack = new Stack<>();
         binding.setLang(getLang());
@@ -123,7 +161,6 @@ public class HomeActivity extends BaseActivity {
         if (getUserModel() != null && from_fire) {
             updateStack(1);
         }
-
     }
 
     private void updateStack(int pos) {
@@ -174,5 +211,6 @@ public class HomeActivity extends BaseActivity {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+        disposable.clear();
     }
 }

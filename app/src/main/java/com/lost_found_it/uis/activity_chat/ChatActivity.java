@@ -110,14 +110,11 @@ public class ChatActivity extends BaseActivity {
                 adapter.updateList(list);
             }
         });
-        mvvm.getRoomId().observe(this, new Observer<MessagesDataModel>() {
-            @Override
-            public void onChanged(MessagesDataModel messagesDataModel) {
-                if (messagesDataModel.getData() != null) {
-                    roomId = messagesDataModel.getData().getId();
-                    setRoomId(roomId);
-                    ad_id = messagesDataModel.getData().getAd_id();
-                }
+        mvvm.getRoomId().observe(this, messagesDataModel -> {
+            if (messagesDataModel.getData() != null) {
+                roomId = messagesDataModel.getData().getId();
+                setRoomId(roomId);
+                ad_id = messagesDataModel.getData().getAd_id();
             }
         });
 

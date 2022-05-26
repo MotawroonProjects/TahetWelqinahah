@@ -33,7 +33,7 @@ public class GeneralMvvm extends AndroidViewModel {
     private MutableLiveData<Boolean> onUserLoggedIn;
     private MutableLiveData<Boolean> onUserLoggedOut;
     private MutableLiveData<Boolean> onCountrySuccess;
-    private MutableLiveData<AdModel> onAdDetailsSelected;
+    private MutableLiveData<String> onAdDetailsSelected;
     private MutableLiveData<String> onMeccaFoundLost;
     private MutableLiveData<String> onTowerFoundLost;
 
@@ -90,7 +90,7 @@ public class GeneralMvvm extends AndroidViewModel {
         return onCountrySuccess;
     }
 
-    public MutableLiveData<AdModel> getOnAdDetailsSelected() {
+    public MutableLiveData<String> getOnAdDetailsSelected() {
         if (onAdDetailsSelected == null) {
             onAdDetailsSelected = new MutableLiveData<>();
         }

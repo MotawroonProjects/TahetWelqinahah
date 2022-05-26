@@ -6,6 +6,7 @@
         <variable
             name="model"
             type="com.lost_found_it.model.NotificationModel" />
+        <import type="android.text.Html"/>
     </data>
 
     <LinearLayout
@@ -61,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{model.text}"
+            android:text="@{Html.fromHtml(model.text)}"
             android:textColor="@color/grey8"
             android:textSize="14sp" />
 

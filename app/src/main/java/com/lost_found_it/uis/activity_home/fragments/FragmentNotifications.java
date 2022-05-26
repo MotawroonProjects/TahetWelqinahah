@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -18,10 +17,21 @@ import com.lost_found_it.R;
 import com.lost_found_it.adapter.NotificationAdapter;
 
 import com.lost_found_it.databinding.FragmentNotificationBinding;
+import com.lost_found_it.model.NotificationModel;
 import com.lost_found_it.mvvm.FragmentNotificationMvvm;
 import com.lost_found_it.mvvm.GeneralMvvm;
+import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FragmentNotifications extends BaseFragment {
     private GeneralMvvm generalMvvm;
@@ -29,6 +39,7 @@ public class FragmentNotifications extends BaseFragment {
     private HomeActivity activity;
     private NotificationAdapter adapter;
     private FragmentNotificationMvvm mvvm;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     @Override
@@ -58,10 +69,38 @@ public class FragmentNotifications extends BaseFragment {
     private void initView() {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         generalMvvm.getOnCountrySuccess().observe(activity, isChanged -> {
-            mvvm.getNotifications(getUserSetting().getCountry(),getUserModel());
+            mvvm.getNotifications(getUserSetting().getCountry(), getUserModel());
         });
         binding.setLang(getLang());
         setUpToolbar(binding.toolbarNotification, getString(R.string.notifications), R.color.white, R.color.black);
+
+        Observable.timer(10, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Long aLong) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        loadUiData();
+                    }
+                });
+    }
+
+    private void loadUiData() {
         binding.toolbarNotification.llBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
@@ -91,10 +130,21 @@ public class FragmentNotifications extends BaseFragment {
         binding.recViewLayout.recView.setAdapter(adapter);
 
         binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.getNotifications(getUserSetting().getCountry(),getUserModel()));
-        mvvm.getNotifications(getUserSetting().getCountry(),getUserModel());
-
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.getNotifications(getUserSetting().getCountry(), getUserModel()));
+        mvvm.getNotifications(getUserSetting().getCountry(), getUserModel());
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
+    }
+
+    public void navigateToAdDetails(NotificationModel model) {
+        if (model.getAd_id() != null && !model.getAd_id().isEmpty()) {
+            generalMvvm.getOnAdDetailsSelected().setValue(model.getId());
+            generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
+        }
+    }
 }
