@@ -1,13 +1,16 @@
 package com.lost_found_it.uis.activity_home.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,9 +20,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.lost_found_it.R;
 import com.lost_found_it.adapter.AdAdapter;
+import com.lost_found_it.adapter.ClosedAdAdapter;
 import com.lost_found_it.adapter.SliderAdapter;
 import com.lost_found_it.databinding.FragmentHomeBinding;
 import com.lost_found_it.model.AdModel;
@@ -49,19 +54,34 @@ public class FragmentHome extends BaseFragment {
     private FragmentHomeBinding binding;
     private SliderAdapter sliderAdapter;
     private AdAdapter adAdapter;
+    private ClosedAdAdapter closedAdAdapter;
     private HomeActivity activity;
     private MyTimerTask timerTask;
     private Timer timer;
+    private int req = 1;
     private ActivityResultLauncher<Intent> launcher;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private ActivityResultLauncher<String> permissionLauncher;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         activity = (HomeActivity) context;
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == BaseActivity.RESULT_OK) {
+            if (req == 1 && result.getResultCode() == BaseActivity.RESULT_OK) {
                 generalMvvm.getOnUserLoggedIn().setValue(true);
+            } else {
+                mvvm.startLocationUpdate();
+            }
+        });
+
+        permissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                mvvm.initGoogleApi();
+
+            } else {
+                Toast.makeText(activity, "Permission denied", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -89,7 +109,20 @@ public class FragmentHome extends BaseFragment {
         binding.setLang(getLang());
         binding.setCountry(getUserSetting().getCountry());
         mvvm = ViewModelProviders.of(this).get(FragmentHomeMvvm.class);
+        mvvm.setActivity(activity);
+        mvvm.getOnLocationUpdated().observe(activity, location -> {
+            mvvm.getNearByAds(getUserSetting().getCountry(), location.getLatitude(), location.getLongitude());
 
+        });
+
+        mvvm.getOnNearAdsSuccess().observe(activity,ads->{
+            if (ads.size()>0){
+                binding.llClosedAds.setVisibility(View.VISIBLE);
+                closedAdAdapter.updateList(ads);
+            }else {
+                binding.llClosedAds.setVisibility(View.GONE);
+            }
+        });
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         Observable.timer(10, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
@@ -115,6 +148,11 @@ public class FragmentHome extends BaseFragment {
                         loadUiData();
                     }
                 });
+        CheckPermission();
+
+        closedAdAdapter = new ClosedAdAdapter(activity, this, getLang());
+        binding.recViewClosedAds.setLayoutManager(new LinearLayoutManager(activity));
+        binding.recViewClosedAds.setAdapter(closedAdAdapter);
 
     }
 
@@ -125,11 +163,11 @@ public class FragmentHome extends BaseFragment {
 
         });
 
-        generalMvvm.getOnAdUpdated().observe(activity,mBoolean->{
+        generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
             mvvm.getData(getUserSetting().getCountry());
         });
 
-        generalMvvm.getOnNewAdAdded().observe(activity,model->{
+        generalMvvm.getOnNewAdAdded().observe(activity, model -> {
             mvvm.getData(getUserSetting().getCountry());
         });
 
@@ -184,9 +222,9 @@ public class FragmentHome extends BaseFragment {
 
 
         binding.cardPostAd.setOnClickListener(v -> {
-            if (getUserModel()==null){
+            if (getUserModel() == null) {
                 navigateToLoginActivity();
-            }else {
+            } else {
                 Intent intent = new Intent(activity, AddAdsActivity.class);
                 launcher.launch(intent);
             }
@@ -199,7 +237,17 @@ public class FragmentHome extends BaseFragment {
 
     }
 
+    private void CheckPermission() {
+        if (ActivityCompat.checkSelfPermission(activity, BaseActivity.fineLocPerm) != PackageManager.PERMISSION_GRANTED) {
+            permissionLauncher.launch(BaseActivity.fineLocPerm);
+        } else {
+
+            mvvm.initGoogleApi();
+        }
+    }
+
     private void navigateToLoginActivity() {
+        req = 1;
         Intent intent = new Intent(activity, LoginActivity.class);
         launcher.launch(intent);
     }
@@ -230,6 +278,7 @@ public class FragmentHome extends BaseFragment {
             binding.pager.setCurrentItem(currentPos);
         }
     }
+
 
     @Override
     public void onDestroyView() {

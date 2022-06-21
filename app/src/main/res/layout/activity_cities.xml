@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="lang"
+            type="String" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey6"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/small_stroke_grey3"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_margin="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+
+            >
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleX='@{lang.equals("ar")?-1:1}'
+                android:src="@drawable/ic_search" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="8dp"
+                android:layout_height="0dp" />
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:hint="@string/search_for_city"
+                android:textColorHint="@color/grey2"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:focusable="true"
+                android:lines="1"
+                android:inputType="text"
+                android:background="@color/transparent"
+
+                />
+
+
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/recViewLayoutCity"
+            layout="@layout/recview_layout"
+            />
+
+    </LinearLayout>
+
+
+</layout>

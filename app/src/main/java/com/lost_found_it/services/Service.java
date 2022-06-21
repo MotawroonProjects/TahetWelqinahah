@@ -3,6 +3,7 @@ package com.lost_found_it.services;
 
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
+import com.lost_found_it.model.CityDataModel;
 import com.lost_found_it.model.HomeDataModel;
 import com.lost_found_it.model.MessagesDataModel;
 import com.lost_found_it.model.RoomDataModel;
@@ -42,6 +43,19 @@ public interface Service {
                                           @Query("place_type") String place_type,
                                           @Query("search") String search
     );
+
+    @GET("api/setting/cities")
+    Single<Response<CityDataModel>> getCities(@Query("country") String country,
+                                              @Query("lang") String lang
+    );
+
+
+    @GET("api/home/nearbyAds")
+    Single<Response<AdsDataModel>> getNearByAds(@Query("country") String country,
+                                                @Query("latitude") double latitude,
+                                                @Query("longitude") double longitude
+    );
+
 
     @GET("api/home/getCategories")
     Single<Response<CategoryDataModel>> getCategoryWithSubCategory(@Query("country") String country
@@ -176,6 +190,7 @@ public interface Service {
     @GET("api/profile/notifications")
     Single<Response<NotificationDataModel>> getNotifications(@Header("Authorization") String Authorization,
                                                              @Query("country") String country);
+
     @GET("api/chat/index")
     Single<Response<MessagesDataModel>> getChatMessages(@Header("Authorization") String Authorization,
                                                         @Query("country") String country,

@@ -125,5 +125,22 @@
     <string name="no_conv">No Conversations</string>
     <string name="type_a_message">Type a message ...</string>
     <string name="not_avail_now">Not Available Now</string>
+    <string name="filter_by">Filter by :</string>
+    <string name="city">City</string>
+    <string name="recent_added">Recently added</string>
+    <string name="apply">Apply</string>
+    <string name="closed_ads">Closed Ads</string>
+    <string name="km">km</string>
+    <string name="cities">Cities</string>
+    <string name="search_for_city">Search for city...</string>
+
+    <array name="lastDays">
+        <item>"Choose"</item>
+        <item>"Last day"</item>
+        <item>"Last 3 days"</item>
+        <item>"Last a week"</item>
+        <item>"Last a month"</item>
+        <item>"All times"</item>
+    </array>
 
 </resources>

@@ -124,6 +124,23 @@
     <string name="conversations">المحادثات</string>
     <string name="no_conv">لا توجد محادثات</string>
     <string name="type_a_message">إكتب رسالتك ...</string>
-    <string name="not_avail_now">Not Available Now</string>
+    <string name="not_avail_now">غير متاح الان</string>
+    <string name="filter_by">تصفية حسب :</string>
+    <string name="city">المدينة</string>
+    <string name="recent_added">المضاف حديثا</string>
+    <string name="apply">تطبيق</string>
+    <string name="closed_ads">الإعلانات القريبة</string>
+    <string name="km">كم</string>
+    <string name="cities">المدن</string>
+    <string name="search_for_city">إبحث عن المدينة ...</string>
 
+    <array name="lastDays">
+        <item>"إختر"</item>
+        <item>"اخر يوم"</item>
+        <item>"اخر 3 يوم"</item>
+        <item>"اخر اسبوع"</item>
+        <item>"اخر شهر"</item>
+        <item>"كل الاوقات"</item>
+
+    </array>
 </resources>

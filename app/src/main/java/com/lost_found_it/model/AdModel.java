@@ -23,6 +23,7 @@ public class AdModel implements Serializable {
     private CategoryModel category;
     private SubCategoryModel subCategory;
     private String created_at;
+    private String distance;
 
 
     public String getId() {
@@ -103,5 +104,9 @@ public class AdModel implements Serializable {
 
     public String getCreated_at() {
         return created_at;
+    }
+
+    public String getDistance() {
+        return distance;
     }
 }

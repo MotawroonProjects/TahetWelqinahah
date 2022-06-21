@@ -1,19 +1,26 @@
 package com.lost_found_it.mvvm;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lost_found_it.R;
 import com.lost_found_it.model.AdModel;
 import com.lost_found_it.model.AdsDataModel;
+import com.lost_found_it.model.CityModel;
 import com.lost_found_it.model.UserModel;
 import com.lost_found_it.remote.Api;
 import com.lost_found_it.tags.Tags;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Scheduler;
@@ -27,9 +34,11 @@ import retrofit2.Response;
 
 public class FragmentSearchMvvm extends AndroidViewModel {
     private CompositeDisposable disposable = new CompositeDisposable();
-
+    private MutableLiveData<Integer> filterDayPos;
     private MutableLiveData<Boolean> isLoading;
+    private MutableLiveData<List<String>> lastDays;
     private MutableLiveData<List<AdModel>> onSearchSuccess;
+    private MutableLiveData<CityModel> cityData;
     public FragmentSearchMvvm(@NonNull Application application) {
         super(application);
     }
@@ -48,6 +57,30 @@ public class FragmentSearchMvvm extends AndroidViewModel {
         return onSearchSuccess;
     }
 
+
+
+    public MutableLiveData<Integer> getFilterDayPos() {
+        if (filterDayPos==null){
+            filterDayPos=new MutableLiveData<>();
+        }
+        return filterDayPos;
+    }
+
+    public MutableLiveData<CityModel> getCityData() {
+        if (cityData==null){
+            cityData=new MutableLiveData<>();
+        }
+        return cityData;
+    }
+    public MutableLiveData<List<String>> getLastDays(Context context) {
+        if (lastDays==null){
+            lastDays=new MutableLiveData<>();
+            List<String> days = Arrays.asList(context.getResources().getStringArray(R.array.lastDays));
+
+            lastDays.setValue(days);
+        }
+        return lastDays;
+    }
     public void search(String country,String search){
         getIsLoading().setValue(true);
 

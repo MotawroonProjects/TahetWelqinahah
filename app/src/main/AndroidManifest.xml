@@ -15,7 +15,7 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:name=".share.App"
@@ -30,17 +30,21 @@
         tools:ignore="AllowBackup"
         tools:targetApi="q">
         <activity
-            android:name=".uis.activity_chat.ChatActivity"
-            android:exported="false"
+            android:name=".uis.activity_cities.CitiesActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize"
             />
         <activity
-            android:name=".uis.activity_rooms.RoomsActivity"
-            android:exported="false"
+            android:name=".uis.activity_chat.ChatActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".uis.activity_rooms.RoomsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".uis.activity_add_ads.AddAdsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -111,21 +115,20 @@
 
         <receiver android:name=".background_service.BroadCastCancelNotificationImages" />
 
-        <service android:name=".chat_service.ChatService"
+        <service
+            android:name=".chat_service.ChatService"
             android:exported="false"
-            android:stopWithTask="false"
-            />
-
+            android:stopWithTask="false" />
         <service
             android:name=".notifications.FireBaseNotifications"
             android:exported="false"
-            android:stopWithTask="false" >
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name=".background_service.BroadCastCancelNotificationImages"/>
+        <receiver android:name=".background_service.BroadCastCancelNotificationImages" />
     </application>
 
 </manifest>

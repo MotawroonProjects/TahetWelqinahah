@@ -2,7 +2,7 @@ package com.lost_found_it.tags;
 
 public class Tags {
 
-    public static String base_url = "http://ta7etwele2t7a.afifdriving.com/";
+    public static String base_url = "http://tahtwla28ha.com/";
     public static final int not_ad_id = 1001;
     public static final String not_ad_tag = "tahet_ad_not";
 
