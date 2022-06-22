@@ -130,17 +130,44 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnApply"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_marginTop="24dp"
-            android:background="@drawable/small_rounded_primary"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="@string/apply"
-            android:fontFamily="@font/font_regular"
-            />
+
+            >
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="56dp"
+                android:background="@drawable/small_rounded_primary"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="@string/apply"
+                android:fontFamily="@font/font_regular"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                />
+
+            <Button
+                android:id="@+id/btnClear"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="56dp"
+                android:background="@drawable/small_stroke_primary"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:text="@string/clear"
+                android:fontFamily="@font/font_regular"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
 </layout>

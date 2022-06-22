@@ -49,7 +49,7 @@ public class AddAdsActivity extends BaseActivity {
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
-        if (intent.hasExtra("data")){
+        if (intent.hasExtra("data")) {
             adModel = (AdModel) intent.getSerializableExtra("data");
         }
     }
@@ -83,15 +83,15 @@ public class AddAdsActivity extends BaseActivity {
                 });
 
 
-
     }
 
     private void LoadUiData() {
         addAdModel = new AddAdModel();
-        if (adModel!=null){
+        if (adModel != null) {
             addAdModel.setAd_id(adModel.getId());
             addAdModel.setTitle(adModel.getTitle());
             addAdModel.setDescription(adModel.getDescription());
+            addAdModel.setCity_id(adModel.getCity_id() != null ? addAdModel.getCity_id() : "");
             addAdModel.setCategory_id(adModel.getCategory().getId());
             addAdModel.setAd_type(adModel.getType());
             addAdModel.setPlace_type(adModel.getPlace_type());
@@ -105,14 +105,14 @@ public class AddAdsActivity extends BaseActivity {
             addAdModel.setCountry(getUserSetting().getCountry());
             addAdModel.setAction("update");
             List<String> onlineImages = new ArrayList<>();
-            for (SliderImages image :adModel.getImages()){
+            for (SliderImages image : adModel.getImages()) {
                 onlineImages.add(image.getImage());
             }
             addAdModel.setOnlineImages(onlineImages);
-            if (adModel.getSubCategory()!=null){
+            if (adModel.getSubCategory() != null) {
                 addAdModel.setSub_category_id(adModel.getSubCategory().getId());
                 addAdModel.setHasSubCategory(true);
-            }else {
+            } else {
                 addAdModel.setSub_category_id("");
                 addAdModel.setHasSubCategory(false);
 
@@ -138,10 +138,10 @@ public class AddAdsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (binding.pager.getCurrentItem()==0){
+        if (binding.pager.getCurrentItem() == 0) {
             super.onBackPressed();
 
-        }else {
+        } else {
             navigateToStep1();
         }
 

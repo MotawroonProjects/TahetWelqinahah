@@ -133,6 +133,7 @@
     <string name="km">كم</string>
     <string name="cities">المدن</string>
     <string name="search_for_city">إبحث عن المدينة ...</string>
+    <string name="clear">إلغاء التصفية</string>
 
     <array name="lastDays">
         <item>"إختر"</item>

@@ -146,8 +146,19 @@ public class FragmentSearch extends BaseFragment {
         binding.imageBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
-        mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString());
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString()));
+        mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString(), null, null);
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> {
+            String added_later = null;
+            String city_id = null;
+            if (mvvm.getAdded_later().getValue() != null) {
+                added_later = mvvm.getAdded_later().getValue();
+            }
+
+            if (mvvm.getCityData().getValue() != null) {
+                city_id = mvvm.getCityData().getValue().getId();
+            }
+            mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString(), added_later, city_id);
+        });
 
         binding.edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -162,7 +173,16 @@ public class FragmentSearch extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                mvvm.search(getUserSetting().getCountry(), s.toString());
+                String added_later = null;
+                String city_id = null;
+                if (mvvm.getAdded_later().getValue() != null) {
+                    added_later = mvvm.getAdded_later().getValue();
+                }
+
+                if (mvvm.getCityData().getValue() != null) {
+                    city_id = mvvm.getCityData().getValue().getId();
+                }
+                mvvm.search(getUserSetting().getCountry(), s.toString(), added_later, city_id);
             }
         });
 
@@ -194,6 +214,25 @@ public class FragmentSearch extends BaseFragment {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     mvvm.getFilterDayPos().setValue(position);
+                    if (position == 0) {
+                        mvvm.getAdded_later().setValue(null);
+
+                    } else if (position == 1) {
+                        mvvm.getAdded_later().setValue("1");
+
+                    } else if (position == 2) {
+                        mvvm.getAdded_later().setValue("3");
+
+                    } else if (position == 3) {
+                        mvvm.getAdded_later().setValue("7");
+
+                    } else if (position == 4) {
+                        mvvm.getAdded_later().setValue("30");
+
+                    } else if (position == 5) {
+                        mvvm.getAdded_later().setValue(null);
+
+                    }
                 }
 
                 @Override
@@ -211,17 +250,43 @@ public class FragmentSearch extends BaseFragment {
                 launcher.launch(intent);
             });
             sheetFilterBinding.btnApply.setOnClickListener(v -> {
+                String added_later = null;
+                String city_id = null;
+                if (mvvm.getAdded_later().getValue() != null) {
+                    added_later = mvvm.getAdded_later().getValue();
+                }
+
+                if (mvvm.getCityData().getValue() != null) {
+                    city_id = mvvm.getCityData().getValue().getId();
+                }
+                mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString().trim(), added_later, city_id);
+
                 sheetDialog.dismiss();
             });
             spinnerLastDayAdapter = new SpinnerLastDayAdapter(activity);
 
         }
 
-        sheetFilterBinding.setCity(mvvm.getCityData().getValue()!=null?mvvm.getCityData().getValue().getName():"");
+        if (mvvm.getCityData().getValue()!=null||mvvm.getAdded_later().getValue()!=null){
+            sheetFilterBinding.btnClear.setVisibility(View.VISIBLE);
+        }else {
+            sheetFilterBinding.btnClear.setVisibility(View.GONE);
+
+        }
+        sheetFilterBinding.setCity(mvvm.getCityData().getValue() != null ? mvvm.getCityData().getValue().getName() : "");
         spinnerLastDayAdapter.updateList(mvvm.getLastDays(activity).getValue());
         sheetFilterBinding.spinner.setAdapter(spinnerLastDayAdapter);
         sheetFilterBinding.spinner.setSelection(mvvm.getFilterDayPos().getValue() != null ? mvvm.getFilterDayPos().getValue() : 0);
-
+        sheetFilterBinding.btnClear.setOnClickListener(v -> {
+            mvvm.getCityData().setValue(null);
+            mvvm.getFilterDayPos().setValue(0);
+            mvvm.getAdded_later().setValue(null);
+            sheetFilterBinding.spinner.setSelection(0);
+            sheetFilterBinding.btnClear.setVisibility(View.GONE);
+            sheetFilterBinding.setCity("");
+            mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString().trim(), null, null);
+            sheetDialog.dismiss();
+        });
         sheetDialog.show();
 
     }

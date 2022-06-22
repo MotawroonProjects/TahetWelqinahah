@@ -25,6 +25,7 @@ public class AddAdModel extends BaseObservable implements Serializable {
     private String phone_code;
     private String phone;
     private String whatsapp;
+    private String city_id;
     private boolean agree_terms;
     private boolean validStep1;
     private boolean validStep2;
@@ -33,6 +34,7 @@ public class AddAdModel extends BaseObservable implements Serializable {
     private List<String> onlineImages;
 
     public AddAdModel() {
+        city_id = "";
         action = "add";
         ad_id = "";
         phone_code = "+966";
@@ -84,6 +86,7 @@ public class AddAdModel extends BaseObservable implements Serializable {
                 !address.isEmpty() &&
                 !phone.isEmpty() &&
                 !whatsapp.isEmpty() &&
+                !city_id.isEmpty()&&
                 agree_terms
         ) {
             if (hasSubCategory) {
@@ -315,6 +318,14 @@ public class AddAdModel extends BaseObservable implements Serializable {
 
     public List<String> getOnlineImages() {
         return onlineImages;
+    }
+
+    public String getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(String city_id) {
+        this.city_id = city_id;
     }
 
     public void setOnlineImages(List<String> onlineImages) {

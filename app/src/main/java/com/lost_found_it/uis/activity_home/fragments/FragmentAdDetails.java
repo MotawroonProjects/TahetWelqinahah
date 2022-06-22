@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -123,21 +124,23 @@ public class FragmentAdDetails extends BaseFragment {
                     }
                 });
 
+
+
     }
 
     private void LoadUiData() {
         generalMvvm.getOnAdDetailsSelected().observe(activity, ad_id -> {
             if (ad_id != null) {
-                if (this.adModel!=null) {
-                    if (!this.adModel.getId().equals(ad_id)){
+                if (this.adModel != null) {
+                    if (!this.adModel.getId().equals(ad_id)) {
                         binding.setModel(null);
                         String device_id = getUserSetting().getId();
                         if (getUserModel() != null) {
                             device_id = device_id + "_" + getUserModel().getData().getUser().getId();
                         }
-                        mvvm.getData(getUserSetting().getCountry(), device_id, ad_id);
+                        mvvm.getData(getUserModel(),getUserSetting().getCountry(), device_id, ad_id);
 
-                    }else {
+                    } else {
                         updateUi(mvvm.getOnDataSuccess().getValue());
                     }
 
@@ -147,7 +150,7 @@ public class FragmentAdDetails extends BaseFragment {
                     if (getUserModel() != null) {
                         device_id = device_id + "_" + getUserModel().getData().getUser().getId();
                     }
-                    mvvm.getData(getUserSetting().getCountry(), device_id, ad_id);
+                    mvvm.getData(getUserModel(),getUserSetting().getCountry(), device_id, ad_id);
 
                 }
             }
@@ -160,8 +163,17 @@ public class FragmentAdDetails extends BaseFragment {
             binding.swipeRefresh.setRefreshing(isLoading);
 
         });
-        mvvm.getOnFollowDataSuccess().observe(activity,isFollowed->{
+        mvvm.getOnFollowDataSuccess().observe(activity, isFollowed -> {
             adModel.setIs_followed(isFollowed);
+            binding.setModel(adModel);
+        });
+
+        mvvm.getOnLoveDataSuccess().observe(activity, isLove -> {
+            adModel.setIs_loved(isLove);
+            binding.setModel(adModel);
+        });
+        mvvm.getOnBadDataSuccess().observe(activity, isBad -> {
+            adModel.setIs_bad(isBad);
             binding.setModel(adModel);
         });
         sliderAdapter = new SliderAdAdapter(getActivity());
@@ -186,7 +198,7 @@ public class FragmentAdDetails extends BaseFragment {
                 if (getUserModel() != null) {
                     device_id = device_id + "_" + getUserModel().getData().getUser().getId();
                 }
-                mvvm.getData(getUserSetting().getCountry(), device_id, adModel.getId());
+                mvvm.getData(getUserModel(),getUserSetting().getCountry(), device_id, adModel.getId());
 
             } else {
                 binding.swipeRefresh.setRefreshing(false);
@@ -194,12 +206,10 @@ public class FragmentAdDetails extends BaseFragment {
 
         });
 
-        binding.llFollow.setOnClickListener(v -> {
-            mvvm.followUnFollow(getUserSetting().getCountry(), getUserModel(),adModel.getId(),adModel.getIs_followed());
-        });
+
 
         binding.call.setOnClickListener(v -> {
-            String phone = adModel.getPhone_code()+adModel.getPhone();
+            String phone = adModel.getPhone_code() + adModel.getPhone();
             intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
 
             if (intent != null) {
@@ -220,7 +230,7 @@ public class FragmentAdDetails extends BaseFragment {
         });
 
         binding.whatsapp.setOnClickListener(v -> {
-            String whatsApp = adModel.getPhone_code()+adModel.getWhatsapp();
+            String whatsApp = adModel.getPhone_code() + adModel.getWhatsapp();
 
             String url = "https://api.whatsapp.com/send?phone=" + whatsApp;
             try {
@@ -236,24 +246,34 @@ public class FragmentAdDetails extends BaseFragment {
         });
 
         binding.chat.setOnClickListener(v -> {
-            String phone = adModel.getPhone_code()+adModel.getPhone();
-            String name = adModel.getUser().getFirst_name()+ " "+adModel.getUser().getLast_name();
-            ChatUserModel model = new ChatUserModel(adModel.getUser().getId(),name,phone,adModel.getUser().getImage(),adModel.getId(),null,adModel);
+            String phone = adModel.getPhone_code() + adModel.getPhone();
+            String name = adModel.getUser().getFirst_name() + " " + adModel.getUser().getLast_name();
+            ChatUserModel model = new ChatUserModel(adModel.getUser().getId(), name, phone, adModel.getUser().getImage(), adModel.getId(), null, adModel);
             Intent intent = new Intent(activity, ChatActivity.class);
-            intent.putExtra("data",model);
+            intent.putExtra("data", model);
             startActivity(intent);
+        });
+
+        binding.checkboxLove.setOnClickListener(v -> mvvm.followUnFollow(getUserSetting().getCountry(), getUserModel(), adModel.getId(), String.valueOf(binding.checkboxLove.isChecked()),"love"));
+
+        binding.checkboxBad.setOnClickListener(v -> mvvm.followUnFollow(getUserSetting().getCountry(), getUserModel(), adModel.getId(), String.valueOf(binding.checkboxBad.isChecked()),"bad"));
+
+
+
+        binding.llFollow.setOnClickListener(v -> {
+            mvvm.followUnFollow(getUserSetting().getCountry(), getUserModel(), adModel.getId(), adModel.getIs_followed(),"follow");
         });
     }
 
     private void updateUi(SingleAdModel.Data singleAdModel) {
-        if (singleAdModel!=null){
+        if (singleAdModel != null) {
             this.adModel = singleAdModel.getAd();
 
             if (adModel.getImages().size() > 0) {
                 sliderAdapter.updateList(adModel.getImages());
                 binding.indicator.setCount(adModel.getImages().size());
 
-                if (adModel.getImages().size()>1){
+                if (adModel.getImages().size() > 1) {
                     startSliderTimer();
                 }
             }
@@ -267,13 +287,28 @@ public class FragmentAdDetails extends BaseFragment {
             }
 
             binding.setModel(adModel);
+
+            if (getUserModel()!=null){
+                if (adModel.getUser().getId().equals(getUserModel().getData().getUser().getId())){
+                    binding.checkboxBad.setVisibility(View.GONE);
+                    binding.checkboxLove.setVisibility(View.GONE);
+                }else{
+                    binding.checkboxBad.setVisibility(View.VISIBLE);
+                    binding.checkboxLove.setVisibility(View.VISIBLE);
+                }
+
+
+            }else {
+                binding.checkboxBad.setVisibility(View.GONE);
+                binding.checkboxLove.setVisibility(View.GONE);
+            }
         }
 
 
     }
 
     private void startSliderTimer() {
-        if (timer!=null&&timerTask!=null){
+        if (timer != null && timerTask != null) {
             timer.purge();
             timer.cancel();
             timerTask.cancel();
@@ -294,7 +329,7 @@ public class FragmentAdDetails extends BaseFragment {
         if (getUserModel() != null) {
             device_id = device_id + "_" + getUserModel().getData().getUser().getId();
         }
-        mvvm.getData(getUserSetting().getCountry(),device_id,adModel.getId());
+        mvvm.getData(getUserModel(),getUserSetting().getCountry(), device_id, adModel.getId());
     }
 
     public class MyTimerTask extends TimerTask {
@@ -324,9 +359,9 @@ public class FragmentAdDetails extends BaseFragment {
         }
         disposable.clear();
     }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_PHONE_CALL: {

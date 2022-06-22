@@ -2,6 +2,7 @@ package com.lost_found_it.uis.activity_home.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,6 +149,9 @@ public class FragmentFound extends BaseFragment {
                 selectedCategory = list.get(0);
                 updateSubCategoryData(selectedCategory);
 
+            }else {
+                updateSubCategoryData(null);
+
             }
             categoryAdapter = new CategoryAdapter(activity,this,getLang());
             binding.recViewCategoryFound.setAdapter(categoryAdapter);
@@ -201,43 +205,52 @@ public class FragmentFound extends BaseFragment {
         if (selectedCategory != null) {
             category_id = selectedCategory.getId();
         }
-        mvvm.getData(getUserSetting().getCountry(), category_id, subCategoryModel.getId(), "found", "main");
+        mvvm.getData(getUserSetting().getCountry(), category_id, subCategoryModel.getId(), "found", "main",null,null);
 
     }
 
     private void updateSubCategoryData(CategoryModel categoryModel) {
 
-        if (categoryModel.getSub_categories().size() > 0) {
+        if (categoryModel==null){
+            Log.e("asda","asda");
+            mvvm.getData(getUserSetting().getCountry(), null, null, "found", "main",null,null);
 
-
-            List<SubCategoryModel> list = new ArrayList<>();
-
-            for (SubCategoryModel subCategoryModel:categoryModel.getSub_categories()){
-                subCategoryModel.setSelected(false);
-                list.add(subCategoryModel);
-            }
-
-            SubCategoryModel subCategoryModel = new SubCategoryModel();
-            subCategoryModel.setId("0");
-            subCategoryModel.setSelected(true);
-            list.add(0, subCategoryModel);
-
-            brandAdapter = new BrandAdapter(activity,this,getLang());
-            binding.recViewBrandsFound.setAdapter(brandAdapter);
-            brandAdapter.updateList(list);
-            String category_id = "0";
-            if (selectedCategory != null) {
-                category_id = selectedCategory.getId();
-            }
-            mvvm.getData(getUserSetting().getCountry(), category_id, "0", "found", "main");
-
-        } else {
-            mvvm.getData(getUserSetting().getCountry(), categoryModel.getId(), null, "found", "main");
-            brandAdapter = new BrandAdapter(activity,this,getLang());
-            binding.recViewBrandsFound.setAdapter(brandAdapter);
             brandAdapter.updateList(new ArrayList<>());
 
+        }else {
+            if (categoryModel.getSub_categories().size() > 0) {
+
+
+                List<SubCategoryModel> list = new ArrayList<>();
+
+                for (SubCategoryModel subCategoryModel:categoryModel.getSub_categories()){
+                    subCategoryModel.setSelected(false);
+                    list.add(subCategoryModel);
+                }
+
+                SubCategoryModel subCategoryModel = new SubCategoryModel();
+                subCategoryModel.setId("0");
+                subCategoryModel.setSelected(true);
+                list.add(0, subCategoryModel);
+
+                brandAdapter = new BrandAdapter(activity,this,getLang());
+                binding.recViewBrandsFound.setAdapter(brandAdapter);
+                brandAdapter.updateList(list);
+                String category_id = "0";
+                if (selectedCategory != null) {
+                    category_id = selectedCategory.getId();
+                }
+                mvvm.getData(getUserSetting().getCountry(), category_id, "0", "found", "main",null,null);
+
+            } else {
+                mvvm.getData(getUserSetting().getCountry(), categoryModel.getId(), null, "found", "main",null,null);
+                brandAdapter = new BrandAdapter(activity,this,getLang());
+                binding.recViewBrandsFound.setAdapter(brandAdapter);
+                brandAdapter.updateList(new ArrayList<>());
+
+            }
         }
+
     }
     public void navigateToAdDetails(AdModel adModel) {
         generalMvvm.getOnAdDetailsSelected().setValue(adModel.getId());

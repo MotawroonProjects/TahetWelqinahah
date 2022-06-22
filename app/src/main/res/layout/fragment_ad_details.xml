@@ -89,6 +89,31 @@
                                     app:piv_viewPager="@id/pager" />
                             </FrameLayout>
 
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="end"
+                                android:layout_margin="16dp"
+                                >
+                                <CheckBox
+                                    android:id="@+id/checkboxLove"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:button="@drawable/check_box_heart"
+                                    android:checked='@{model.is_loved.equals("true")?true:false}'
+                                    />
+
+                                <CheckBox
+                                    android:id="@+id/checkboxBad"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:button="@drawable/check_box_report"
+                                    android:layout_marginTop="16dp"
+                                    android:checked='@{model.is_bad.equals("true")?true:false}'
+
+                                    />
+                            </LinearLayout>
 
                         </FrameLayout>
 

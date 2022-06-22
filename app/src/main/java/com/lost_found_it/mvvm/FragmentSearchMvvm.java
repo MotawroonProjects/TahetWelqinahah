@@ -39,6 +39,7 @@ public class FragmentSearchMvvm extends AndroidViewModel {
     private MutableLiveData<List<String>> lastDays;
     private MutableLiveData<List<AdModel>> onSearchSuccess;
     private MutableLiveData<CityModel> cityData;
+    private MutableLiveData<String> added_later;
     public FragmentSearchMvvm(@NonNull Application application) {
         super(application);
     }
@@ -81,11 +82,18 @@ public class FragmentSearchMvvm extends AndroidViewModel {
         }
         return lastDays;
     }
-    public void search(String country,String search){
+
+    public MutableLiveData<String> getAdded_later() {
+        if (added_later==null){
+            added_later=new MutableLiveData<>();
+        }
+        return added_later;
+    }
+    public void search(String country,String search,String added_later,String city_id){
         getIsLoading().setValue(true);
 
         Api.getService(Tags.base_url)
-                .search(country,search)
+                .search(country,search,added_later,city_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {

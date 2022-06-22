@@ -115,8 +115,6 @@ public class FragmentLost extends BaseFragment {
         });
 
 
-
-
         binding.cardMecca.setOnClickListener(v -> {
             generalMvvm.getOnMeccaFoundLost().setValue("lost");
             generalMvvm.getMainNavigation().setValue(Tags.fragment_mecca_pos);
@@ -126,39 +124,41 @@ public class FragmentLost extends BaseFragment {
             generalMvvm.getOnTowerFoundLost().setValue("lost");
             generalMvvm.getMainNavigation().setValue(Tags.fragment_tower_pos);
         });
-        generalMvvm.getOnNewAdAdded().observe(activity,adModel -> {
-            if (mvvm.getOnDataSuccess().getValue()!=null){
-                mvvm.getOnDataSuccess().getValue().add(0,adModel);
-                if (adAdapter!=null){
+        generalMvvm.getOnNewAdAdded().observe(activity, adModel -> {
+            if (mvvm.getOnDataSuccess().getValue() != null) {
+                mvvm.getOnDataSuccess().getValue().add(0, adModel);
+                if (adAdapter != null) {
                     adAdapter.notifyItemInserted(0);
                 }
             }
         });
 
-        generalMvvm.getOnAdUpdated().observe(activity,mBoolean -> {
+        generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
             mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
         });
-        mvvm.getIsLoading().observe(activity,isLoading->{
+        mvvm.getIsLoading().observe(activity, isLoading -> {
             binding.recViewLayoutLost.swipeRefresh.setRefreshing(isLoading);
         });
 
         mvvm.getOnCategoryDataSuccess().observe(activity, list -> {
-            if (list.size()>0){
+            if (list.size() > 0) {
                 selectedCategory = list.get(0);
                 updateSubCategoryData(selectedCategory);
 
+            }else {
+                updateSubCategoryData(null);
             }
-            categoryAdapter = new CategoryAdapter(activity,this,getLang());
+            categoryAdapter = new CategoryAdapter(activity, this, getLang());
             binding.recViewCategoryLost.setAdapter(categoryAdapter);
             categoryAdapter.updateList(list);
 
         });
 
-        mvvm.getOnDataSuccess().observe(activity,list->{
+        mvvm.getOnDataSuccess().observe(activity, list -> {
             binding.recViewLayoutLost.tvNoData.setText(R.string.no_item);
-            if (list.size()>0){
+            if (list.size() > 0) {
                 binding.recViewLayoutLost.tvNoData.setVisibility(View.GONE);
-            }else {
+            } else {
                 binding.recViewLayoutLost.tvNoData.setVisibility(View.VISIBLE);
             }
             adAdapter.updateList(list);
@@ -200,49 +200,58 @@ public class FragmentLost extends BaseFragment {
         if (selectedCategory != null) {
             category_id = selectedCategory.getId();
         }
-        mvvm.getData(getUserSetting().getCountry(), category_id, subCategoryModel.getId(), "lost", "main");
+        mvvm.getData(getUserSetting().getCountry(), category_id, subCategoryModel.getId(), "lost", "main", null, null);
 
     }
 
     private void updateSubCategoryData(CategoryModel categoryModel) {
 
-        if (categoryModel.getSub_categories().size() > 0) {
-
-            List<SubCategoryModel> list = new ArrayList<>();
-
-            for (SubCategoryModel subCategoryModel:categoryModel.getSub_categories()){
-                subCategoryModel.setSelected(false);
-                list.add(subCategoryModel);
-            }
-
-            SubCategoryModel subCategoryModel = new SubCategoryModel();
-            subCategoryModel.setId("0");
-            subCategoryModel.setSelected(true);
-            list.add(0, subCategoryModel);
-
-            brandAdapter = new BrandAdapter(activity,this,getLang());
-            binding.recViewBrandsLost.setAdapter(brandAdapter);
-            brandAdapter.updateList(list);
-
-
-            String category_id = "0";
-            if (selectedCategory != null) {
-                category_id = selectedCategory.getId();
-            }
-            mvvm.getData(getUserSetting().getCountry(), category_id, "0", "lost", "main");
-
-        } else {
-            mvvm.getData(getUserSetting().getCountry(), categoryModel.getId(), null, "lost", "main");
-
-            brandAdapter = new BrandAdapter(activity,this,getLang());
-            binding.recViewBrandsLost.setAdapter(brandAdapter);
+        if (categoryModel==null){
             brandAdapter.updateList(new ArrayList<>());
+            mvvm.getData(getUserSetting().getCountry(), null, null, "lost", "main", null, null);
+
+        }else {
+            if (categoryModel.getSub_categories().size() > 0) {
+
+                List<SubCategoryModel> list = new ArrayList<>();
+
+                for (SubCategoryModel subCategoryModel : categoryModel.getSub_categories()) {
+                    subCategoryModel.setSelected(false);
+                    list.add(subCategoryModel);
+                }
+
+                SubCategoryModel subCategoryModel = new SubCategoryModel();
+                subCategoryModel.setId("0");
+                subCategoryModel.setSelected(true);
+                list.add(0, subCategoryModel);
+
+                brandAdapter = new BrandAdapter(activity, this, getLang());
+                binding.recViewBrandsLost.setAdapter(brandAdapter);
+                brandAdapter.updateList(list);
+
+
+                String category_id = "0";
+                if (selectedCategory != null) {
+                    category_id = selectedCategory.getId();
+                }
+                mvvm.getData(getUserSetting().getCountry(), category_id, "0", "lost", "main", null, null);
+
+            } else {
+                mvvm.getData(getUserSetting().getCountry(), categoryModel.getId(), null, "lost", "main", null, null);
+
+                brandAdapter = new BrandAdapter(activity, this, getLang());
+                binding.recViewBrandsLost.setAdapter(brandAdapter);
+                brandAdapter.updateList(new ArrayList<>());
+            }
         }
+
     }
+
     public void navigateToAdDetails(AdModel adModel) {
         generalMvvm.getOnAdDetailsSelected().setValue(adModel.getId());
         generalMvvm.getMainNavigation().setValue(Tags.fragment_ad_details_pos);
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

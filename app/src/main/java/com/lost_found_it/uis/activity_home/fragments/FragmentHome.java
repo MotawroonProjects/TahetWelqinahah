@@ -37,6 +37,7 @@ import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
 import com.lost_found_it.uis.activity_login.LoginActivity;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -116,9 +117,9 @@ public class FragmentHome extends BaseFragment {
         });
 
         mvvm.getOnNearAdsSuccess().observe(activity,ads->{
+            closedAdAdapter.updateList(ads);
             if (ads.size()>0){
                 binding.llClosedAds.setVisibility(View.VISIBLE);
-                closedAdAdapter.updateList(ads);
             }else {
                 binding.llClosedAds.setVisibility(View.GONE);
             }
@@ -160,6 +161,7 @@ public class FragmentHome extends BaseFragment {
         generalMvvm.getOnCountrySuccess().observe(activity, isChanged -> {
             binding.setCountry(getUserSetting().getCountry());
             mvvm.getData(getUserSetting().getCountry());
+            CheckPermission();
 
         });
 

@@ -15,7 +15,10 @@ public class AdModel implements Serializable {
     private String phone_code;
     private String phone;
     private String whatsapp;
+    private String city_id;
     private String is_followed;
+    private String is_loved;
+    private String is_bad;
     private String views;
     private UserModel.User user;
     private List<SliderImages> images;
@@ -78,6 +81,14 @@ public class AdModel implements Serializable {
         this.is_followed = is_followed;
     }
 
+    public void setIs_loved(String is_loved) {
+        this.is_loved = is_loved;
+    }
+
+    public void setIs_bad(String is_bad) {
+        this.is_bad = is_bad;
+    }
+
     public String getViews() {
         return views;
     }
@@ -108,5 +119,17 @@ public class AdModel implements Serializable {
 
     public String getDistance() {
         return distance;
+    }
+
+    public String getIs_loved() {
+        return is_loved;
+    }
+
+    public String getIs_bad() {
+        return is_bad;
+    }
+
+    public String getCity_id() {
+        return city_id;
     }
 }

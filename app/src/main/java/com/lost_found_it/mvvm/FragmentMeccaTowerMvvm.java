@@ -53,7 +53,7 @@ public class FragmentMeccaTowerMvvm extends AndroidViewModel {
         getIsLoading().setValue(true);
 
         Api.getService(Tags.base_url)
-                .getAds(country, "0", "0", type, "special", null)
+                .getAds(country, "0", "0", type, "special", null,null,null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {

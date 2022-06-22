@@ -133,6 +133,7 @@
     <string name="km">km</string>
     <string name="cities">Cities</string>
     <string name="search_for_city">Search for city...</string>
+    <string name="clear">Clear</string>
 
     <array name="lastDays">
         <item>"Choose"</item>

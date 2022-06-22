@@ -47,12 +47,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lost_found_it.R;
 import com.lost_found_it.adapter.SpinnerCategoryAdapter;
+import com.lost_found_it.adapter.SpinnerCityAdapter;
 import com.lost_found_it.adapter.SpinnerSubCategoryAdapter;
 import com.lost_found_it.background_service.ServicePostAd;
 import com.lost_found_it.databinding.FragmentPostAddStep1Binding;
 import com.lost_found_it.databinding.FragmentPostAddStep2Binding;
 import com.lost_found_it.model.AddAdModel;
 import com.lost_found_it.model.CategoryModel;
+import com.lost_found_it.model.CityModel;
 import com.lost_found_it.model.SubCategoryModel;
 import com.lost_found_it.mvvm.FragmentAddAdsMvvm;
 import com.lost_found_it.uis.activity_about_app.AboutAppActivity;
@@ -83,6 +85,7 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     private ActivityResultLauncher<String> permission;
     private SpinnerCategoryAdapter spinnerCategoryAdapter;
     private SpinnerSubCategoryAdapter spinnerSubCategoryAdapter;
+    private SpinnerCityAdapter spinnerCityAdapter;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -125,25 +128,29 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
                 if (list.size() > 0) {
                     spinnerCategoryAdapter.updateList(list);
                     if (model.getAd_id().isEmpty()) {
-                        CategoryModel categoryModel = list.get(0);
-                        model.setCategory_id(categoryModel.getId());
+                        if (list.size()>0){
+                            CategoryModel categoryModel = list.get(0);
+                            model.setCategory_id(categoryModel.getId());
+                            if (categoryModel.getSub_categories().size() > 0) {
+                                binding.llSubCategory.setVisibility(View.VISIBLE);
 
-                        if (categoryModel.getSub_categories().size() > 0) {
-                            binding.llSubCategory.setVisibility(View.VISIBLE);
+                                SubCategoryModel subCategoryModel = categoryModel.getSub_categories().get(0);
+                                model.setSub_category_id(subCategoryModel.getId());
 
-                            SubCategoryModel subCategoryModel = categoryModel.getSub_categories().get(0);
-                            model.setSub_category_id(subCategoryModel.getId());
+                                model.setHasSubCategory(true);
 
-                            model.setHasSubCategory(true);
+                                if (spinnerSubCategoryAdapter != null) {
+                                    spinnerSubCategoryAdapter.updateList(categoryModel.getSub_categories());
 
-                            if (spinnerSubCategoryAdapter != null) {
-                                spinnerSubCategoryAdapter.updateList(categoryModel.getSub_categories());
+                                }
+                            } else {
+                                binding.llSubCategory.setVisibility(View.GONE);
+                                model.setSub_category_id("");
+                                model.setHasSubCategory(false);
+                        }
 
-                            }
-                        } else {
-                            binding.llSubCategory.setVisibility(View.GONE);
-                            model.setSub_category_id("");
-                            model.setHasSubCategory(false);
+
+
 
                         }
                     } else {
@@ -163,6 +170,33 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
 
             }
         });
+
+        mvvm.getOnCityDataSuccess().observe(activity,list->{
+            spinnerCityAdapter.updateList(list);
+            if (model.getAd_id().isEmpty()) {
+                if (list.size()>0){
+                    CityModel cityModel = list.get(0);
+                    model.setCity_id(cityModel.getId());
+
+
+                }
+
+            } else {
+                int pos = getCityPos(model.getCity_id());
+                binding.spinnerCity.setSelection(pos);
+
+
+            }
+        });
+
+        spinnerCategoryAdapter = new SpinnerCategoryAdapter(activity);
+        binding.spinnerCategory.setAdapter(spinnerCategoryAdapter);
+
+        spinnerSubCategoryAdapter = new SpinnerSubCategoryAdapter(activity);
+        binding.spinnerSubCategory.setAdapter(spinnerSubCategoryAdapter);
+
+        spinnerCityAdapter = new SpinnerCityAdapter(activity);
+        binding.spinnerCity.setAdapter(spinnerCityAdapter);
 
         binding.spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -210,13 +244,21 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
 
             }
         });
+        binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CityModel cityModel = (CityModel) parent.getSelectedItem();
+                model.setCity_id(cityModel.getId());
 
 
-        spinnerCategoryAdapter = new SpinnerCategoryAdapter(activity);
-        binding.spinnerCategory.setAdapter(spinnerCategoryAdapter);
+            }
 
-        spinnerSubCategoryAdapter = new SpinnerSubCategoryAdapter(activity);
-        binding.spinnerSubCategory.setAdapter(spinnerSubCategoryAdapter);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
 
         binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -264,6 +306,8 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         return 0;
     }
 
+
+
     private int getSubCategoryPos(String sub_category_id, List<SubCategoryModel> list) {
         if (mvvm.getOnCategoryDataSuccess().getValue() != null) {
             for (int index = 0; index < list.size(); index++) {
@@ -275,11 +319,24 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         return 0;
     }
 
+    private int getCityPos(String city_id) {
+        if (mvvm.getOnCityDataSuccess().getValue() != null) {
+            List<CityModel> list = mvvm.getOnCityDataSuccess().getValue();
+            for (int index = 0; index < list.size(); index++) {
+                if (list.get(index).getId().equals(city_id)) {
+                    return index;
+                }
+            }
+        }
+        return 0;
+    }
     public void updateModel(AddAdModel model) {
         this.model = model;
         binding.setModel(model);
         setUpMapFragment();
         mvvm.getCategories(getUserSetting().getCountry());
+        mvvm.getCities(getUserSetting().getCountry(),getLang());
+
         if (model!=null&&!model.getAd_id().isEmpty()) {
             binding.checkbox.setChecked(true);
         }

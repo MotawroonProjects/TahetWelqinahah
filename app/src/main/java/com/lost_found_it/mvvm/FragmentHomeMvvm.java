@@ -139,7 +139,7 @@ public class FragmentHomeMvvm extends AndroidViewModel implements GoogleApiClien
     }
 
     public void getNearByAds(String country,double lat,double lng){
-        getIsLoading().setValue(true);
+        Log.e("latLng",lat+"__"+lng);
         Api.getService(Tags.base_url)
                 .getNearByAds(country,lat,lng)
                 .subscribeOn(Schedulers.io())
@@ -170,7 +170,6 @@ public class FragmentHomeMvvm extends AndroidViewModel implements GoogleApiClien
 
                     @Override
                     public void onError(Throwable e) {
-                        getIsLoading().setValue(false);
 
                         Log.e(TAG,e.getMessage());
                     }

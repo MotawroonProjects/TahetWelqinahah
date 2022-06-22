@@ -41,7 +41,10 @@ public interface Service {
                                           @Query("sub_category_id") String sub_category_id,
                                           @Query("type") String type,
                                           @Query("place_type") String place_type,
-                                          @Query("search") String search
+                                          @Query("search") String search,
+                                          @Query("added_latter") String added_latter,
+                                          @Query("city_id") String city_id
+
     );
 
     @GET("api/setting/cities")
@@ -62,7 +65,8 @@ public interface Service {
     );
 
     @GET("api/home/getOneAd")
-    Single<Response<SingleAdModel>> getAdDetails(@Query("country") String country,
+    Single<Response<SingleAdModel>> getAdDetails(@Header("Authorization") String Authorization,
+                                                 @Query("country") String country,
                                                  @Query("ad_id") String ad_id,
                                                  @Query("phone_key") String phone_key
     );
@@ -73,7 +77,9 @@ public interface Service {
 
     @GET("api/home/getAds")
     Single<Response<AdsDataModel>> search(@Query("country") String country,
-                                          @Query("search") String search
+                                          @Query("search") String search,
+                                          @Query("added_latter") String added_latter,
+                                          @Query("city_id") String city_id
     );
 
     @FormUrlEncoded
@@ -180,7 +186,8 @@ public interface Service {
     @GET("api/home/follow-delete-Ad")
     Single<Response<StatusResponse>> followUnFollow(@Header("Authorization") String Authorization,
                                                     @Query("country") String country,
-                                                    @Query("ad_id") String ad_id
+                                                    @Query("ad_id") String ad_id,
+                                                    @Query("type") String type
     );
 
     @GET("api/chat/myRooms")

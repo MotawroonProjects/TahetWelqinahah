@@ -35,6 +35,8 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
     private final String TAG = FragmentAdDetailsMvvm.class.getName();
     public MutableLiveData<SingleAdModel.Data> onDataSuccess;
     public MutableLiveData<String> onFollowDataSuccess;
+    public MutableLiveData<String> onLoveDataSuccess;
+    public MutableLiveData<String> onBadDataSuccess;
 
     public MutableLiveData<Boolean> isLoading;
 
@@ -68,11 +70,30 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
         return onFollowDataSuccess;
     }
 
-    public void getData(String country, String phone_token_id, String ad_id) {
-        getIsLoading().setValue(true);
+    public MutableLiveData<String> getOnLoveDataSuccess() {
+        if (onLoveDataSuccess == null) {
+            onLoveDataSuccess = new MutableLiveData<>();
+        }
+        return onLoveDataSuccess;
+    }
 
+    public MutableLiveData<String> getOnBadDataSuccess() {
+        if (onBadDataSuccess == null) {
+            onBadDataSuccess = new MutableLiveData<>();
+        }
+        return onBadDataSuccess;
+    }
+
+
+    public void getData(UserModel userModel,String country, String phone_token_id, String ad_id) {
+        getIsLoading().setValue(true);
+        Log.e("phoneKey",phone_token_id);
+        String token = null;
+        if (userModel!=null){
+            token = "Bearer "+userModel.getData().getAccess_token();
+        }
         Api.getService(Tags.base_url)
-                .getAdDetails(country, ad_id, phone_token_id)
+                .getAdDetails(token,country, ad_id, phone_token_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<SingleAdModel>>() {
@@ -109,15 +130,15 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
                 });
     }
 
-    public void followUnFollow(String country, UserModel userModel, String ad_id, String isFollowed) {
+    public void followUnFollow(String country, UserModel userModel, String ad_id, String isValue, String type) {
         if (userModel == null) {
             return;
         }
 
-
+        Log.e("token",userModel.getData().getAccess_token()+"_____"+ad_id);
 
         Api.getService(Tags.base_url)
-                .followUnFollow("Bearer " + userModel.getData().getAccess_token(), country, ad_id)
+                .followUnFollow("Bearer " + userModel.getData().getAccess_token(), country, ad_id, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<StatusResponse>>() {
@@ -130,10 +151,13 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
                     public void onSuccess(Response<StatusResponse> response) {
 
                         if (response.isSuccessful()) {
-                            Log.e("follow",response.body().getCode()+"__");
+                            Log.e("follow", response.body().getCode() + "__"+type+"__"+isValue);
                             if (response.body() != null && response.body().getCode() == 200) {
-                                boolean follow = Boolean.parseBoolean(isFollowed);
-                                getOnFollowDataSuccess().setValue(String.valueOf(!follow));
+                                boolean isVal = Boolean.parseBoolean(isValue);
+                                if (type.equals("follow")) {
+                                    getOnFollowDataSuccess().setValue(String.valueOf(!isVal));
+
+                                }
                             }
 
 

@@ -11,6 +11,8 @@ import com.lost_found_it.model.AdModel;
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.CategoryModel;
+import com.lost_found_it.model.CityDataModel;
+import com.lost_found_it.model.CityModel;
 import com.lost_found_it.model.StatusResponse;
 import com.lost_found_it.model.SubCategoryModel;
 import com.lost_found_it.model.UserModel;
@@ -31,6 +33,7 @@ import retrofit2.Response;
 public class FragmentAddAdsMvvm extends AndroidViewModel {
     private final String TAG = FragmentAddAdsMvvm.class.getName();
     public MutableLiveData<List<CategoryModel>> onCategoryDataSuccess;
+    public MutableLiveData<List<CityModel>> onCityDataSuccess;
 
 
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -43,6 +46,12 @@ public class FragmentAddAdsMvvm extends AndroidViewModel {
             onCategoryDataSuccess = new MutableLiveData<>();
         }
         return onCategoryDataSuccess;
+    }
+    public MutableLiveData<List<CityModel>> getOnCityDataSuccess() {
+        if (onCityDataSuccess == null) {
+            onCityDataSuccess = new MutableLiveData<>();
+        }
+        return onCityDataSuccess;
     }
     public void getCategories(String country){
 
@@ -82,6 +91,37 @@ public class FragmentAddAdsMvvm extends AndroidViewModel {
                         Log.e(TAG,e.getMessage());
                     }
                 });
+    }
+    public void getCities(String country, String lang) {
+        Api.getService(Tags.base_url)
+                .getCities(country, lang)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<CityDataModel>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Response<CityDataModel> response) {
+
+                        if (response.isSuccessful()) {
+                            if (response.body() != null) {
+                                if (response.body().getCode() == 200) {
+                                    getOnCityDataSuccess().setValue(response.body().getData());
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, "onError: ", e);
+
+                    }
+                });
+
     }
 
 }
