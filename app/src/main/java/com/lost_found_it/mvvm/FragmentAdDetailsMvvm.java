@@ -1,6 +1,7 @@
 package com.lost_found_it.mvvm;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lost_found_it.R;
 import com.lost_found_it.model.AdModel;
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
@@ -18,6 +20,7 @@ import com.lost_found_it.model.StatusResponse;
 import com.lost_found_it.model.SubCategoryModel;
 import com.lost_found_it.model.UserModel;
 import com.lost_found_it.remote.Api;
+import com.lost_found_it.share.Common;
 import com.lost_found_it.tags.Tags;
 
 import java.io.IOException;
@@ -130,13 +133,15 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
                 });
     }
 
-    public void followUnFollow(String country, UserModel userModel, String ad_id, String isValue, String type) {
+    public void followUnFollow(Context context,String country, UserModel userModel, String ad_id, String isValue, String type) {
         if (userModel == null) {
             return;
         }
 
         Log.e("token",userModel.getData().getAccess_token()+"_____"+ad_id);
 
+        ProgressDialog dialog = Common.createProgressDialog(context,context.getString(R.string.wait));
+        dialog.show();
         Api.getService(Tags.base_url)
                 .followUnFollow("Bearer " + userModel.getData().getAccess_token(), country, ad_id, type)
                 .subscribeOn(Schedulers.io())
@@ -149,7 +154,7 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
 
                     @Override
                     public void onSuccess(Response<StatusResponse> response) {
-
+                        dialog.dismiss();
                         if (response.isSuccessful()) {
                             Log.e("follow", response.body().getCode() + "__"+type+"__"+isValue);
                             if (response.body() != null && response.body().getCode() == 200) {
@@ -162,6 +167,19 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
 
 
                         } else {
+                            boolean isVal = Boolean.parseBoolean(isValue);
+
+                            if (type.equals("follow")) {
+                                getOnFollowDataSuccess().setValue(String.valueOf(!isVal));
+
+                            }else if (type.equals("love")){
+                                getOnLoveDataSuccess().setValue(String.valueOf(!isVal));
+
+                            }else if (type.equals("bad")){
+                                getOnBadDataSuccess().setValue(String.valueOf(!isVal));
+
+                            }
+
                             try {
                                 Log.e(TAG, response.errorBody().string() + "___" + response.body().getMessage().toString());
                             } catch (IOException e) {
@@ -172,7 +190,19 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
 
                     @Override
                     public void onError(Throwable e) {
+                        boolean isVal = Boolean.parseBoolean(isValue);
 
+                        if (type.equals("follow")) {
+                            getOnFollowDataSuccess().setValue(String.valueOf(!isVal));
+
+                        }else if (type.equals("love")){
+                            getOnLoveDataSuccess().setValue(String.valueOf(!isVal));
+
+                        }else if (type.equals("bad")){
+                            getOnBadDataSuccess().setValue(String.valueOf(!isVal));
+
+                        }
+                        dialog.dismiss();
                         Log.e(TAG, e.getMessage());
                     }
                 });

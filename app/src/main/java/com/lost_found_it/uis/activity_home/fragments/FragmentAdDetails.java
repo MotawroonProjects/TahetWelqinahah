@@ -254,14 +254,14 @@ public class FragmentAdDetails extends BaseFragment {
             startActivity(intent);
         });
 
-        binding.checkboxLove.setOnClickListener(v -> mvvm.followUnFollow(getUserSetting().getCountry(), getUserModel(), adModel.getId(), String.valueOf(binding.checkboxLove.isChecked()),"love"));
+        binding.checkboxLove.setOnClickListener(v -> mvvm.followUnFollow(activity,getUserSetting().getCountry(), getUserModel(), adModel.getId(), String.valueOf(binding.checkboxLove.isChecked()),"love"));
 
-        binding.checkboxBad.setOnClickListener(v -> mvvm.followUnFollow(getUserSetting().getCountry(), getUserModel(), adModel.getId(), String.valueOf(binding.checkboxBad.isChecked()),"bad"));
+        binding.checkboxBad.setOnClickListener(v -> mvvm.followUnFollow(activity,getUserSetting().getCountry(), getUserModel(), adModel.getId(), String.valueOf(binding.checkboxBad.isChecked()),"bad"));
 
 
 
         binding.llFollow.setOnClickListener(v -> {
-            mvvm.followUnFollow(getUserSetting().getCountry(), getUserModel(), adModel.getId(), adModel.getIs_followed(),"follow");
+            mvvm.followUnFollow(activity,getUserSetting().getCountry(), getUserModel(), adModel.getId(), adModel.getIs_followed(),"follow");
         });
     }
 
@@ -299,6 +299,7 @@ public class FragmentAdDetails extends BaseFragment {
 
 
             }else {
+
                 binding.checkboxBad.setVisibility(View.GONE);
                 binding.checkboxLove.setVisibility(View.GONE);
             }
@@ -322,7 +323,6 @@ public class FragmentAdDetails extends BaseFragment {
 
 
     }
-
 
     public void setAdItemData(AdModel adModel) {
         String device_id = getUserSetting().getId();
