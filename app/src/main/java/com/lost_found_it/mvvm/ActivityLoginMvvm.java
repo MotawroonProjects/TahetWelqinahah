@@ -177,27 +177,28 @@ public class ActivityLoginMvvm extends AndroidViewModel {
         ProgressDialog dialog = Common.createProgressDialog(activity, activity.getResources().getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
+        login(activity, loginModel,country, dialog);
 
-        if (verificationId != null) {
-            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-            mAuth.signInWithCredential(credential)
-                    .addOnSuccessListener(authResult -> {
-                        login(activity, loginModel,country, dialog);
-                    }).addOnFailureListener(e -> {
-                        dialog.dismiss();
-                        if (e.getMessage() != null) {
-                            Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
-
-                        } else {
-
-                            dialog.dismiss();
-                        }
-                    });
-        } else {
-            Toast.makeText(activity, "Wait sms maybe take a few minutes", Toast.LENGTH_LONG).show();
-            dialog.dismiss();
-            // Toast.makeText(context, "wait sms", Toast.LENGTH_SHORT).show();
-        }
+//        if (verificationId != null) {
+//            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+//            mAuth.signInWithCredential(credential)
+//                    .addOnSuccessListener(authResult -> {
+//                        login(activity, loginModel,country, dialog);
+//                    }).addOnFailureListener(e -> {
+//                        dialog.dismiss();
+//                        if (e.getMessage() != null) {
+//                            Toast.makeText(activity, e.getMessage(), Toast.LENGTH_LONG).show();
+//
+//                        } else {
+//
+//                            dialog.dismiss();
+//                        }
+//                    });
+//        } else {
+//            Toast.makeText(activity, "Wait sms maybe take a few minutes", Toast.LENGTH_LONG).show();
+//            dialog.dismiss();
+//            // Toast.makeText(context, "wait sms", Toast.LENGTH_SHORT).show();
+//        }
 
     }
 

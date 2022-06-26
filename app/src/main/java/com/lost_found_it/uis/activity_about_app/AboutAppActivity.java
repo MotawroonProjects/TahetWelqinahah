@@ -95,7 +95,7 @@ public class AboutAppActivity extends BaseActivity {
                                         if (settingModel != null && settingModel.getTerms_condition() != null) {
                                             String endPoint = "";
                                             if (!settingModel.getTerms_condition().isEmpty()){
-                                                endPoint = "webView?type=" + settingModel.getTerms_condition();
+                                                endPoint = "webView?type=terms" ;
                                             }
                                             String url = Tags.base_url + endPoint;
                                             binding.webView.loadUrl(url);
@@ -109,7 +109,7 @@ public class AboutAppActivity extends BaseActivity {
                                         if (settingModel != null && settingModel.getPrivacy_policy() != null) {
                                             String endPoint = "";
                                             if (!settingModel.getPrivacy_policy().isEmpty()){
-                                                endPoint = "webView?type=" + settingModel.getPrivacy_policy();
+                                                endPoint = "webView?type=privacy";
                                             }
                                             String url = Tags.base_url + endPoint;
                                             binding.webView.loadUrl(url);
