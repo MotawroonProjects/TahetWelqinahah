@@ -76,6 +76,8 @@ public class ServicePostAd extends Service {
         Log.e("token",userModel.getData().getAccess_token()+"____");
         RequestBody country_part = Common.getRequestBodyText(country);
         RequestBody title_part = Common.getRequestBodyText(model.getTitle());
+        RequestBody city_id_part = Common.getRequestBodyText(model.getCity_id());
+
         RequestBody description_part = Common.getRequestBodyText(model.getDescription());
         RequestBody category_id_part = Common.getRequestBodyText(model.getCategory_id());
         RequestBody sub_category_id_part = Common.getRequestBodyText(model.getSub_category_id());
@@ -88,7 +90,7 @@ public class ServicePostAd extends Service {
         RequestBody type_part = Common.getRequestBodyText(model.getAd_type());
         RequestBody place_type_part = Common.getRequestBodyText(model.getPlace_type());
 
-        Api.getService(Tags.base_url).addAds("Bearer " + userModel.getData().getAccess_token(), country_part, title_part, description_part, category_id_part, sub_category_id_part, address_part, lat_part, lng_part, whatsapp_part, phone_code_part, phone_part, type_part, place_type_part, getImages())
+        Api.getService(Tags.base_url).addAds("Bearer " + userModel.getData().getAccess_token(), country_part, title_part, description_part, category_id_part, sub_category_id_part, address_part, lat_part, lng_part, whatsapp_part, phone_code_part, phone_part, type_part, place_type_part,city_id_part, getImages())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<SingleAd>>() {
@@ -140,9 +142,10 @@ public class ServicePostAd extends Service {
         RequestBody whatsapp_part = Common.getRequestBodyText(model.getWhatsapp());
         RequestBody type_part = Common.getRequestBodyText(model.getAd_type());
         RequestBody place_type_part = Common.getRequestBodyText(model.getPlace_type());
+        RequestBody city_id_part = Common.getRequestBodyText(model.getCity_id());
 
 
-        Api.getService(Tags.base_url).updateAds("Bearer " + userModel.getData().getAccess_token(), country_part, ad_id_part, title_part, description_part, category_id_part, sub_category_id_part, address_part, lat_part, lng_part, whatsapp_part, phone_code_part, phone_part, type_part, place_type_part, getImages())
+        Api.getService(Tags.base_url).updateAds("Bearer " + userModel.getData().getAccess_token(), country_part, ad_id_part, title_part, description_part, category_id_part, sub_category_id_part, address_part, lat_part, lng_part, whatsapp_part, phone_code_part, phone_part, type_part, place_type_part,city_id_part, getImages())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<SingleAd>>() {

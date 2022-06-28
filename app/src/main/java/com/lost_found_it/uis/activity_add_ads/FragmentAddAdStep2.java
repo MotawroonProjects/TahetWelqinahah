@@ -122,6 +122,8 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         mvvm = ViewModelProviders.of(this).get(FragmentAddAdsMvvm.class);
 
 
+        binding.setModel(model);
+
         mvvm.getOnCategoryDataSuccess().observe(activity, list -> {
             if (spinnerCategoryAdapter != null) {
 
@@ -190,6 +192,7 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         });
 
         spinnerCategoryAdapter = new SpinnerCategoryAdapter(activity);
+
         binding.spinnerCategory.setAdapter(spinnerCategoryAdapter);
 
         spinnerSubCategoryAdapter = new SpinnerSubCategoryAdapter(activity);
@@ -332,6 +335,17 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     }
     public void updateModel(AddAdModel model) {
         this.model = model;
+        String phone_code;
+        if (getUserSetting().getCountry().equals("sa")){
+            phone_code = "+966";
+
+        }else if (getUserSetting().getCountry().equals("eg")){
+            phone_code ="+20";
+
+        }else {
+            phone_code = "+971";
+        }
+        model.setPhone_code(phone_code);
         binding.setModel(model);
         setUpMapFragment();
         mvvm.getCategories(getUserSetting().getCountry());

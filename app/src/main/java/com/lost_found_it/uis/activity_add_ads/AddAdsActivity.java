@@ -88,6 +88,7 @@ public class AddAdsActivity extends BaseActivity {
     private void LoadUiData() {
         addAdModel = new AddAdModel();
         if (adModel != null) {
+
             addAdModel.setAd_id(adModel.getId());
             addAdModel.setTitle(adModel.getTitle());
             addAdModel.setDescription(adModel.getDescription());

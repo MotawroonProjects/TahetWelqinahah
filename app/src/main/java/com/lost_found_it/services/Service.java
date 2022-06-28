@@ -154,6 +154,7 @@ public interface Service {
                                       @Part("phone") RequestBody phone,
                                       @Part("type") RequestBody type,
                                       @Part("place_type") RequestBody place_type,
+                                      @Part("city_id") RequestBody city_id,
                                       @Part List<MultipartBody.Part> images
     );
 
@@ -174,6 +175,8 @@ public interface Service {
                                          @Part("phone") RequestBody phone,
                                          @Part("type") RequestBody type,
                                          @Part("place_type") RequestBody place_type,
+                                         @Part("city_id") RequestBody city_id,
+
                                          @Part List<MultipartBody.Part> images
     );
 
