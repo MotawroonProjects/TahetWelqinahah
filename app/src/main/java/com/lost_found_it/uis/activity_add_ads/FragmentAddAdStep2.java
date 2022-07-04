@@ -130,7 +130,7 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
                 if (list.size() > 0) {
                     spinnerCategoryAdapter.updateList(list);
                     if (model.getAd_id().isEmpty()) {
-                        if (list.size()>0){
+                        if (list.size() > 0) {
                             CategoryModel categoryModel = list.get(0);
                             model.setCategory_id(categoryModel.getId());
                             if (categoryModel.getSub_categories().size() > 0) {
@@ -149,9 +149,7 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
                                 binding.llSubCategory.setVisibility(View.GONE);
                                 model.setSub_category_id("");
                                 model.setHasSubCategory(false);
-                        }
-
-
+                            }
 
 
                         }
@@ -173,10 +171,10 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
             }
         });
 
-        mvvm.getOnCityDataSuccess().observe(activity,list->{
+        mvvm.getOnCityDataSuccess().observe(activity, list -> {
             spinnerCityAdapter.updateList(list);
             if (model.getAd_id().isEmpty()) {
-                if (list.size()>0){
+                if (list.size() > 0) {
                     CityModel cityModel = list.get(0);
                     model.setCity_id(cityModel.getId());
 
@@ -261,19 +259,26 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
 
             }
         });
-
+        binding.tvcheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, AboutAppActivity.class);
+                intent.putExtra("type", "1");
+                startActivity(intent);
+            }
+        });
 
 
         binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             model.setAgree_terms(isChecked);
-            if (isChecked&&model!=null&&model.getAd_id().isEmpty()) {
-                Intent intent = new Intent(activity, AboutAppActivity.class);
-                intent.putExtra("type", "1");
-                startActivity(intent);
-
-
-
-            }
+//            if (isChecked&&model!=null&&model.getAd_id().isEmpty()) {
+//                Intent intent = new Intent(activity, AboutAppActivity.class);
+//                intent.putExtra("type", "1");
+//                startActivity(intent);
+//
+//
+//
+//            }
         });
         binding.btnPublish.setOnClickListener(v -> {
             String action = "add";
@@ -310,7 +315,6 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     }
 
 
-
     private int getSubCategoryPos(String sub_category_id, List<SubCategoryModel> list) {
         if (mvvm.getOnCategoryDataSuccess().getValue() != null) {
             for (int index = 0; index < list.size(); index++) {
@@ -333,25 +337,26 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         }
         return 0;
     }
+
     public void updateModel(AddAdModel model) {
         this.model = model;
         String phone_code;
-        if (getUserSetting().getCountry().equals("sa")){
+        if (getUserSetting().getCountry().equals("sa")) {
             phone_code = "+966";
 
-        }else if (getUserSetting().getCountry().equals("eg")){
-            phone_code ="+20";
+        } else if (getUserSetting().getCountry().equals("eg")) {
+            phone_code = "+20";
 
-        }else {
+        } else {
             phone_code = "+971";
         }
         model.setPhone_code(phone_code);
         binding.setModel(model);
         setUpMapFragment();
         mvvm.getCategories(getUserSetting().getCountry());
-        mvvm.getCities(getUserSetting().getCountry(),getLang());
+        mvvm.getCities(getUserSetting().getCountry(), getLang());
 
-        if (model!=null&&!model.getAd_id().isEmpty()) {
+        if (model != null && !model.getAd_id().isEmpty()) {
             binding.checkbox.setChecked(true);
         }
 

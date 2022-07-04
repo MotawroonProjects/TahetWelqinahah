@@ -413,19 +413,33 @@
                     />
 
             </LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:buttonTint="@color/colorPrimary"
+        android:paddingStart="8dp"
+        android:textSize="16sp"
 
-            <CheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:buttonTint="@color/colorPrimary"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="@{Html.fromHtml(@string/agree_terms)}"
-                android:textSize="16sp"
+        />
+    <TextView
+        android:id="@+id/tvcheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:buttonTint="@color/colorPrimary"
+        android:paddingEnd="8dp"
+        android:text="@{Html.fromHtml(@string/agree_terms)}"
+        android:textSize="16sp"
 
-                />
+        />
+</LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

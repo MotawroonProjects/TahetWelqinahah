@@ -165,12 +165,12 @@ public class SignUpActivity extends BaseActivity {
 
         binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             model.setAcceptTerms(isChecked);
-//            if (isChecked) {
-//                Intent intent = new Intent(this, AboutAppActivity.class);
-//                intent.putExtra("type", "1");
-//                startActivity(intent);
-//
-//            }
+            if (isChecked) {
+                Intent intent = new Intent(this, AboutAppActivity.class);
+                intent.putExtra("type", "1");
+                startActivity(intent);
+
+            }
         });
 
     }
