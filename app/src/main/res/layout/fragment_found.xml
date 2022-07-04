@@ -84,6 +84,53 @@
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
                     </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_margin="16dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:focusable="true"
+                        android:selectable="true">
+
+                        <LinearLayout
+                            android:id="@+id/llSearch"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="@drawable/small_stroke_grey3"
+                            android:gravity="center_vertical"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+
+                            >
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:scaleX='@{lang.equals("ar")?-1:1}'
+                                android:src="@drawable/ic_search" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="8dp"
+                                android:layout_height="0dp" />
+
+                            <EditText
+                                android:id="@+id/edtSearch"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:hint="@string/what_are_you_looking_for"
+                                android:textColorHint="@color/grey2"
+                                android:textColor="@color/black"
+                                android:textSize="14sp"
+                                android:focusable="true"
+                                android:lines="1"
+                                android:inputType="text"
+                                android:background="@color/transparent"
+
+                                />
+                        </LinearLayout>
+
+                    </FrameLayout>
                 </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>

@@ -42,6 +42,8 @@ import com.lost_found_it.tags.Tags;
 import com.lost_found_it.uis.activity_base.BaseActivity;
 import com.lost_found_it.uis.activity_base.BaseFragment;
 import com.lost_found_it.uis.activity_home.HomeActivity;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,6 +67,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
     private int type;
     private Map<Integer, String> uris;
     private List<String> images;
+    private Uri uri;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -87,84 +90,12 @@ public class FragmentAddAdStep1 extends BaseFragment {
         });
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (req == 1 && result.getResultCode() == Activity.RESULT_OK) {
-                if (type == 1) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(outPutUri)
-                            .into(binding.img1);
-                    binding.icon1.setVisibility(View.GONE);
-                    uris.put(0, outPutUri.toString());
-                    addImages();
 
-                } else if (type == 2) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(outPutUri)
-                            .into(binding.img2);
-                    binding.icon2.setVisibility(View.GONE);
-                    uris.put(1, outPutUri.toString());
-                    addImages();
-
-
-                } else if (type == 3) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(outPutUri)
-                            .into(binding.img3);
-                    binding.icon3.setVisibility(View.GONE);
-                    uris.put(2, outPutUri.toString());
-                    addImages();
-
-                } else if (type == 4) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(outPutUri)
-                            .into(binding.img4);
-                    binding.icon4.setVisibility(View.GONE);
-                    uris.put(3, outPutUri.toString());
-                    addImages();
-
-                }
-
+cropImage(outPutUri);
 
             } else if (req == 2 && result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                Uri uri = result.getData().getData();
-                if (type == 1) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(uri)
-                            .into(binding.img1);
-                    binding.icon1.setVisibility(View.GONE);
-                    uris.put(0, uri.toString());
-                    addImages();
-
-                } else if (type == 2) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(uri)
-                            .into(binding.img2);
-                    binding.icon2.setVisibility(View.GONE);
-                    uris.put(1, uri.toString());
-                    addImages();
-
-                } else if (type == 3) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(uri)
-                            .into(binding.img3);
-                    binding.icon3.setVisibility(View.GONE);
-                    uris.put(2, uri.toString());
-                    addImages();
-
-                } else if (type == 4) {
-                    Glide.with(this)
-                            .asBitmap()
-                            .load(uri)
-                            .into(binding.img4);
-                    binding.icon4.setVisibility(View.GONE);
-                    uris.put(3, uri.toString());
-                    addImages();
-                }
+                 uri = result.getData().getData();
+                cropImage(uri);
             }
         });
 
@@ -435,5 +366,60 @@ public class FragmentAddAdStep1 extends BaseFragment {
 
         return file;
     }
+    private void cropImage(Uri uri) {
 
+        CropImage.activity(uri).setAspectRatio(1,1).setGuidelines(CropImageView.Guidelines.ON).start(getContext(),this);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+      Log.e("dlllcl",requestCode+" "+CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+                uri = result.getUri();
+
+                if (type == 1) {
+              Glide.with(this)
+                      .asBitmap()
+                      .load(uri)
+                      .into(binding.img1);
+              binding.icon1.setVisibility(View.GONE);
+              uris.put(0, uri.toString());
+              addImages();
+
+          }
+          else if (type == 2) {
+              Glide.with(this)
+                      .asBitmap()
+                      .load(uri)
+                      .into(binding.img2);
+              binding.icon2.setVisibility(View.GONE);
+              uris.put(1, uri.toString());
+              addImages();
+
+          }
+          else if (type == 3) {
+              Glide.with(this)
+                      .asBitmap()
+                      .load(uri)
+                      .into(binding.img3);
+              binding.icon3.setVisibility(View.GONE);
+              uris.put(2, uri.toString());
+              addImages();
+
+          }
+          else if (type == 4) {
+              Glide.with(this)
+                      .asBitmap()
+                      .load(uri)
+                      .into(binding.img4);
+              binding.icon4.setVisibility(View.GONE);
+              uris.put(3, uri.toString());
+              addImages();
+          }
+
+    }}
 }

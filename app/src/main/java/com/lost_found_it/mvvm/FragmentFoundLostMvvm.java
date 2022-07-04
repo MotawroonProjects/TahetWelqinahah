@@ -91,7 +91,7 @@ public class FragmentFoundLostMvvm extends AndroidViewModel {
                                         subList.addAll(model.getSub_categories());
                                     }
                                     categoryModel.setSub_categories(subList);
-                                    getData(country,"0","0",type,place_type,null,null);
+                                    getData(country,"0","0",type,place_type,null,null,null);
 
                                 }
 
@@ -116,11 +116,11 @@ public class FragmentFoundLostMvvm extends AndroidViewModel {
                     }
                 });
     }
-    public void getData(String country,String category_id,String sub_category_id,String type,String place_type,String added_later,String city_id){
+    public void getData(String country,String category_id,String sub_category_id,String type,String place_type,String added_later,String city_id,String search){
         getIsLoading().setValue(true);
 
         Api.getService(Tags.base_url)
-                .getAds(country,category_id,sub_category_id,type,place_type,null,added_later,city_id)
+                .getAds(country,category_id,sub_category_id,type,place_type,search,added_later,city_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {
