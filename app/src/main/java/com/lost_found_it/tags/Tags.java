@@ -16,6 +16,7 @@ public class Tags {
     public static final int fragment_search_pos = 5;
     public static final int fragment_ad_details_pos = 6;
     public static final int fragment_setting_pos = 7;
+    public static final int fragment_my_fav_ads_pos = 8;
 
     //lostfounditapp@gmail.com
 }

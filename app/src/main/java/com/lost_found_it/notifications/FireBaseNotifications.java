@@ -85,7 +85,7 @@ public class FireBaseNotifications extends FirebaseMessagingService {
 
             cancelPending = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_MUTABLE);
         } else {
-            cancelPending = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_ONE_SHOT);
+            cancelPending = PendingIntent.getBroadcast(this, 0, cancelIntent, PendingIntent.FLAG_MUTABLE);
 
         }
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

@@ -156,6 +156,13 @@ public class FragmentAdDetails extends BaseFragment {
             }
         });
         mvvm.getOnDataSuccess().observe(activity, this::updateUi);
+        generalMvvm.getOnAdUpdated().observe(activity,aBoolean -> {
+            String device_id = getUserSetting().getId();
+            if (getUserModel() != null) {
+                device_id = device_id + "_" + getUserModel().getData().getUser().getId();
+            }
+            mvvm.getData(getUserModel(),getUserSetting().getCountry(), device_id, adModel.getId());
+        });
         mvvm.getIsLoading().observe(activity, isLoading -> {
             if (isLoading) {
                 binding.setModel(null);
@@ -168,9 +175,13 @@ public class FragmentAdDetails extends BaseFragment {
             binding.setModel(adModel);
         });
 
+
+
         mvvm.getOnLoveDataSuccess().observe(activity, isLove -> {
             adModel.setIs_loved(isLove);
             binding.setModel(adModel);
+            generalMvvm.getOnAdUpdated().setValue(true);
+            Log.e("isLove",isLove);
         });
         mvvm.getOnBadDataSuccess().observe(activity, isBad -> {
             adModel.setIs_bad(isBad);

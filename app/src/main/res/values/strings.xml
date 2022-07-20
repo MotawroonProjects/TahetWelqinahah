@@ -134,6 +134,14 @@
     <string name="cities">Cities</string>
     <string name="search_for_city">Search for city...</string>
     <string name="clear">Clear</string>
+    <string name="unfollowed">Unfollowed</string>
+    <string name="followed">Followed</string>
+    <string name="fav">Favourite</string>
+    <string name="unfav">Un Favourite</string>
+    <string name="reported">Reported</string>
+    <string name="un_reported">Un Reported</string>
+    <string name="governorate">Governorate</string>
+    <string name="favs">Favorites</string>
 
     <array name="lastDays">
         <item>"Choose"</item>

@@ -161,8 +161,33 @@ public class FragmentAdDetailsMvvm extends AndroidViewModel {
                                 boolean isVal = Boolean.parseBoolean(isValue);
                                 if (type.equals("follow")) {
                                     getOnFollowDataSuccess().setValue(String.valueOf(!isVal));
+                                    if (isVal){
+                                        Toast.makeText(context, R.string.unfollowed, Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(context, R.string.followed, Toast.LENGTH_SHORT).show();
 
+                                    }
                                 }
+
+                                if (type.equals("love")) {
+                                    if (isVal){
+                                        Toast.makeText(context, R.string.fav, Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(context, R.string.unfav, Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    getOnLoveDataSuccess().setValue("true");
+                                }
+
+                                if (type.equals("bad")) {
+                                    if (isVal){
+                                        Toast.makeText(context, R.string.reported, Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(context, R.string.un_reported, Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+
                             }
 
 

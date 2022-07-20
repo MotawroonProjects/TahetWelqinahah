@@ -287,6 +287,18 @@
                         android:layout_height="36dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_add_gallery" />
+
+                    <ImageView
+                        android:id="@+id/iconClose1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_close"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:visibility="gone"
+                        app:tint="@color/colorPrimary"
+
+                        />
                 </FrameLayout>
 
                 <FrameLayout
@@ -319,6 +331,17 @@
                         android:layout_height="36dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_add_gallery" />
+                    <ImageView
+                        android:id="@+id/iconClose2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_close"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:visibility="gone"
+                        app:tint="@color/colorPrimary"
+
+                        />
                 </FrameLayout>
 
                 <FrameLayout
@@ -349,6 +372,17 @@
                         android:layout_height="36dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_add_gallery" />
+                    <ImageView
+                        android:id="@+id/iconClose3"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_close"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:visibility="gone"
+                        app:tint="@color/colorPrimary"
+
+                        />
                 </FrameLayout>
 
                 <FrameLayout
@@ -378,6 +412,17 @@
                         android:layout_height="36dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_add_gallery" />
+                    <ImageView
+                        android:id="@+id/iconClose4"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_close"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:visibility="gone"
+                        app:tint="@color/colorPrimary"
+
+                        />
                 </FrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

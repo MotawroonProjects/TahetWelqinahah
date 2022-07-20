@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class FragmentAddAdStep1 extends BaseFragment {
     private FragmentPostAddStep1Binding binding;
@@ -94,6 +95,7 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img1);
                     binding.icon1.setVisibility(View.GONE);
                     uris.put(0, outPutUri.toString());
+                    binding.iconClose1.setVisibility(View.VISIBLE);
                     addImages();
 
                 } else if (type == 2) {
@@ -103,6 +105,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img2);
                     binding.icon2.setVisibility(View.GONE);
                     uris.put(1, outPutUri.toString());
+                    binding.iconClose2.setVisibility(View.VISIBLE);
+
                     addImages();
 
 
@@ -113,6 +117,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img3);
                     binding.icon3.setVisibility(View.GONE);
                     uris.put(2, outPutUri.toString());
+                    binding.iconClose3.setVisibility(View.VISIBLE);
+
                     addImages();
 
                 } else if (type == 4) {
@@ -122,6 +128,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img4);
                     binding.icon4.setVisibility(View.GONE);
                     uris.put(3, outPutUri.toString());
+                    binding.iconClose4.setVisibility(View.VISIBLE);
+
                     addImages();
 
                 }
@@ -136,6 +144,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img1);
                     binding.icon1.setVisibility(View.GONE);
                     uris.put(0, uri.toString());
+                    binding.iconClose1.setVisibility(View.VISIBLE);
+
                     addImages();
 
                 } else if (type == 2) {
@@ -145,6 +155,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img2);
                     binding.icon2.setVisibility(View.GONE);
                     uris.put(1, uri.toString());
+                    binding.iconClose2.setVisibility(View.VISIBLE);
+
                     addImages();
 
                 } else if (type == 3) {
@@ -154,6 +166,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img3);
                     binding.icon3.setVisibility(View.GONE);
                     uris.put(2, uri.toString());
+                    binding.iconClose3.setVisibility(View.VISIBLE);
+
                     addImages();
 
                 } else if (type == 4) {
@@ -163,6 +177,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
                             .into(binding.img4);
                     binding.icon4.setVisibility(View.GONE);
                     uris.put(3, uri.toString());
+                    binding.iconClose4.setVisibility(View.VISIBLE);
+
                     addImages();
                 }
             }
@@ -206,29 +222,29 @@ public class FragmentAddAdStep1 extends BaseFragment {
         binding.setModel(model);
         model.setCountry(getUserSetting().getCountry());
 
-        if (!model.getAd_id().isEmpty()){
-            for (int index =0;index<model.getOnlineImages().size();index++){
+        if (!model.getAd_id().isEmpty()) {
+            for (int index = 0; index < model.getOnlineImages().size(); index++) {
                 String onlineUrl = model.getOnlineImages().get(index);
-                if (index==0){
+                if (index == 0) {
                     Glide.with(this)
                             .asBitmap()
                             .load(onlineUrl)
                             .into(binding.img1);
                     binding.icon1.setVisibility(View.GONE);
 
-                }else if (index==1){
+                } else if (index == 1) {
                     Glide.with(this)
                             .asBitmap()
                             .load(onlineUrl)
                             .into(binding.img2);
                     binding.icon2.setVisibility(View.GONE);
-                }else if (index==2){
+                } else if (index == 2) {
                     Glide.with(this)
                             .asBitmap()
                             .load(onlineUrl)
                             .into(binding.img3);
                     binding.icon3.setVisibility(View.GONE);
-                }else if (index==3){
+                } else if (index == 3) {
                     Glide.with(this)
                             .asBitmap()
                             .load(onlineUrl)
@@ -237,9 +253,9 @@ public class FragmentAddAdStep1 extends BaseFragment {
                 }
             }
 
-            if (model.getAd_type().equals("lost")){
+            if (model.getAd_type().equals("lost")) {
                 updateAdTypeLost();
-            }else if (model.getAd_type().equals("found")){
+            } else if (model.getAd_type().equals("found")) {
                 updateAdTypeFound();
             }
         }
@@ -247,10 +263,10 @@ public class FragmentAddAdStep1 extends BaseFragment {
         if (getUserSetting().getCountry().equals("sa")) {
             binding.checkbox.setVisibility(View.VISIBLE);
             binding.checkbox.setText(R.string.thing_great_mosq);
-            if (!model.getAd_id().isEmpty()){
-                if (model.getAd_type().equals("special")){
+            if (!model.getAd_id().isEmpty()) {
+                if (model.getAd_type().equals("special")) {
                     binding.checkbox.setChecked(true);
-                }else {
+                } else {
                     binding.checkbox.setChecked(false);
 
                 }
@@ -259,10 +275,10 @@ public class FragmentAddAdStep1 extends BaseFragment {
         } else if (getUserSetting().getCountry().equals("ae")) {
             binding.checkbox.setVisibility(View.VISIBLE);
             binding.checkbox.setText(R.string.thing_great_tower);
-            if (!model.getAd_id().isEmpty()){
-                if (model.getAd_type().equals("special")){
+            if (!model.getAd_id().isEmpty()) {
+                if (model.getAd_type().equals("special")) {
                     binding.checkbox.setChecked(true);
-                }else {
+                } else {
                     binding.checkbox.setChecked(false);
 
                 }
@@ -274,9 +290,8 @@ public class FragmentAddAdStep1 extends BaseFragment {
         }
 
 
-
         binding.flAdLost.setOnClickListener(v -> {
-           updateAdTypeLost();
+            updateAdTypeLost();
         });
 
         binding.flAdFound.setOnClickListener(v -> {
@@ -310,6 +325,49 @@ public class FragmentAddAdStep1 extends BaseFragment {
         });
         binding.btnNext.setOnClickListener(v -> {
             activity.navigateToStep2(model);
+        });
+        binding.iconClose1.setOnClickListener(v -> {
+            binding.iconClose1.setVisibility(View.GONE);
+            binding.icon1.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .asBitmap()
+                    .load("")
+                    .into(binding.img1);
+            uris.remove(0);
+            addImages();
+        });
+
+        binding.iconClose2.setOnClickListener(v -> {
+            binding.iconClose2.setVisibility(View.GONE);
+            binding.icon2.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .asBitmap()
+                    .load("")
+                    .into(binding.img2);
+            uris.remove(1);
+            addImages();
+        });
+
+        binding.iconClose3.setOnClickListener(v -> {
+            binding.iconClose3.setVisibility(View.GONE);
+            binding.icon3.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .asBitmap()
+                    .load("")
+                    .into(binding.img3);
+            uris.remove(2);
+            addImages();
+        });
+
+        binding.iconClose4.setOnClickListener(v -> {
+            binding.iconClose4.setVisibility(View.GONE);
+            binding.icon4.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .asBitmap()
+                    .load("")
+                    .into(binding.img4);
+            uris.remove(3);
+            addImages();
         });
     }
 
@@ -395,12 +453,14 @@ public class FragmentAddAdStep1 extends BaseFragment {
 
     private void openCamera() {
         req = 1;
-        outPutUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", getCameraOutPutFile());
+        outPutUri = FileProvider.getUriForFile(Objects.requireNonNull(activity.getApplicationContext()), BuildConfig.APPLICATION_ID + ".provider", getCameraOutPutFile());
 
         if (outPutUri != null) {
             Intent intentCamera = new Intent();
             intentCamera.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
             intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
+            intentCamera.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
             launcher.launch(intentCamera);
         } else {
             Toast.makeText(activity, "You don't allow to access photos", Toast.LENGTH_SHORT).show();

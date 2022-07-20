@@ -4,6 +4,7 @@ package com.lost_found_it.services;
 import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.CityDataModel;
+import com.lost_found_it.model.GovernorateDataModel;
 import com.lost_found_it.model.HomeDataModel;
 import com.lost_found_it.model.MessagesDataModel;
 import com.lost_found_it.model.RoomDataModel;
@@ -49,7 +50,13 @@ public interface Service {
 
     @GET("api/setting/cities")
     Single<Response<CityDataModel>> getCities(@Query("country") String country,
+                                              @Query("governorate_id") String governorate_id,
                                               @Query("lang") String lang
+    );
+
+    @GET("api/setting/governorates")
+    Single<Response<GovernorateDataModel>> getGovernorates(@Query("country") String country,
+                                                           @Query("lang") String lang
     );
 
 
@@ -74,6 +81,11 @@ public interface Service {
     @GET("api/profile/myAds")
     Single<Response<AdsDataModel>> getMyAds(@Header("Authorization") String Authorization,
                                             @Query("country") String country);
+
+    @GET("api/profile/myFavorites")
+    Single<Response<AdsDataModel>> getMyFavAds(@Header("Authorization") String Authorization,
+                                               @Query("country") String country);
+
 
     @GET("api/home/getAds")
     Single<Response<AdsDataModel>> search(@Query("country") String country,

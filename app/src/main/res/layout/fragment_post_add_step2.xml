@@ -6,6 +6,9 @@
         <variable
             name="model"
             type="com.lost_found_it.model.AddAdModel" />
+        <variable
+            name="cityModel"
+            type="com.lost_found_it.model.CityModel" />
         <import type="android.text.Html" />
     </data>
 
@@ -146,6 +149,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp">
 
+
                     <Spinner
                         android:id="@+id/spinnerSubCategory"
                         android:layout_width="0dp"
@@ -162,10 +166,69 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
                         android:padding="3dp"
-                        android:src="@drawable/ic_arrow_down" />
+                        android:src="@drawable/ic_arrow_down"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_pin"
+                    app:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/governorate"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llGovernorate"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/small_stroke_rounded_grey0"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+
+                 <Spinner
+                     android:id="@+id/spinnerGovernorate"
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="1"
+                     android:background="@color/transparent" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="8dp"
+                    android:layout_height="0dp"
+                    android:visibility="visible"
+                    />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:visibility="visible"
+                    />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -194,6 +257,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/llCity"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
@@ -201,23 +265,36 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
-                <Spinner
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:text="@{cityModel.name}"
+                    />
+
+               <!-- <Spinner
                     android:id="@+id/spinnerCity"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/transparent" />
+                    android:background="@color/transparent" />-->
 
                 <androidx.legacy.widget.Space
                     android:layout_width="8dp"
-                    android:layout_height="0dp" />
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:padding="3dp"
-                    android:src="@drawable/ic_arrow_down" />
+                    android:src="@drawable/ic_arrow_down"
+                    android:visibility="gone"
+                    />
             </LinearLayout>
 
             <LinearLayout

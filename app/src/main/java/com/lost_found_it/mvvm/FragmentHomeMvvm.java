@@ -121,11 +121,7 @@ public class FragmentHomeMvvm extends AndroidViewModel implements GoogleApiClien
                             }
 
                         }else {
-                            try {
-                                Log.e(TAG,response.errorBody().string()+"___"+response.body().getMessage().toString());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
                         }
                     }
 
@@ -160,11 +156,7 @@ public class FragmentHomeMvvm extends AndroidViewModel implements GoogleApiClien
                             }
 
                         }else {
-                            try {
-                                Log.e(TAG,response.errorBody().string()+"___"+response.body().getMessage().toString());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
                         }
                     }
 

@@ -7,20 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.lost_found_it.model.AdModel;
-import com.lost_found_it.model.AdsDataModel;
 import com.lost_found_it.model.CategoryDataModel;
 import com.lost_found_it.model.CategoryModel;
-import com.lost_found_it.model.CityDataModel;
-import com.lost_found_it.model.CityModel;
-import com.lost_found_it.model.StatusResponse;
-import com.lost_found_it.model.SubCategoryModel;
-import com.lost_found_it.model.UserModel;
+import com.lost_found_it.model.GovernorateDataModel;
+import com.lost_found_it.model.GovernorateModel;
 import com.lost_found_it.remote.Api;
 import com.lost_found_it.tags.Tags;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.SingleObserver;
@@ -33,7 +27,7 @@ import retrofit2.Response;
 public class FragmentAddAdsMvvm extends AndroidViewModel {
     private final String TAG = FragmentAddAdsMvvm.class.getName();
     public MutableLiveData<List<CategoryModel>> onCategoryDataSuccess;
-    public MutableLiveData<List<CityModel>> onCityDataSuccess;
+    public MutableLiveData<List<GovernorateModel>> onGovernorateDataSuccess;
 
 
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -47,11 +41,11 @@ public class FragmentAddAdsMvvm extends AndroidViewModel {
         }
         return onCategoryDataSuccess;
     }
-    public MutableLiveData<List<CityModel>> getOnCityDataSuccess() {
-        if (onCityDataSuccess == null) {
-            onCityDataSuccess = new MutableLiveData<>();
+    public MutableLiveData<List<GovernorateModel>> getOnGovernorateDataSuccess() {
+        if (onGovernorateDataSuccess == null) {
+            onGovernorateDataSuccess = new MutableLiveData<>();
         }
-        return onCityDataSuccess;
+        return onGovernorateDataSuccess;
     }
     public void getCategories(String country){
 
@@ -92,24 +86,25 @@ public class FragmentAddAdsMvvm extends AndroidViewModel {
                     }
                 });
     }
-    public void getCities(String country, String lang) {
+    public void getGovernorates(String country, String lang) {
         Api.getService(Tags.base_url)
-                .getCities(country, lang)
+                .getGovernorates(country, lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Response<CityDataModel>>() {
+                .subscribe(new SingleObserver<Response<GovernorateDataModel>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposable.add(d);
                     }
 
                     @Override
-                    public void onSuccess(@NonNull Response<CityDataModel> response) {
+                    public void onSuccess(@NonNull Response<GovernorateDataModel> response) {
 
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
                                 if (response.body().getCode() == 200) {
-                                    getOnCityDataSuccess().setValue(response.body().getData());
+                                    Log.e("asdas",response.body().getData().size()+"");
+                                    getOnGovernorateDataSuccess().setValue(response.body().getData());
                                 }
                             }
                         }

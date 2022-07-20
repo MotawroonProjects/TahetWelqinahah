@@ -57,8 +57,16 @@ public class MyAdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         myHolder.binding.llDelete.setOnClickListener(view -> {
             if (fragment instanceof FragmentMyAds){
-                FragmentMyAds fragmentMyAds=(FragmentMyAds) fragment;
-                fragmentMyAds.delete(myHolder.getAdapterPosition(),list.get(position));
+                try {
+                    if (list.size()>0){
+                        FragmentMyAds fragmentMyAds=(FragmentMyAds) fragment;
+                        fragmentMyAds.delete(myHolder.getAdapterPosition(),list.get(position));
+
+                    }
+
+                }catch (Exception e){
+
+                }
             }
         });
 

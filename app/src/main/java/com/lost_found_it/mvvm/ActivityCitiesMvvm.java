@@ -61,13 +61,13 @@ public class ActivityCitiesMvvm extends AndroidViewModel {
 
     //_________________________hitting api_________________________________
 
-    public void getCities(String country, String lang) {
+    public void getCities(String country, String lang,String governorate_id) {
         if (getOnDataSuccess().getValue()!=null) {
             getOnDataSuccess().getValue().clear();
         }
         getIsLoading().postValue(true);
         Api.getService(Tags.base_url)
-                .getCities(country, lang)
+                .getCities(country,governorate_id,lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<CityDataModel>>() {
@@ -97,10 +97,10 @@ public class ActivityCitiesMvvm extends AndroidViewModel {
 
     }
 
-    public void search(String query,String country,String lang) {
+    public void search(String query,String country,String lang,String governorate_id) {
         Log.e("search",query+"_"+getOnDataSuccess().getValue().size()+"____");
         if (query.isEmpty()){
-           getCities(country, lang);
+           getCities(country, lang,governorate_id);
         }else {
             if (getOnDataSuccess().getValue() != null) {
                 Observable.fromIterable(getOnDataSuccess().getValue())

@@ -29,6 +29,7 @@ import com.lost_found_it.uis.activity_home.fragments.FragmentHome;
 import com.lost_found_it.uis.activity_home.fragments.FragmentMain;
 import com.lost_found_it.uis.activity_home.fragments.FragmentMecca;
 import com.lost_found_it.uis.activity_home.fragments.FragmentMyAds;
+import com.lost_found_it.uis.activity_home.fragments.FragmentMyFavorite;
 import com.lost_found_it.uis.activity_home.fragments.FragmentNotifications;
 import com.lost_found_it.uis.activity_home.fragments.FragmentSearch;
 import com.lost_found_it.uis.activity_home.fragments.FragmentSettings;
@@ -77,7 +78,6 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-
     private void initView() {
 
 
@@ -121,6 +121,7 @@ public class HomeActivity extends BaseActivity {
         fragments.add(FragmentSearch.newInstance());
         fragments.add(FragmentAdDetails.newInstance());
         fragments.add(FragmentSettings.newInstance());
+        fragments.add(FragmentMyFavorite.newInstance());
 
         adapter = new MyPagerAdapter(getSupportFragmentManager(), fragments, null);
         binding.pager.setAdapter(adapter);
@@ -130,7 +131,6 @@ public class HomeActivity extends BaseActivity {
         if (stack.isEmpty()) {
             stack.push(Tags.fragment_main_pos);
         }
-
 
 
         generalMvvm.getMainNavigation().observe(this, this::updateStack);
@@ -168,7 +168,6 @@ public class HomeActivity extends BaseActivity {
         binding.pager.setCurrentItem(pos);
     }
 
-
     public void refreshActivity(String lang) {
         Paper.book().write("lang", lang);
         Language.setNewLocale(this, lang);
@@ -203,7 +202,6 @@ public class HomeActivity extends BaseActivity {
         }
 
     }
-
 
     @Override
     protected void onDestroy() {

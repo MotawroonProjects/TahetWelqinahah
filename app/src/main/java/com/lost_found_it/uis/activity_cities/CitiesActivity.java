@@ -40,17 +40,25 @@ public class CitiesActivity extends BaseActivity {
     private ActivityCitiesMvvm mvvm;
     private CityAdapter adapter;
     private CompositeDisposable disposable = new CompositeDisposable();
+    private String governorate_id = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cities);
+        getDataFromIntent();
         initView();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("governorate_id")){
+            governorate_id = intent.getStringExtra("governorate_id");
+        }
     }
 
     @SuppressLint("CheckResult")
     private void initView() {
         mvvm = ViewModelProviders.of(this).get(ActivityCitiesMvvm.class);
-
         setUpToolbar(binding.toolbar, getString(R.string.cities), R.color.white, R.color.black);
 
         binding.setLang(getLang());
@@ -80,8 +88,8 @@ public class CitiesActivity extends BaseActivity {
         binding.recViewLayoutCity.recView.setAdapter(adapter);
         binding.recViewLayoutCity.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         binding.recViewLayoutCity.tvNoData.setText(R.string.no_data_to_show);
-        binding.recViewLayoutCity.swipeRefresh.setOnRefreshListener(() -> mvvm.getCities(getUserSetting().getCountry(), getLang()));
-        mvvm.getCities(getUserSetting().getCountry(), getLang());
+        binding.recViewLayoutCity.swipeRefresh.setOnRefreshListener(() -> mvvm.getCities(getUserSetting().getCountry(), getLang(),governorate_id));
+        mvvm.getCities(getUserSetting().getCountry(), getLang(),governorate_id);
 
         Observable.create(emitter -> {
                     binding.edtSearch.addTextChangedListener(new TextWatcher() {
@@ -104,7 +112,7 @@ public class CitiesActivity extends BaseActivity {
                 .debounce(1, TimeUnit.SECONDS)
                 .distinctUntilChanged()
                 .subscribe(query -> {
-                    mvvm.search(query.toString(),getUserSetting().getCountry(),getLang());
+                    mvvm.search(query.toString(),getUserSetting().getCountry(),getLang(),governorate_id);
                 });
 
 

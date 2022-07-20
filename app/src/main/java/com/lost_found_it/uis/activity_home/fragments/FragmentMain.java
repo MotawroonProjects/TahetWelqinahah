@@ -218,6 +218,15 @@ public class FragmentMain extends BaseFragment {
             }
         });
 
+        binding.cardMyFav.setOnClickListener(v -> {
+            if (getUserModel() == null) {
+                navigateToLoginActivity();
+            } else {
+                binding.drawerLayout.closeDrawer(GravityCompat.START);
+                generalMvvm.getMainNavigation().setValue(Tags.fragment_my_fav_ads_pos);
+            }
+
+        });
         binding.cardLogout.setOnClickListener(v -> {
             if (getUserModel() == null) {
                 navigateToLoginActivity();

@@ -63,15 +63,15 @@
     <string name="what_are_you_looking_for">عن ماذا تبحث ؟</string>
     <string name="post_your_ad">إنشر إعلانك</string>
     <string name="now">الان</string>
-    <string name="missing_things_in_nthe_great_mosque_nof_mecca">العناصر\nالمفقودة في\nالحرم المكي</string>
+    <string name="missing_things_in_nthe_great_mosque_nof_mecca">العناصر\nالمفقودة في\nالحرمين</string>
     <string name="missing_things_in_nthe_tower">العناصر\nالمفقودة في\nبرج خليفة</string>
-    <string name="found_things_in_nthe_great_mosque_nof_mecca">العناصر\nتمت العثور عليها في\nالحرم المكي</string>
+    <string name="found_things_in_nthe_great_mosque_nof_mecca">العناصر\nتمت العثور عليها في\nالحرمين</string>
     <string name="found_things_in_nthe_tower">العناصر\nتمت العثور عليها في\nبرج خليفة</string>
 
-    <string name="missing_things_in_mecca">العناصر المفقودة في الحرم المكي</string>
+    <string name="missing_things_in_mecca">العناصر المفقودة في الحرمين</string>
     <string name="missing_things_in_tower">العناصر المفقودة في برج خليفة</string>
 
-    <string name="found_things_in_mecca">العناصر تمت العثور عليها في الحرم المكي</string>
+    <string name="found_things_in_mecca">العناصر تمت العثور عليها في الحرمين</string>
     <string name="found_things_in_tower">العناصر تمت العثور عليها في برج خليفة</string>
 
     <string name="potential_ads">إعلانات محتملة</string>
@@ -107,7 +107,7 @@
     <string name="location">الموقع</string>
     <string name="publish">نشر</string>
     <string name="back">رجوع</string>
-    <string name="thing_great_mosq">العناصر في الحرم المكي</string>
+    <string name="thing_great_mosq">العناصر في الحرمين</string>
     <string name="thing_great_tower">العناصر في برج خليفة</string>
     <string name="whatsapp_num">واتس اب</string>
     <string name="no_item">لا توجد عناصر لعرضها</string>
@@ -134,6 +134,14 @@
     <string name="cities">المدن</string>
     <string name="search_for_city">إبحث عن المدينة ...</string>
     <string name="clear">إلغاء التصفية</string>
+    <string name="unfollowed">إلغاء المتابعة</string>
+    <string name="followed">تمت المتابعة</string>
+    <string name="fav">مفضلة</string>
+    <string name="unfav">غير مفضلة</string>
+    <string name="reported">تم الابلاغ</string>
+    <string name="un_reported">إزالة الابلاغ</string>
+    <string name="governorate">المحافظة</string>
+    <string name="favs">المفضلة</string>
 
     <array name="lastDays">
         <item>"إختر"</item>
