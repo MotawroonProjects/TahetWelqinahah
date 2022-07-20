@@ -297,6 +297,7 @@
                         android:layout_margin="5dp"
                         android:visibility="gone"
                         app:tint="@color/colorPrimary"
+                        android:background="@drawable/circle_white"
 
                         />
                 </FrameLayout>
@@ -340,6 +341,7 @@
                         android:layout_margin="5dp"
                         android:visibility="gone"
                         app:tint="@color/colorPrimary"
+                        android:background="@drawable/circle_white"
 
                         />
                 </FrameLayout>
@@ -381,6 +383,7 @@
                         android:layout_margin="5dp"
                         android:visibility="gone"
                         app:tint="@color/colorPrimary"
+                        android:background="@drawable/circle_white"
 
                         />
                 </FrameLayout>
@@ -421,6 +424,7 @@
                         android:layout_margin="5dp"
                         android:visibility="gone"
                         app:tint="@color/colorPrimary"
+                        android:background="@drawable/circle_white"
 
                         />
                 </FrameLayout>

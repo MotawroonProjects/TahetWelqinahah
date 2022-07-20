@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -88,6 +89,7 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     private SpinnerGovernorateAdapter spinnerGovernorateAdapter;
     private ActivityResultLauncher<Intent> launcher;
     private String governorate_id = null;
+
 
     @SuppressLint("MissingPermission")
     @Override
@@ -276,31 +278,14 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         });
 
 
-        binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            model.setAgree_terms(isChecked);
-            if (isChecked && model != null && model.getAd_id().isEmpty()) {
-        binding.tvcheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, AboutAppActivity.class);
-                intent.putExtra("type", "1");
-                startActivity(intent);
-            }
+        binding.tvcheckbox.setOnClickListener(v -> {
+            Intent intent = new Intent(activity, AboutAppActivity.class);
+            intent.putExtra("type", "1");
+            startActivity(intent);
         });
 
 
-        binding.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            model.setAgree_terms(isChecked);
-//            if (isChecked&&model!=null&&model.getAd_id().isEmpty()) {
-//                Intent intent = new Intent(activity, AboutAppActivity.class);
-//                intent.putExtra("type", "1");
-//                startActivity(intent);
-//
-//
-//
-//            }
-            }
-        });
+        binding.checkbox.setOnCheckedChangeListener((buttonView1, isChecked1) -> model.setAgree_terms(isChecked1));
         binding.btnPublish.setOnClickListener(v -> {
             String action = "add";
             if (model.getAd_id().isEmpty()) {
@@ -321,13 +306,12 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         binding.llCity.setOnClickListener(v -> {
             Intent intent = new Intent(activity, CitiesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            intent.putExtra("governorate_id",governorate_id);
+            intent.putExtra("governorate_id", governorate_id);
             launcher.launch(intent);
         });
         binding.btnBack.setOnClickListener(v -> {
             activity.navigateToStep1();
         });
-
     }
 
     private int getCategoryPos(String category_id) {
@@ -341,7 +325,6 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         }
         return 0;
     }
-
 
     private int getSubCategoryPos(String sub_category_id, List<SubCategoryModel> list) {
         if (mvvm.getOnCategoryDataSuccess().getValue() != null) {
@@ -382,7 +365,7 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         binding.setModel(model);
         setUpMapFragment();
         mvvm.getCategories(getUserSetting().getCountry());
-        mvvm.getGovernorates(getUserSetting().getCountry(),getLang());
+        mvvm.getGovernorates(getUserSetting().getCountry(), getLang());
 
 
         if (model != null && !model.getAd_id().isEmpty()) {
@@ -561,3 +544,4 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     }
 
 }
+
