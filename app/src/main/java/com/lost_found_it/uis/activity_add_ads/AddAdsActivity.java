@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
@@ -18,6 +19,8 @@ import com.lost_found_it.model.AdModel;
 import com.lost_found_it.model.AddAdModel;
 import com.lost_found_it.model.SliderImages;
 import com.lost_found_it.uis.activity_base.BaseActivity;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,4 +156,5 @@ public class AddAdsActivity extends BaseActivity {
         super.onDestroy();
         disposable.clear();
     }
+
 }

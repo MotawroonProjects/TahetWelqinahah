@@ -2,6 +2,8 @@ package com.lost_found_it.uis.activity_home.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +51,9 @@ public class FragmentLost extends BaseFragment {
     private AdAdapter adAdapter;
     private CategoryModel selectedCategory;
     private CompositeDisposable disposable = new CompositeDisposable();
-
+    private String category_id;
+    private String sub_category_id="0";
+    private String search=null;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -185,7 +189,25 @@ public class FragmentLost extends BaseFragment {
             mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
 
         });
+        binding.edtSearch.requestFocus();
+        binding.edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                search = binding.edtSearch.getText().toString();
+                mvvm.getData(getUserSetting().getCountry(), category_id, sub_category_id, "found", "main", null, null, search);
+            }
+        });
         mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
 
     }
@@ -200,7 +222,8 @@ public class FragmentLost extends BaseFragment {
         if (selectedCategory != null) {
             category_id = selectedCategory.getId();
         }
-        mvvm.getData(getUserSetting().getCountry(), category_id, subCategoryModel.getId(), "lost", "main", null, null);
+        sub_category_id=subCategoryModel.getId();
+        mvvm.getData(getUserSetting().getCountry(), category_id, subCategoryModel.getId(), "lost", "main", null, null,search);
 
     }
 
@@ -208,7 +231,7 @@ public class FragmentLost extends BaseFragment {
 
         if (categoryModel==null){
             brandAdapter.updateList(new ArrayList<>());
-            mvvm.getData(getUserSetting().getCountry(), null, null, "lost", "main", null, null);
+            mvvm.getData(getUserSetting().getCountry(), null, null, "lost", "main", null, null,search);
 
         }else {
             if (categoryModel.getSub_categories().size() > 0) {
@@ -230,14 +253,14 @@ public class FragmentLost extends BaseFragment {
                 brandAdapter.updateList(list);
 
 
-                String category_id = "0";
+                 category_id = "0";
                 if (selectedCategory != null) {
                     category_id = selectedCategory.getId();
                 }
-                mvvm.getData(getUserSetting().getCountry(), category_id, "0", "lost", "main", null, null);
+                mvvm.getData(getUserSetting().getCountry(), category_id, "0", "lost", "main", null, null,search);
 
             } else {
-                mvvm.getData(getUserSetting().getCountry(), categoryModel.getId(), null, "lost", "main", null, null);
+                mvvm.getData(getUserSetting().getCountry(), categoryModel.getId(), null, "lost", "main", null, null,search);
 
                 brandAdapter = new BrandAdapter(activity, this, getLang());
                 binding.recViewBrandsLost.setAdapter(brandAdapter);

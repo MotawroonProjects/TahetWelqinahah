@@ -32,6 +32,9 @@
         tools:ignore="AllowBackup"
         tools:targetApi="q">
         <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
             android:name=".uis.activity_cities.CitiesActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
