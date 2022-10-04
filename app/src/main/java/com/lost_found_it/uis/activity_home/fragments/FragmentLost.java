@@ -205,7 +205,7 @@ public class FragmentLost extends BaseFragment {
             public void afterTextChanged(Editable s) {
 
                 search = binding.edtSearch.getText().toString();
-                mvvm.getData(getUserSetting().getCountry(), category_id, sub_category_id, "found", "main", null, null, search);
+                mvvm.getData(getUserSetting().getCountry(), category_id, sub_category_id, "lost", "main", null, null, search);
             }
         });
         mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
