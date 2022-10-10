@@ -46,17 +46,20 @@ public class BrandAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         myHolder.binding.setModel(model);
 
         if (model.isSelected()){
+
             if (oldHolder==null){
+                Log.e("dldlldl","dlldlldl");
                 oldHolder = myHolder;
+                Log.e("slslsll",oldHolder.getAdapterPosition()+"");
             }
         }
 
         myHolder.itemView.setOnClickListener(v -> {
             if (oldHolder!=null){
-                SubCategoryModel oldModel = list.get(oldHolder.getAdapterPosition());
+                SubCategoryModel oldModel = list.get(oldHolder.getLayoutPosition());
                 if (oldModel.isSelected()){
                     oldModel.setSelected(false);
-                    list.set(oldHolder.getAdapterPosition(),oldModel);
+                    list.set(oldHolder.getLayoutPosition(),oldModel);
                     oldHolder.binding.setModel(oldModel);
                 }
             }
