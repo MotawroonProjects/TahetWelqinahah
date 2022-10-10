@@ -165,7 +165,8 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
 
 
                         }
-                    } else {
+                    }
+                    else {
                         int pos = getCategoryPos(model.getCategory_id());
                         binding.spinnerCategory.setSelection(pos);
                         if (!model.getSub_category_id().isEmpty()) {
@@ -198,7 +199,8 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
 
             } else {
                 int pos = getCityPos(model.getCity_id());
-                //binding.spinnerCity.setSelection(pos);
+
+              //  binding.spinnerGovernorate.setSelection(pos);
 
 
             }
@@ -497,8 +499,13 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
     public void onLocationChanged(Location location) {
         lat = location.getLatitude();
         lng = location.getLongitude();
+        if(model.getAd_id().isEmpty()){
         getAddress(lat, lng);
-        addMarker(new LatLng(lat, lng));
+        addMarker(new LatLng(lat, lng));}
+        else {
+            getAddress(model.getLat(), model.getLng());
+            addMarker(new LatLng(model.getLat(), model.getLng()));
+        }
         if (googleApiClient != null) {
             LocationServices.getFusedLocationProviderClient(activity).removeLocationUpdates(locationCallback);
             googleApiClient.disconnect();
