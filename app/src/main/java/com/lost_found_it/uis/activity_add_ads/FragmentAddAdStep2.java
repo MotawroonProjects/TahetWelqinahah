@@ -366,7 +366,7 @@ public class FragmentAddAdStep2 extends BaseFragment implements OnMapReadyCallba
         model.setPhone_code(phone_code);
         binding.setModel(model);
         setUpMapFragment();
-        mvvm.getCategories(getUserSetting().getCountry());
+        mvvm.getCategories(getUserSetting().getCountry(),getLang());
         mvvm.getGovernorates(getUserSetting().getCountry(), getLang());
 
 

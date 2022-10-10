@@ -135,7 +135,7 @@ public class FragmentFound extends BaseFragment {
     private void LoadUiData() {
         generalMvvm.getOnCountrySuccess().observe(activity, isChanged -> {
             binding.setCountry(getUserSetting().getCountry());
-            mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "found", "main",getLang());
         });
 
 
@@ -160,7 +160,7 @@ public class FragmentFound extends BaseFragment {
         });
 
         generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
-            mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "found", "main",getLang());
         });
 
         mvvm.getIsLoading().observe(activity, isLoading -> {
@@ -210,11 +210,11 @@ public class FragmentFound extends BaseFragment {
 
         binding.recViewLayout.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> {
-            mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "found", "main",getLang());
 
         });
 
-        mvvm.getCategories(getUserSetting().getCountry(), "found", "main");
+        mvvm.getCategories(getUserSetting().getCountry(), "found", "main",getLang());
 
     }
 

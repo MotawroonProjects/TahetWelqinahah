@@ -114,7 +114,7 @@ public class FragmentLost extends BaseFragment {
         generalMvvm = ViewModelProviders.of(activity).get(GeneralMvvm.class);
         generalMvvm.getOnCountrySuccess().observe(activity, isChanged -> {
             binding.setCountry(getUserSetting().getCountry());
-            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main",getLang());
 
         });
 
@@ -138,7 +138,7 @@ public class FragmentLost extends BaseFragment {
         });
 
         generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
-            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main",getLang());
         });
         mvvm.getIsLoading().observe(activity, isLoading -> {
             binding.recViewLayoutLost.swipeRefresh.setRefreshing(isLoading);
@@ -186,7 +186,7 @@ public class FragmentLost extends BaseFragment {
 
         binding.recViewLayoutLost.swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         binding.recViewLayoutLost.swipeRefresh.setOnRefreshListener(() -> {
-            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
+            mvvm.getCategories(getUserSetting().getCountry(), "lost", "main",getLang());
 
         });
         binding.edtSearch.requestFocus();
@@ -208,7 +208,7 @@ public class FragmentLost extends BaseFragment {
                 mvvm.getData(getUserSetting().getCountry(), category_id, sub_category_id, "lost", "main", null, null, search);
             }
         });
-        mvvm.getCategories(getUserSetting().getCountry(), "lost", "main");
+        mvvm.getCategories(getUserSetting().getCountry(), "lost", "main",getLang());
 
     }
 

@@ -47,10 +47,10 @@ public class FragmentAddAdsMvvm extends AndroidViewModel {
         }
         return onGovernorateDataSuccess;
     }
-    public void getCategories(String country){
+    public void getCategories(String country,String lang){
 
         Api.getService(Tags.base_url)
-                .getCategoryWithSubCategory(country)
+                .getCategoryWithSubCategory(country,lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<CategoryDataModel>>() {

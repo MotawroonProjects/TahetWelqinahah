@@ -64,10 +64,10 @@ public class FragmentMyFavAdsMvvm extends AndroidViewModel {
 
 
 
-    public void getMyAds(String country, UserModel model){
+    public void getMyAds(String country, UserModel model,String lang){
         getIsLoading().setValue(true);
         Api.getService(Tags.base_url)
-                .getMyFavAds("Bearer "+model.getData().getAccess_token(),country)
+                .getMyFavAds("Bearer "+model.getData().getAccess_token(),country,lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {
@@ -88,7 +88,7 @@ public class FragmentMyFavAdsMvvm extends AndroidViewModel {
                         }else {
                             try {
                                 Log.e(TAG,response.errorBody().string()+"___"+response.body().getMessage().toString());
-                            } catch (IOException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }

@@ -57,10 +57,11 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
         return onDelete;
     }
 
-    public void getMyAds(String country, UserModel model){
+    public void getMyAds(String country, UserModel model,String lang){
         getIsLoading().setValue(true);
+        Log.e("Dldldlld",model.getData().getAccess_token());
         Api.getService(Tags.base_url)
-                .getMyAds("Bearer "+model.getData().getAccess_token(),country)
+                .getMyAds("Bearer "+model.getData().getAccess_token(),country,lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {
@@ -81,7 +82,8 @@ public class FragmentMyAdsMvvm extends AndroidViewModel {
                         }else {
                             try {
                                 Log.e(TAG,response.errorBody().string()+"___"+response.body().getMessage().toString());
-                            } catch (IOException e) {
+                            } catch (Exception e) {
+                                Log.e("kdkkd",response.code()+"");
                                 e.printStackTrace();
                             }
                         }
