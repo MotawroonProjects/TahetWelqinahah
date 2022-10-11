@@ -354,7 +354,13 @@ public class FragmentAdDetails extends BaseFragment {
                 currentPos = 0;
 
             }
-            binding.pager.setCurrentItem(currentPos);
+            try {
+                binding.pager.setCurrentItem(currentPos);
+
+            }
+            catch (Exception e){
+
+            }
         }
     }
 

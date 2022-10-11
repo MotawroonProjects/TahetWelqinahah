@@ -95,7 +95,7 @@ public class FragmentMyFavorite extends BaseFragment {
 
         mvvm.getOnUnFav().observe(activity,aBoolean -> {
             generalMvvm.getOnAdUpdated().setValue(true);
-            mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
+            mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang());
 
         });
         Observable.timer(10, TimeUnit.MILLISECONDS)
@@ -138,13 +138,13 @@ public class FragmentMyFavorite extends BaseFragment {
 
         generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
             if (getUserModel() != null) {
-                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
+                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang());
 
             }
         });
         generalMvvm.getOnUserLoggedIn().observe(activity, mBoolean -> {
             if (getUserModel() != null) {
-                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
+                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang());
 
             }
         });
@@ -165,11 +165,11 @@ public class FragmentMyFavorite extends BaseFragment {
 
 
         if (getUserModel() != null) {
-            mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
+            mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang());
 
         }
 
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.getMyAds(getUserSetting().getCountry(), getUserModel()));
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang()));
         adapter = new FavAdAdapter(activity, this);
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recViewLayout.recView.setHasFixedSize(true);

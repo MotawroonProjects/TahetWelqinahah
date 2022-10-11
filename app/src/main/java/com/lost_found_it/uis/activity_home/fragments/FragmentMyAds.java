@@ -130,13 +130,13 @@ public class FragmentMyAds extends BaseFragment {
 
         generalMvvm.getOnAdUpdated().observe(activity, mBoolean -> {
             if (getUserModel() != null) {
-                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
+                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang());
 
             }
         });
         generalMvvm.getOnUserLoggedIn().observe(activity, mBoolean -> {
             if (getUserModel() != null) {
-                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
+                mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang());
 
             }
         });
@@ -173,11 +173,11 @@ public class FragmentMyAds extends BaseFragment {
         });
 
         if (getUserModel() != null) {
-            mvvm.getMyAds(getUserSetting().getCountry(), getUserModel());
+            mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang());
 
         }
 
-        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.getMyAds(getUserSetting().getCountry(), getUserModel()));
+        binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> mvvm.getMyAds(getUserSetting().getCountry(), getUserModel(),getLang()));
         adapter = new MyAdAdapter(activity, this, getLang());
         binding.recViewLayout.recView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recViewLayout.recView.setHasFixedSize(true);

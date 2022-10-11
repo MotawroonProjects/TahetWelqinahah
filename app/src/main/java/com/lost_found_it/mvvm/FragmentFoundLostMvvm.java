@@ -61,11 +61,11 @@ public class FragmentFoundLostMvvm extends AndroidViewModel {
         return isLoading;
     }
 
-    public void getCategories(String country,String type,String place_type){
+    public void getCategories(String country,String type,String place_type,String lang){
 
         getIsLoading().setValue(true);
         Api.getService(Tags.base_url)
-                .getCategoryWithSubCategory(country)
+                .getCategoryWithSubCategory(country, lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<CategoryDataModel>>() {

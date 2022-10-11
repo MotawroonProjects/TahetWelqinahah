@@ -68,7 +68,8 @@ public interface Service {
 
 
     @GET("api/home/getCategories")
-    Single<Response<CategoryDataModel>> getCategoryWithSubCategory(@Query("country") String country
+    Single<Response<CategoryDataModel>> getCategoryWithSubCategory(@Query("country") String country,
+                                                                   @Header("Accept-Language")String lang
     );
 
     @GET("api/home/getOneAd")
@@ -80,18 +81,21 @@ public interface Service {
 
     @GET("api/profile/myAds")
     Single<Response<AdsDataModel>> getMyAds(@Header("Authorization") String Authorization,
-                                            @Query("country") String country);
+                                            @Query("country") String country,
+                                            @Header("Accept-Language")String lang);
 
     @GET("api/profile/myFavorites")
     Single<Response<AdsDataModel>> getMyFavAds(@Header("Authorization") String Authorization,
-                                               @Query("country") String country);
+                                               @Query("country") String country,
+                                               @Header("Accept-Language")String lang);
 
 
     @GET("api/home/getAds")
     Single<Response<AdsDataModel>> search(@Query("country") String country,
                                           @Query("search") String search,
                                           @Query("added_latter") String added_latter,
-                                          @Query("city_id") String city_id
+                                          @Query("city_id") String city_id,
+                                          @Header("Accept-Language")String lang
     );
 
     @FormUrlEncoded

@@ -146,7 +146,7 @@ public class FragmentSearch extends BaseFragment {
         binding.imageBack.setOnClickListener(v -> {
             generalMvvm.getMainNavigationBackPress().setValue(true);
         });
-        mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString(), null, null);
+        mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString(), null, null,getLang());
         binding.recViewLayout.swipeRefresh.setOnRefreshListener(() -> {
             String added_later = null;
             String city_id = null;
@@ -157,7 +157,7 @@ public class FragmentSearch extends BaseFragment {
             if (mvvm.getCityData().getValue() != null) {
                 city_id = mvvm.getCityData().getValue().getId();
             }
-            mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString(), added_later, city_id);
+            mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString(), added_later, city_id,getLang());
         });
 
         binding.edtSearch.addTextChangedListener(new TextWatcher() {
@@ -182,7 +182,7 @@ public class FragmentSearch extends BaseFragment {
                 if (mvvm.getCityData().getValue() != null) {
                     city_id = mvvm.getCityData().getValue().getId();
                 }
-                mvvm.search(getUserSetting().getCountry(), s.toString(), added_later, city_id);
+                mvvm.search(getUserSetting().getCountry(), s.toString(), added_later, city_id,getLang());
             }
         });
 
@@ -259,7 +259,7 @@ public class FragmentSearch extends BaseFragment {
                 if (mvvm.getCityData().getValue() != null) {
                     city_id = mvvm.getCityData().getValue().getId();
                 }
-                mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString().trim(), added_later, city_id);
+                mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString().trim(), added_later, city_id,getLang());
 
                 sheetDialog.dismiss();
             });
@@ -284,7 +284,7 @@ public class FragmentSearch extends BaseFragment {
             sheetFilterBinding.spinner.setSelection(0);
             sheetFilterBinding.btnClear.setVisibility(View.GONE);
             sheetFilterBinding.setCity("");
-            mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString().trim(), null, null);
+            mvvm.search(getUserSetting().getCountry(), binding.edtSearch.getText().toString().trim(), null, null,getLang());
             sheetDialog.dismiss();
         });
         sheetDialog.show();

@@ -84,7 +84,7 @@ public class ServicePostAd extends Service {
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
         RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
         RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
-        RequestBody phone_code_part = Common.getRequestBodyText(model.getPhone());
+        RequestBody phone_code_part = Common.getRequestBodyText(model.getPhone_code());
         RequestBody phone_part = Common.getRequestBodyText(model.getPhone());
         RequestBody whatsapp_part = Common.getRequestBodyText(model.getWhatsapp());
         RequestBody type_part = Common.getRequestBodyText(model.getAd_type());
@@ -137,7 +137,7 @@ public class ServicePostAd extends Service {
         RequestBody address_part = Common.getRequestBodyText(model.getAddress());
         RequestBody lat_part = Common.getRequestBodyText(model.getLat() + "");
         RequestBody lng_part = Common.getRequestBodyText(model.getLng() + "");
-        RequestBody phone_code_part = Common.getRequestBodyText(model.getPhone());
+        RequestBody phone_code_part = Common.getRequestBodyText(model.getPhone_code());
         RequestBody phone_part = Common.getRequestBodyText(model.getPhone());
         RequestBody whatsapp_part = Common.getRequestBodyText(model.getWhatsapp());
         RequestBody type_part = Common.getRequestBodyText(model.getAd_type());

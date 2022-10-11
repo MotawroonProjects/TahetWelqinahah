@@ -89,11 +89,11 @@ public class FragmentSearchMvvm extends AndroidViewModel {
         }
         return added_later;
     }
-    public void search(String country,String search,String added_later,String city_id){
+    public void search(String country,String search,String added_later,String city_id,String lang){
         getIsLoading().setValue(true);
 
         Api.getService(Tags.base_url)
-                .search(country,search,added_later,city_id)
+                .search(country,search,added_later,city_id,lang)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<AdsDataModel>>() {
