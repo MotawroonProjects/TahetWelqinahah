@@ -11,8 +11,8 @@ android {
         applicationId "com.lost_found_it"
         minSdk 19
         targetSdk 31
-        versionCode 6
-        versionName "1.5"
+        versionCode 7
+        versionName "1.6"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
